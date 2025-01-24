@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<title>병원 전자동의서</title>
+	<link rel="stylesheet" href="../../css/login.css">
+	<script src="../../lib/js/jquery-1.12.4.min.js"></script>
+
+
+</head>
+
+<body>
+	<div id='selectHospital'>
+		<div><img src="../../images/catholicLogo.png" alt=""></div>
+		<div style='margin-top: 65px;width: 40%;margin-left: 59px;'>
+			<select id="_HospitalList" style="background:white;">
+				<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;기관 선택</option>
+				<option value="012">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;서울성모병원</option>
+				<option value="015">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;은평성모병원</option>
+			</select>
+		</div>
+		<button type="button" id="_btnSelect">
+			<span style="margin-top: 14%; margin-left: -15%; position: absolute;"> 선택</span>
+		</button>
+		<span id='selectTxt'>기관선택은 초기에 1회 가능합니다.</span>
+	</div>
+
+	<!--  <button id="notice_btn"><img src="../../images/megaphone.png" style="width:100%;height:100%;position:initial" alt="" /></button>
+	<button id="help_btn"><img src="../../images/question.png" style="width:100%;height:100%;position:initial" alt="" /></button>
+	<button id="help_btns"><img src="../../images/open-book.png" style="width:75%;height:75%;position:initial" alt="" /></button>-->
+
+	<div id="help_layout" style="display: none;">
+		<img src="../../images/quick4.png" alt="" style="width:100%;height:auto; position: initial;" />  
+		<button type="button" id="helpCloseBtn" style="top:45px; position: fixed;z-index: 10; right: 75px;" class="btn-close">
+			<span>CLOSE</span>
+		</button>
+	</div>
+	<div id="help_layouts" style="display: none;"> 
+		<button type="button" id="helpCloseBtns" style="top:45px;position: fixed;z-index: 10; right: 75px;" class="btn-close">
+			<span>CLOSE</span>
+		</button>
+	</div>
+	<div id="notice_layout">
+		<button type="button" id="noticeCloseBtn" style="top:10px;" class="btn-close">
+			<span>CLOSE</span>
+		</button>
+		<div style="width: 100%;height: 10%;font-size: 24px;font-weight: bold;">
+			<span style="margin-left: 3%;position: absolute;top: 2%;">Notice</span>
+		</div>
+		<div id="notice_table_layout">
+			<div class="notice_box">
+				<div class="notice_circle"><span class="update_circle_text">Update</span></div>
+				<div class="notice_title">
+					<span class="notice_title_text">[교육] SUH_CONSENT_SIGN_EDU V_2.05 교육 배포 안내</span>
+				</div>
+				<div class="notice_date"><span class="notice_date_text">2020-02-25</span></div>
+			</div>
+			<div class="notice_full_text" style="display: none;">
+				<div style="margin-left: 5%;padding-bottom: 5%;margin-top: 3%; ">
+					<span style="line-height: 26px;"> [SUH_CONSENT_SIGN_EDU_V_2.05 배포 안내]
+						<br>
+						<br>
+						&nbsp;안녕하세요. 아름누리메디컴입니다.
+						<br>
+						&nbsp;교육 업데이트 및 수정 안내입니다.<br>
+						<br>
+						[배포버전]
+						<br><br>&nbsp; 교육 : V_2.05<br>
+						<br>
+						[안내사항]<br><br> 
+						&nbsp;1. 2.05 앱이 배포되었습니다.<br>
+						<br>
+						감사합니다. <br>
+					</span>
+				</div>
+			</div>
+		</div> 
+	</div>
+	</div>
+	<div class="wrap">
+		<h1>MOBILE CONSENT SYSTEM 전자동의시스템</h1>
+		<div id='hospital_image'><img src="../../images/hospital_image.png" style="  width: 100%;height: 100%;position: initial;opacity: 0.3;" id="hospital_images" alt=""></div>
+		<div class="box2-1" id="plzLogo"></div>
+		<div class="login_section">
+			<div class="login_box login_id_box">
+				<span>
+					<input type="text" id="_loginId" class="input_id" tabindex="1" placeholder="ID" onChange="javascript:this.value=this.value.toUpperCase();" />
+				</span>
+				<!-- -. 5개이후 자동 스크롤 -->
+				<div id="_latelyList" class="login_id_list">
+					<ul></ul>
+				</div>
+			</div>
+			<div class="login_box login_pw_box">
+				<span>
+					<input type="password" id="_loginPw" class="input_pw" tabindex="2" placeholder="PW" />
+				</span>
+			</div>
+			<div class="login_btn_box">
+				<button type="button" id="_btnLogin" class="btn-login1" style="margin-top: 10px;">
+					<span style="margin-top: 14%; margin-left: -20%; position: absolute;"> LOGIN</span>
+				</button>
+				<button type="button" style="display: none;" id="_btnLoginSign" class="btn-login">
+					<span style="margin-top: 14%; margin-left: -25%; position: absolute;">인증로그인</span>
+				</button>
+			</div>
+		</div>
+		<div class="choice_Dept" style="display: none;">
+			<span id="_userDeptChoice_txt"></span>
+			<select id="_userDeptChoice">
+				<option value="">과 선택</option>
+			</select>
+			<div id="deptChoice_btn">
+				<button class="btn-login1 deptChoice_enter">선택</button>
+				<button class="btn-login1 deptChoice_close">취소</button>
+			</div>
+		</div> 
+		<div id="loading_bar" style="display:none;"><img id="loading_img" src="../../images/loading.gif" alt=""></div> 
+		<div id="bcTarget1" style="margin-top:30px;"></div> 
+		<!-- 전자동의서 Version -->
+		<div class="version_section">
+			<dl>
+				<dt>전자동의서 Version :</dt>
+				<dd id="_consentVersion">EPH_EDU_V1.0.01</dd>
+			</dl>
+			<dl>
+				<dt>e-Form Version :</dt>
+				<dd id="_eformVersion">2.5.124</dd>
+			</dl>
+			<dl>
+				<dt></dt>
+				<dd id="_interfaceType"></dd>
+			</dl>
+			<dl>
+				<dt>Device Info : </dt>
+				<dd id="_DeviceUUID"></dd>
+			</dl>
+		</div>
+
+		<!-- 업데이트 버튼 -->
+		<div id="_btnUpdate" class="update_section" style="display: none;">
+			<button type="button" id="_btnUpdateEfrom" class="btn-eform" style="display: none;">
+				<span>이폼</span>
+			</button>
+			<button type="button" id="_btnUpdateConsent" class="btn-agree" style="display: none;">
+				<span>전자동의서</span>
+			</button>
+		</div>
+
+		<!-- copyright -->
+		<p class="copyright">Copyright, All Rights Reserved.</p>
+
+		<!-- 닫기버튼 -->
+		<button type="button" id="_btnClose" class="btn-close">
+			<span>LOGIN</span>
+		</button>
+
+		<div id="loading_bar" style="display: none;">
+			<img id="loading_img" src="../../images/loading.gif" alt="">
+		</div>
+		<div class="dimmed"></div>
+
+		<script type="text/javascript" src="../../js/header.js"></script>
+		<script type="text/javascript" src="../../js/jquery-barcode.js"></script>
+		<script type="text/javascript" src="../../js/qrcode.js"></script>
+		<script type="text/javascript" src="../../js/pdf.js"></script>
+		<script type="text/javascript" src="../../js/plugin.js"></script>
+		<script type="text/javascript" src="../../js/pdfobject.js"></script>
+		<script type="text/javascript" src="js/login.js"></script>
+	</div>
+</body>
+
+</html>

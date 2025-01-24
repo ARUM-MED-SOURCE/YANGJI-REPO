@@ -1,0 +1,64 @@
+{
+    "KUMC": {
+    	"CNUHH" : {
+			        "MAIN": {
+			                "soapUrl"	: "http://192.168.0.185:8090",
+			                "eformUrl"	: "http://192.168.0.185:8088",
+			                "ftpUrl"	: "demo.clipsoft.co.kr",
+				            "ftpId"		: "clipsoft",
+				            "ftpPw"		: "clipsoft!815",
+			                "eSignUrl"	: "10.150.154.103",
+			                "eSignPort"	: "7770"
+			        },
+			        "SUB": {
+			            "soapUrl"	: "http://demo.clipsoft.co.kr:8090",
+			            "eformUrl"	: "http://demo.clipsoft.co.kr:8088",
+			            "ftpUrl"	: "demo.clipsoft.co.kr",
+			            "ftpId"		: "clipsoft",
+			            "ftpPw"		: "clipsoft!815",
+			            "eSignUrl"	: "10.150.154.103",
+			            "eSignPort"	: "7770"
+			        }
+        },
+        "GURO" : {
+			        "MAIN": {
+			                "soapUrl"	: "http://192.168.0.185:8090",
+			                "eformUrl"	: "http://192.168.0.185:8088",
+			                "ftpUrl"	: "192.168.0.185",
+			                "ftpId"		: "clipsoft",
+			                "ftpPw"		: "qwer1234!@#$",
+			                "eSignUrl"	: "10.150.154.103",
+			                "eSignPort"	: "7770"
+			        },
+			        "SUB": {
+			            "soapUrl"	: "http://demo.clipsoft.co.kr:8090",
+			            "eformUrl"	: "http://demo.clipsoft.co.kr:8088",
+			            "ftpUrl"	: "demo.clipsoft.co.kr",
+			            "ftpId"		: "clipsoft",
+			            "ftpPw"		: "clipsoft!815",
+			            "eSignUrl"	: "10.150.154.103",
+			            "eSignPort"	: "7770"
+			        }
+        },
+        "ANSAN" : {
+			        "MAIN": {
+			                "soapUrl"	: "http://192.168.0.185:8090",
+			                "eformUrl"	: "http://192.168.0.185:8088",
+			                "ftpUrl"	: "192.168.0.185",
+			                "ftpId"		: "clipsoft",
+			                "ftpPw"		: "qwer1234!@#$",
+			                "eSignUrl"	: "10.150.154.103",
+			                "eSignPort"	: "7770"
+			        },
+			        "SUB": {
+			            "soapUrl"	: "http://demo.clipsoft.co.kr:8090",
+			            "eformUrl"	: "http://demo.clipsoft.co.kr:8088",
+			            "ftpUrl"	: "demo.clipsoft.co.kr",
+			            "ftpId"		: "clipsoft",
+			            "ftpPw"		: "clipsoft!815",
+			            "eSignUrl"	: "10.150.154.103",
+			            "eSignPort"	: "7770"
+			        }
+        }
+    }
+}
