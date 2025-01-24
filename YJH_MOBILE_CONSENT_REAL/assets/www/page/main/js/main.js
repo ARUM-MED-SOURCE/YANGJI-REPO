@@ -267,7 +267,7 @@ $(document).ready(function () {
         var timeMinus = year + "" + month + "" + dayMinus;
         
         $.ajax({
-            url: "http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",
+            url: "http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",
             type: 'post',
             data: 'submit_id=DRMRF00122&business_id=mr&instcd=204&startdate='+ timeMinus +'&enddate='+ time +'&userdeptcd='+ getLocalStorage("userDeptCode"),
             dataType: 'xml',
@@ -400,7 +400,7 @@ $(document).ready(function () {
             	
             	COMMON.plugin.loadingBar("show", "삭제 요청 중입니다.");
                 $.ajax({
-                    url: 'http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live?' + 'submit_id=DXMRF00117&business_id=mr&instcd=204&pid='+ pid 
+                    url: 'http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live?' + 'submit_id=DXMRF00117&business_id=mr&instcd=204&pid='+ pid 
                     +'&orddd='+ orddd +'&cretno='+cretno + '&apdd='+ apdd +'&apdeptcd='+ apdeptcd +'&apuserid='+ apuserid + '&signuserid='+signuserid+'&resncnts='+resncnts+'&updtcnts='+updtcnts + "&jobkindcd="+jobkindcd,
                     type: 'post',
                     dataType: 'xml',
@@ -526,7 +526,7 @@ $(document).ready(function () {
                 //loadingbar_display();
                 COMMON.plugin.loadingBar("show", "검색중입니다.");
                 $.ajax({
-                    url: "http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",
+                    url: "http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",
                     data: "submit_id=DRMRF00123&business_id=mr&instcd=204&pid=&fromdd="+fromdd+"&todd="+todd+"&orddeptcd="+orddeptcd+"&orddrid="+orddrid
                             +"&reqflag="+reqflag+"&replyn="+replyn+"&ioflag="+ioflag,
                     type: 'get',
@@ -1162,7 +1162,7 @@ $(document).ready(function () {
 	                                       	 var ordtype = ocrAdd.visitType;
 	                                         var nonseqno = ocrAdd.orderSeqNo;
 	                                       	 $.ajax({
-	                                       		   url: "http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",   
+	                                       		   url: "http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",   
 	                                               data: "submit_id=DRMRF00128&business_id=mr&instcd=204&prcpcd=" + prcpcd + "&prcpno=" + prcpno + "&formcd=" + formcd + "&pid="+pid+"&cretno="+cretno+"&orddd="+orddd+"&ordtype="+ordtype , 
 	                                               type: 'get',
 	                                               async : false,
@@ -1790,7 +1790,7 @@ $(document).ready(function () {
 
                             if(applyduty == "Y"){
                             	$.ajax({
-                        			url: 'http://emrdev.yjh.com/cmcnu/.live',
+                        			url: 'http://emr.yjh.com/cmcnu/.live',
                         			type: 'post',
                         			data: 'submit_id=DRZSU11708&business_id=zz&dutplceinstcd=204&dutplcecd=' + getLocalStorage("userDeptCode") + '&userid=' + getLocalStorage("userId"),
                         			dataType: 'xml',
@@ -4683,14 +4683,14 @@ function searchNowriteConsent() {
                         	var ordtype = consent.ordtype;
                             var nonseqno = consent.seqno ;
                         	 $.ajax({
-                        		  url: "http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",   
+                        		  url: "http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live",   
                                   data: "submit_id=DRMRF00128&business_id=mr&instcd=204&prcpcd=" + prcpcd + "&prcpno=" + prcpno + "&formcd=" + formcd + "&pid="+pid+"&cretno="+cretno+"&orddd="+orddd+"&ordtype="+ordtype , 
                                   type: 'get',
                                   async : false,
                                   dataType: 'xml',
                                   timeout: 40000,
                                   success: function (result) {
-                                	  //console.log( "뿌쑝 : http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live"+"submit_id=DRMRF00128&business_id=mr&instcd=204&prcpcd=" + prcpcd + "&prcpno=" + prcpno + "&formcd=" + formcd + "&pid="+pid+"&cretno="+cretno+"&orddd="+orddd+"&ordtype="+ordtype);
+                                	  //console.log( "뿌쑝 : http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live"+"submit_id=DRMRF00128&business_id=mr&instcd=204&prcpcd=" + prcpcd + "&prcpno=" + prcpno + "&formcd=" + formcd + "&pid="+pid+"&cretno="+cretno+"&orddd="+orddd+"&ordtype="+ordtype);
                                       if ($(result).find('prcpinfo').length > 0) { 
                                           var idx = 0;
                                           $(result).find('prcpinfo').each(function () {  
@@ -5836,8 +5836,6 @@ function consentSearchSuccessHandler(resData, type) {
                               } 
                               if (ecoFlag != true && cosign_Flags != true && nurscert_Flag != true) {
                                   COMMON.plugin.loadingBar("hide", "뷰어를 실행하는 중입니다."); 
-                                  alert("여기1?");
-                                  alert('signPwd is 뭔들 : ' + getLocalStorage("signPwd"));
                                   if (getLocalStorage("signPwd") == "" || getLocalStorage("signPwd") == null || getLocalStorage("signPwd") == undefined) {
                                       $('#sign_popup').css('display', 'block');
                                       $('#_certpassword').focus();
@@ -6702,7 +6700,7 @@ function makeCommmonParamForEform() {
     var url = "";
     if (localStorage.getItem("jobkindcd").substring(0, 2) == "03") {
         docName = getLocalStorage("userName");
-        url = "http://emrdev.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live?submit_id=DRMRF02317&business_id=mr&userid=" + getLocalStorage("userId");
+        url = "http://emr.yjh.com/cmcnu/webapps/mr/mr/formmngtweb/.live?submit_id=DRMRF02317&business_id=mr&userid=" + getLocalStorage("userId");
     }
      
     var viewerCommonParams = { 
@@ -6760,8 +6758,8 @@ function makeCommmonParamForEform() {
             "I_VISIT_TYPE_NUMBER": patient.VisitTypeNum, // 내원 구분 숫자
             "I_BEDNO": patient.Bedno, // 환자 침대번호 
             "I_OP_DATE": patient.OperationDate,
-            "logo_imge": "http://emrdev.yjh.com/cmcnu/webapps/images/report/biglogo204.png",
-            //"logo_imge": "http://emrdev.yjh.com/cmcnu/webapps/images/report/biglogo013.png",
+            "logo_imge": "http://emr.yjh.com/cmcnu/webapps/images/report/biglogo204.png",
+            //"logo_imge": "http://emr.yjh.com/cmcnu/webapps/images/report/biglogo013.png",
             "docSignImgUrl": url,
             "certTarget": consent.FormId,
             "certResult": getLocalStorage("sign"),
@@ -8143,7 +8141,7 @@ function CreateOcrTag() {
     } else {
         var ymd = "";
         $.ajax({
-            url:  'http://emrdev.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
+            url:  'http://emr.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
             type: 'post',
             timeout: 40000,
             async: false,
@@ -8186,7 +8184,7 @@ function wifiCheckFn(wifiCheck) {
 
 function getTime() {
     $.ajax({
-        url: 'http://emrdev.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
+        url: 'http://emr.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
         type: 'post',
         timeout: 40000,
         async: false,

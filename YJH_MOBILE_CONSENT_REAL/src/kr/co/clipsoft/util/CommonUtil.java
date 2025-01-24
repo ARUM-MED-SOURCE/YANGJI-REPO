@@ -189,7 +189,7 @@ public class CommonUtil {
 		String name = "";
 		try {
 			if(packageName == null || packageName.equals("")){
-				name = "kr.co.less.consent.yjh.edu";
+				name = "kr.co.less.consent.yjh.real";
 			}else{
 				name = packageName;
 			}
@@ -208,7 +208,7 @@ public class CommonUtil {
 		String name = "";
 		try {
 			if(packageName == null || packageName.equals("")){
-				name = "kr.co.less.consent.yjh.edu";
+				name = "kr.co.less.consent.yjh.real";
 			}else{
 				name = packageName;
 			}

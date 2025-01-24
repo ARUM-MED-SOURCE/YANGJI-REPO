@@ -1971,7 +1971,7 @@ public class EFromViewer {
 				params.put("imgRealPath", pathAry);
 			}
 
-			url = "http://emrdev.yjh.com/eform/biz/nu/member/viewer/eForm25/consent/view/save";// EFORM_URL +
+			url = "http://emr.yjh.com/eform/biz/nu/member/viewer/eForm25/consent/view/save";// EFORM_URL +
 																										// "biz/nu/member/viewer/eForm25/consent/view/save";
 
 			// 2021-12-02
