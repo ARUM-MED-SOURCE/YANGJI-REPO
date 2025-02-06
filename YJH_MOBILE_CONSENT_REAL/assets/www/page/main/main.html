@@ -1,0 +1,1451 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<title>아름누리메디컴</title>
+<link rel="stylesheet" href="../../css/default.css">
+<link rel="stylesheet" href="../../css/style.css?ver=1">
+<style>
+img {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px;
+	width: 100px;
+	height: 120px;
+}
+
+.fixed {
+	position: fixed;
+	top: 0px;
+	background-color: white;
+	z-index: 9999;
+	opacity: 0.9;
+	margin: auto;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: 0;
+	display: block;
+}
+
+input:disabled {
+	background: lightgray;
+	opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+	<div class="wrap">
+		<div id="mainDiv"
+			style="display: none; z-index: 9999; width: 100%; height: 100%; position: absolute; background: white; overflow: auto; -ms-overflow-style: none;">
+			<div id="headerDiv" class="fixed"
+				style="width: 100%; height: 150px; margin: auto; display: block;">
+				<div style="float: right;">
+					<input type='button' value='창닫기' id='close_btn'
+						style="opacity: 0.5; filter: alpha(opacity : 50); width: 80px; height: 57px; background-color: black; border-radius: 10px; color: #ffffff; margin-top: 30px; margin-right: 5%; border: 0; outline: 0; font-weight: bolder; color: #FFCC00;">
+				</div>
+			</div>
+			<br />
+			<div id="bodyDiv"
+				style="width: 100%; height: auto; margin-top: 100px;">
+				<img id="imgMain" class="class1" src=""
+					style="width: 100%; height: 80%;" />
+			</div>
+
+
+		</div>
+
+		<!--     <div id="mainDiv" style="display:none;     overflow-x: hidden; z-index:9999; width:100%; height:100%; position:absolute; background:white;">
+	    <div id="headerDiv" style="width:100%;height:150px; margin:auto; display:block; overflow: auto;">
+	     <div style="float:right;">          
+	    <input type='button' value='창닫기' id='close_btn' style="opacity: 0.5; filter: alpha(opacity : 50); width: 80px; height: 57px; margin-right:15px; background-color: black; border-radius: 10px; color: #ffffff; margin-top: 50px; border: 0; outline: 0; font-weight: bolder; color: #FFCC00;"></div></div>
+	    <br/>
+	    <div id="bodyDiv" style="width:100%;height:100%; overflow-x:hidden;">
+	        <img id="imgMain" class="class1 imgs" src="" style="width:100%;height:100%;"/>
+	    </div>
+        </div> -->
+		<!-- header -->
+		<div class="header">
+			<h1>아름누리병원</h1>
+			<div class="nav" style="width: 103%;">
+
+				<ul id="_menus">
+					<li id="_inPatient" class="gnb_1 on"><a href="#">입원</a></li>
+					<li id="_outPatient" class="gnb_2"><a href="#">외래</a></li>
+					<li id="_emergency" class="gnb_3"><a href="#">응급</a></li>
+					<li id="_operation" class="gnb_4"><a href="#">수술</a></li>
+					<li id="_find" class="gnb_6"><a href="#">검색</a></li>
+				</ul>
+			</div>
+			<!-- by sangu02 2024-11-14 -->
+			<div style="margin-top:270px">
+				<button id="Dept_Change_Btn" 
+						style="width: 100%; height: 33px; color: #144c9a; line-height: 40px; font-weight: bold;">과 변경하기</button>
+				<div class="user_info">
+					<ul>
+						<li><span id="_userId" class="name" style="display: none;"></span></li>
+						<li><span id="_userDept" class="gbn"></span> <span
+							id="_userName" class="user_id"></span></li>
+					</ul>
+				</div>
+				<div class="btn-area">
+					<button type="button" id="_btnHelp" class="btn-help">
+						<span class="sp">도움말</span>
+					</button>
+					<button type="button" id="_btnLogOut" class="btn-logout on">
+						<span class="sp">로그아웃</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- content -->
+		<div class="content">
+			<!--  입원 환자 검색 영역  -->
+			<div class="ctns cnts_1 gnb_part_1 _inPatient">
+
+				<!-- 검색영역 -->
+				<div class="form_section">
+					<div class="form_area">
+						<span class="form_box form_box_input cal_box"> <input
+							type="text" id="_inPatientCalendar" class="_calendar" value=""
+							placeholder="진료일자" readonly="readonly">
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span class="form_box form_box_select"> <select
+							id="_inPatientWard">
+								<option value="">병동</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_inPatientClnDept">
+								<option value="">진료과</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_inPatientDoctor">
+								<option value="">주치의</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_inPatientWriteState">
+								<option value="">작성상태</option>
+								<option value="A">전체</option>
+								<option value="N">미작성</option>
+								<option value="T">임시저장</option>
+								<option value="Y">인증저장</option> 
+						</select>
+						</span>
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_inPatientInit" class="btn-reset">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_inPatientSearch" class="btn-search">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no"><span class="_sort" attr-key="PatientCode"
+								attr-orderby="desc">등록번호</span></li>
+							<li class="name"><span class="_sort" attr-key="PatientName"
+								attr-orderby="desc">성명</span></li>
+							<li class="age"><span class="_sort" attr-key="Sex"
+								attr-orderby="desc">S</span>/<span class="_sort" attr-key="Age"
+								attr-orderby="desc">A</span></li>
+							<li class="room"><span class="_sort" attr-key="Ward"
+								attr-orderby="desc">병실</span></li>
+							<li class="clinic"><span class="_sort"
+								attr-key="ClnDeptName" attr-orderby="desc">진료과</span></li>
+							<li class="doctor"><span class="_sort" attr-key="ChargeName"
+								attr-orderby="desc">주치의</span>/<span class="_sort"
+								attr-key="DoctorName" attr-orderby="desc">담당의</span></li>
+						</ul>
+					</div>
+
+					<div class="list_body" id="_inPatientList"></div>
+					<div id="_inPatientListTemplate" style='display: none;'>
+						<ul>
+							<li class="_inPatientCode no" style="padding-left: 15px;"></li>
+							<li class="_inPatientName name"></li>
+							<li class="_inPatientAge age" style='padding-left: 10px;'></li>
+							<li class="_inPatientRoom room" style="padding-left: 15px;"></li>
+							<li class="_inPatientclnDeptName clinic"></li>
+							<li class="doctor" style='padding-left: 10px;'><span
+								class="_inPatientDoctorName"></span>/<span
+								class="_inPatientChargeName"></span></li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+			<!--  외래 환자 검색영역 -->
+			<div class="ctns cnts_1 gnb_part_2 _outPatient"
+				style='display: none;'>
+				<!-- 검색영역 -->
+				<div class="form_section1">
+					<div class="form_area">
+						<span class="form_box form_box_input cal_box"> <input
+							type="text" id="_outPatientCalendar" class="_calendar" value=""
+							placeholder="진료일자" readonly="readonly" />
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span class="form_box form_box_select"> <select
+							id="_outPatientClnDept">
+								<option value="">진료과</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_outPatientDoctor">
+								<option value="">진료의</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_outPatientWriteState">
+								<option value="">작성상태</option>
+								<option value="A">전체</option>
+								<option value="N">미작성</option>
+								<option value="T">임시저장</option>
+								<option value="Y">인증저장</option>
+						</select>
+						</span>
+
+
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_outPatientInit" class="btn-reset1">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_outPatientSearch" class="btn-search1">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form1">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no1"><span class="_sort" attr-key="PatientCode"
+								attr-orderby="desc">등록번호</span></li>
+							<li class="name"><span class="_sort" attr-key="PatientName"
+								attr-orderby="desc">성명</span></li>
+							<li class="age"><span class="_sort" attr-key="Sex"
+								attr-orderby="desc">S</span>/<span class="_sort" attr-key="Age"
+								attr-orderby="desc">A</span></li>
+
+							<li class="doctor"><span id="outPatientChange" class="_sort"
+								attr-key="DoctorName" attr-orderby="desc">진료과/진료의</span></li>
+						</ul>
+					</div>
+					<div class="list_body1" id="_outPatientList"></div>
+					<div id="_outPatientListTemplate" style='display: none;'>
+						<ul>
+							<li class="_outPatientCode no1" style="padding-left: 15px;">등록번호</li>
+							<li class="_outPatientName name">성명</li>
+							<li class="_outPatientAge age">S/A</li>
+							<li class="_outPatientDoctorName doctor">진료/주치의</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!--  응급 환자 검색영역 -->
+			<div class="ctns cnts_1 gnb_part_3 _emergency" style='display: none;'>
+				<!-- 검색영역 -->
+				<div class="form_section2">
+					<div class="form_area">
+						<span class="form_box form_box_select"> <select
+							id="_emergencyDept">
+								<option value="">진료과</option>
+						</select>
+						</span> <span class="form_box form_box_input cal_box"> <input
+							type="text" id="_emergencyCalender" class="_calendar" value=""
+							placeholder="진료일자" readonly="readonly" />
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span class="form_box form_box_select"> <select
+							id="_emerVisitType">
+								<option value="-">전체</option>
+								<option selected="selected" value="1">재원</option>
+								<option value="2">퇴실정리</option>
+								<option value="3">퇴원</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_emrWriteState">
+								<option value="">작성상태</option>
+								<option value="A">전체</option>
+								<option value="N">미작성</option>
+								<option value="T">임시저장</option>
+								<option value="Y">인증저장</option> 
+						</select>
+						</span>
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_emergencyInit" class="btn-reset2">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_emergencySearch" class="btn-search2">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form2">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no2"><span class="_sort" attr-key="PatientCode"
+								attr-orderby="desc">등록번호</span></li>
+							<li class="name"><span class="_sort" attr-key="PatientName"
+								attr-orderby="desc">성명</span></li>
+							<li class="age"><span class="_sort" attr-key="Sex"
+								attr-orderby="desc">S</span>/<span class="_sort" attr-key="Age"
+								attr-orderby="desc">A</span></li>
+							<li class="emergency"><span class="_sort" attr-key="Bed"
+								attr-orderby="desc">BED</span></li>
+							<li class="clinic"><span class="_sort"
+								attr-key="ClnDeptCode" attr-orderby="desc">진료과</span></li>
+							<li class="doctor"><span class="_sort" attr-key="ChargeName"
+								attr-orderby="desc">담당의</span></li>
+						</ul>
+					</div>
+					<div class="list_body2" id="_emergencyList"></div>
+					<div id="_emergencyListTemplate" style='display: none;'>
+						<ul>
+							<li class="_emergencyCode no2" style="padding-left: 15px;"></li>
+							<li class="_emergencyName name"></li>
+							<li class="_emergencyAge age" style='padding-left: 0'></li>
+							<li class="_emergencyEmergencyArea emergency"
+								style="padding-left: 15px;">ER</li>
+							<li class="_emergencyClnDeptCode clinic"></li>
+							<li class="_emergencyChargeName doctor" style='padding-left: 0'></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!--  수술 환자 검색영역 -->
+			<div class="ctns cnts_1 gnb_part_4 _operation" style='display: none;'>
+				<!-- 검색영역 -->
+				<div class="form_section3">
+					<div class="form_area">
+						<span class="form_box form_box_input cal_box"> <input
+							type="text" id="_operationCalender" class="_calendar" value=""
+							placeholder="수술일자" readonly="readonly" />
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span class="form_box form_box_select"> <select
+							id="_operationClnDept">
+								<option value="">집도과</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_OperationDoctor">
+								<option value="">집도의</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_operationOperationType">
+								<option value="">수술구분</option>
+								<option value="A">전체</option>
+								<option value="M">미착</option>
+								<option value="R">준비</option>
+								<option value="I">진행</option>
+								<option value="F">완료</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_OperationWriteState">
+								<option value="">작성상태</option>
+								<option value="A">전체</option>
+								<option value="N">미작성</option>
+								<option value="T">임시저장</option>
+								<option value="Y">인증저장</option> 
+						</select>
+						</span>
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_operationInit" class="btn-reset3">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_operationSearch" class="btn-search3">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form3">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no3"><span class="_sort" attr-key="PatientCode"
+								attr-orderby="desc">등록번호</span></li>
+							<li class="name"><span class="_sort" attr-key="PatientName"
+								attr-orderby="desc">성명</span></li>
+							<li class="age"><span class="_sort" attr-key="Sex"
+								attr-orderby="desc">S</span>/<span class="_sort" attr-key="Age"
+								attr-orderby="desc">A</span>/ <span class="_sort"
+								attr-key="AnesthesiaType" attr-orderby="desc">마취구분</span></li>
+							<li class="room"><span class="_sort"
+								attr-key="OperationRoom" attr-orderby="desc">수술방</span></li>
+							<li class="surgery"><span class="_sort"
+								attr-key="OperationDept" attr-orderby="desc">집도과</span></li>
+							<li class="surgery_date"><span class="_sort" attr-key="Room"
+								attr-orderby="desc">병실</span></li>
+						</ul>
+					</div>
+					<div class="list_body3" id="_operationList"></div>
+					<div id="_operationListTemplate" style='display: none;'>
+						<ul>
+							<li class="_operationCode no3" style="padding-left: 15px;">01181041</li>
+							<li class="_operationName name">김도현</li>
+							<li class="_operationAge age" style='padding-left: 4px;'>23/남/General</li>
+							<li class="_operationOperationRoom room"
+								style="padding-left: 15px;">1/18</li>
+							<li class="_operationOperationDept surgery">OS(RO)</li>
+							<li class="_operationOperationDate surgery_date"
+								style='padding-left: 4px;'>20171026</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!--  검사실 환자 검색영역 -->
+			<div class="ctns cnts_1 gnb_part_5 _request" style='display: none;'>
+				<!-- 검색영역 -->
+				<div class="form_section4">
+					<div class="form_area">
+						<span class="form_box form_box_input cal_box" style="width: 46%;">
+							<input type="text" id="_requestCalender" class="_calendar"
+							value="" placeholder="진료일자" readonly="readonly" />
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span
+							style='color: white; float: left; margin-top: 3%; padding-right: 1%;'>~</span>
+						<span class="form_box form_box_input cal_box"
+							style="width: 46%; margin-left: 1px;"> <input type="text"
+							id="_requestCalender_2" class="_calendar" value=""
+							placeholder="진료일자" readonly="readonly" />
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span class="form_box form_box_select"
+							style="width: 30%; margin-left: 0; margin-right: 13px;"> <select
+							id="_requestCheck">
+								<option value="">의뢰구분</option>
+								<option value="-">전체</option>
+								<option value="1">진료의뢰</option>
+								<option value="3">타과의뢰</option>
+						</select>
+						</span> <span class="form_box form_box_select" style="width: 30%;">
+							<select id="_requestReply">
+								<option value="">회신구분</option>
+								<option value="-">전체</option>
+								<option value="Y">회신</option>
+								<option value="N">미회신</option>
+						</select>
+						</span> <span class="form_box form_box_select"
+							style="width: 30%; margin-left: 2%;"> <select
+							id="_requestDiag">
+								<option value="">진료구분</option>
+								<option value="-">전체</option>
+								<option value="I">입원</option>
+								<option value="O">외래</option>
+								<option value="D">DSC</option>
+								<option value="E">응급</option>
+						</select>
+						</span> <span class="form_box form_box_select" style="width: 47.5%;">
+							<select id="_requestDept">
+								<option value="">진료과</option>
+						</select>
+						</span> <span class="form_box form_box_select" style="width: 47.5%;">
+							<select id="_requestDoc">
+								<option value="">진료의</option>
+						</select>
+						</span> <span class="form_box form_box_select" style="width: 98%;">
+							<select id="_requestWriteState">
+								<option value="">작성상태</option>
+								<option value="A">전체</option>
+								<option value="N">미작성</option>
+								<option value="T">임시저장</option>
+								<option value="Y">인증저장</option> 
+						</select>
+						</span>
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_requestInit" class="btn-reset4">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_requestSearch" class="btn-search4">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form4">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no4"><span class="_sort" attr-key="PatientCode"
+								attr-orderby="desc">등록번호</span></li>
+
+							<li class="name" style='padding-left: 8px; width: 42%;'><span
+								class="_sort" attr-key="PatientName" attr-orderby="desc">성명</span>
+							</li>
+							<li class="age" style='padding-left: 0; width: 21%'><span
+								class="_sort" attr-key="Sex" attr-orderby="desc">성별</span>/ <span
+								class="_sort" attr-key="Age" attr-orderby="desc">나이</span></li>
+							<li class="clinic" style="width: 36%;"><span class="_sort"
+								attr-key="ClnDeptCode" attr-orderby="desc">의뢰과</span></li>
+							<li class="inspect"><span class="_sort" attr-key="Ward"
+								attr-orderby="desc">의뢰일시</span></li>
+							<li class="requestDoc"
+								style='width: 25%; padding-left: 10px; color: #808080;'><span
+								class="_sort" attr-key="Ward" attr-orderby="desc">의뢰의사</span></li>
+							<li class="condition" style="width: 36%; padding-left: 15px;"><span
+								class="_sort" attr-key="VisitType" attr-orderby="desc">회신과</span></li>
+							<li class="condition" style="padding-left: 0; width: 36.3%"><span
+								class="_sort" attr-key="VisitType" attr-orderby="desc">회신일시</span></li>
+							<li class="condition" style="padding-left: 10px; width: 25%"><span
+								class="_sort" attr-key="VisitType" attr-orderby="desc">회신의사</span></li>
+						</ul>
+					</div>
+					<div class="list_body4" id="_requestList"></div>
+					<div id="_requestListTemplate" style='display: none;'>
+						<ul>
+							<li class="_requestPatientCode no4" style="padding-left: 15px;">2425252</li>
+							<li class="_requestPatientName name" style="padding-left: 1px;">최윤수</li>
+							<li class="_requestAge age" style="padding-left: 17px;">남자/26</li>
+							<li class="_requestRequestDept clinic"
+								style="padding-left: 15px;">건강증진학과</li>
+							<li class="_requestRequestDate inspect">2020-01-02 11:07</li>
+							<li class="_requestRequestDoc condition"
+								style='padding-left: 17px;'>정연화</li>
+							<li class="_requestReplyDept clinic"
+								style='padding-top: 3px; padding-left: 15px;'>흉부외과</li>
+							<li class="_requestReplyDate inspect" style='padding-top: 3px;'>2020-01-02
+								11:07</li>
+							<li class="_requestReplyDoc condition"
+								style='padding-top: 3px; padding-left: 17px;'>김진수</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!--  검색 환자 검색영역 -->
+			<div class="ctns cnts_1 gnb_part_6 _find" style='display: none;'>
+				<!-- 검색영역 -->
+				<div class="form_section5">
+					<div class="form_area">
+						<span class="form_box form_box_input"> <input type="number"
+							id="_findPatientCode" placeholder="등록번호" value="" />
+						</span> <span class="form_box form_box_input"> <input type="text"
+							id="_findPatientName" placeholder="환자이름" value="" />
+						</span> <span class="form_box form_box_input cal_box"> <input
+							type="text" id="_findCalender" class="_calendar" value=""
+							placeholder="진료일자" readonly="readonly" />
+							<button type="button" class="btn-cal _calendar">
+								<span>달력</span>
+							</button>
+						</span> <span class="form_box form_box_select"> <select
+							id="_findDept">
+								<option value="">진료과</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_findVisitType">
+								<option value="I">입원</option>
+								<option value="O">외래</option>
+								<option value="E">응급</option>
+								<option value="P">수술</option>
+						</select>
+						</span> <span class="form_box form_box_select"> <select
+							id="_findWriteState">
+								<option value="">작성상태</option>
+								<option value="A">전체</option>
+								<option value="N">미작성</option>
+								<option value="T">임시저장</option>
+								<option value="Y">인증저장</option> 
+						</select>
+						</span> 
+						
+						<!-- 2022-02-03 -->
+						<span class="form_box form_box_select"> <select
+							id="_findVerbalMulti">
+								<option value="">구두/응급 동의여부</option>
+								<option value="VM">구두/응급동의 전체</option>
+								<option value="VN">구두동의</option>
+								<option value="MN">응급동의(의료인2인)</option>
+								<option value="VY">구두동의완료</option> 
+								<option value="MY">응급동의(의료인2인)완료</option>
+						</select>
+						</span>
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_findInit" class="btn-reset5">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_findSearch" class="btn-search5">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form5">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no5"><span class="_sort" attr-key="PatientCode"
+								attr-orderby="desc">등록번호</span></li>
+							<li class="name"><span class="_sort" attr-key="PatientName"
+								attr-orderby="desc">성명</span></li>
+							<li class="age"><span class="_sort" attr-key="Sex"
+								attr-orderby="desc">S</span>/<span class="_sort" attr-key="Age"
+								attr-orderby="desc">A</span></li>
+							<li class="birthday"><span class="_sort" attr-key="Birthday"
+								attr-orderby="desc">생년월일</span></li>
+							<li class="hospital"><span class="_sort"
+								attr-key="AdmissionTime" attr-orderby="desc">수진일</span></li>
+							<li class="etc"><span class="_sort" attr-key="ClnDeptCode"
+								attr-orderby="desc">진료과</span></li>
+						</ul>
+					</div>
+					<div class="list_body5" id="_findList"></div>
+					<div id="_findListTemplate" style='display: none;'>
+						<ul>
+							<li class="_findPatientCode no5" style="padding-left: 15px;"></li>
+							<li class="_findPatientName name"></li>
+							<li class="_findAge age" style='padding-left: 5px;'></li>
+							<li class="_findBirthday birthday" style="padding-left: 15px;"></li>
+							<li class="_findClinicalDate hospital"></li>
+							<li class="_findClnDeptName etc" style='padding-left: 5px;'></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+
+			<!--  검사실 환자 검색영역 -->
+			<div class="ctns cnts_1 gnb_part_9 _laboratory"
+				style='display: none;'>
+				<!-- 검색영역 -->
+				<div class="form_section4">
+					<div class="form_area">
+						<span class="form_box form_box_input cal_box"
+							style="width: 45%; float: none;"> <input type="text"
+							id="_laboratoryStartDate" class="_calendar" value=""
+							style="width: 100%;" readonly="readonly" placeholder="검색 시작일" />
+						</span> <span style="color: white; position: absolute; top: 12%;">~
+						</span> <span class="form_box form_box_input cal_box"
+							style="width: 45%; float: none; margin-left: 5%;"> <input
+							type="text" id="_laboratoryEndDate" class="_calendar" value=""
+							readonly="readonly" style="width: 100%;" placeholder="검색 종료일" />
+						</span> <span class="form_box form_box_select"
+							style="width: 46.5%; margin-left: 0;"> <select
+							id="_laboratoryClnDept">
+								<option value="">지원부서</option>
+						</select>
+						</span> <span class="form_box form_box_select"
+							style="width: 46.5%; margin-left: 5%;"> <select
+							id="_laboratoryRoom">
+								<option value="">검사실</option>
+						</select>
+						</span> <span class="form_box form_box_select"
+							style="width: 46.5%; margin-left: 0;"> <select
+							id="_laboratoryCheck">
+
+								<option value="eccd">미예약</option>
+								<option value="rsrv" selected="selected">예약</option>
+								<option value="acpt">실시</option>
+						</select>
+						</span> <span class="form_box form_box_input"
+							style="width: 46.5%; margin-left: 5%;"> <input
+							type="number" id="_laboratoryPatientCode" placeholder="등록번호"
+							value="" />
+						</span>
+
+					</div>
+
+					<!-- 버튼 영역 -->
+					<div class="btn-area">
+						<button type="button" id="_laboratoryInit" class="btn-reset4">
+							<span>초기화</span>
+						</button>
+						<button type="button" id="_laboratorySearch" class="btn-search4">
+							<span>검색</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- 펼치기 / 닫기 버튼 -->
+				<div class="btn-area toggle-form-area">
+					<button type="button" class="btn-toggle-form4">
+						<span>펼치기/닫기</span>
+					</button>
+				</div>
+
+				<!-- 리스트 -->
+				<!-- 리스트 -->
+				<div class="list_section">
+					<div class="list_header">
+						<ul>
+							<li class="no1" style='text-align: center;'><span
+								class="_sort" attr-key="PatientCode" attr-orderby="desc">등록번호</span></li>
+							<li class="name" style="padding-right: 0px; text-align: center;"><span
+								class="_sort" attr-key="PatientName" attr-orderby="desc">성명</span></li>
+							<li class="age" style="text-align: center; margin-left: 5px;"><span
+								class="_sort" attr-key="Sex" attr-orderby="desc">S</span>/<span
+								class="_sort" attr-key="Age" attr-orderby="desc">A</span></li>
+
+							<li class="doctor" style="padding-left: 9px;"><span
+								id="clnDeptName" class="_sort" attr-key="ClnDeptName"
+								attr-orderby="desc">진료과</span></li>
+							<li class="prcpdd" style="padding-left: 9px;"><span
+								id="outPatientChange" class="_sort" attr-key="prcpdd"
+								attr-orderby="desc">처방일</span></li>
+						</ul>
+					</div>
+					<div class="list_body1" id="_laboratoryList"></div>
+					<div id="_laboratoryListTemplate" style='display: none;'>
+						<ul>
+							<li class="_laboratoryPatientCode no1"
+								style="padding-left: 9px; text-align: center;">등록번호</li>
+							<li class="_laboratoryPatientName name"
+								style="padding-right: 0px; text-align: center;">성명</li>
+							<li class="_laboratoryAge age" style="margin-left: 8px;">S/A</li>
+							<li class="_laboratoryDeptName doctor">진료과</li>
+							<li class="_laboratoryPrcpdd prcpdd">진료과</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- 해당 환자 상세정보 영역 -->
+			<div class="ctns cnts_2">
+				<!-- 환자정보 -->
+				<div class="patient_section">
+					<h3 class="h3_tit inPatient" id="h3_tit">환자정보</h3>
+					<div class="patient_info">
+						<div class="patient_info_1 _patientDetailInfo"
+							style='display: none;'>
+							<ul>
+								<li id="_detailPatientCode" class="no _detail"></li>
+								<li id="_detailPatientName" class="name _detail"></li>
+								<!--  <li id="_detailPatientBirthday" class="name _detail"></li> -->
+								<li id="_detailClnDeptCode" class="clinic _detail"></li>
+							</ul>
+						</div>
+						<div class="patient_info_2 _patientDetailInfo"
+							style='display: none;'>
+							<dl>
+								<dt id="_detailAdmissionDateTitle" class="_detail"></dt>
+								<dd id="_detailAdmissionDate" class="_detail"></dd>
+								<dt>병실</dt>
+								<dd id="_detailRoomNo"></dd>
+							</dl>
+							<dl>
+								<dt>생년월일</dt>
+								<dd id="_detailDiagBirthday" class="_detail"></dd>
+
+
+								<br>
+							</dl>
+							<dl>
+								<dt id="_detailDoctorTitle">주치의</dt>
+								<dd id="_detailDoctorName" class="_detail"></dd>
+
+								<dt>담당의</dt>
+								<dd id="_detailChargeName" class="_detail"></dd>
+							</dl>
+							<dl>
+								<dt>진단명</dt>
+								<dd id="_detailDiagName" class="_detail"></dd>
+
+
+								<br>
+							</dl>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- 연관 -->
+				<div class="relation_section">
+					<h2 class="h2_tit1">처방동의서</h2>
+					<div class="relation_list">
+						<ul id="_relationConsentList"></ul>
+						<ul id="_relationConsentListTemplate" style='display: none;'>
+							<li><span class="list_txt"> <span class="_formName"
+									style="margin-left: 0px;"></span><br /> <span
+									class="_ExamName"></span>
+							</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!-- 해당 환자 동의서 영역  -->
+			<div class="ctns cnts_3">
+				<!-- 동의서 검색 / 작성동의서 -->
+				<div class="agree_tab" id=agree_tab>
+					<h2 class="h2_tit agree_1 select_tab on" data-idx="1">동의서 검색</h2>
+					<h4 class="h4_tit agree_2 select_tab " data-idx="2">작성 동의서</h4>
+				</div>
+				<!-- 동의서 검색 영역 -->
+				<div class="agree_section agree_1_section">
+					<!-- 검색 -->
+					<div class="form_section">
+						<!-- checkbox id와 label 값을 동일하게 해주세요. -->
+						<div class="form_area">
+							<span class="form_box form_box_radio"><input type="radio"
+								checked="true" name="_consentSearchType" id="radio_tmp_12"
+								value="A" /><label for="radio_tmp_12">전체</label></span>
+							<!--	<span class="form_box form_box_radio"><input type="radio" name="_consentSearchType" id="radio_tmp_13" value="A"/><label for="radio_tmp_13">전체</label></span> -->
+							<span class="form_box form_box_radio"><input type="radio"
+								name="_consentSearchType" id="radio_tmp_14" value="S" /><label
+								for="radio_tmp_14">과SET</label></span> <span
+								class="form_box form_box_radio"><input type="radio"
+								name="_consentSearchType" id="radio_tmp_15" value="B" /><label
+								for="radio_tmp_15">즐겨찾기</label></span>
+							</spanco>
+							<!--<span class="form_box form_box_radio"><input type="radio"
+								name="_consentSearchType" id="radio_tmp_16" value="C" /><label
+								for="radio_tmp_16">Co-sign</label></span> </span>  -->
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<span class="form_box"> </span>
+							<div class="form_box_1">
+								<span class="form_box form_box_checkbox" style="display: none">
+									<input type="checkbox" id="CHECK_intnlMedForm"
+									class="_intnlMedFormYN" /><label for="CHECK_intnlMedForm">국제진료
+										서식 포함</label>
+								</span> <span class="form_box form_box_input search_box"> <input
+									type="text" id="_searchKeyword" placeholder="동의서를 검색하세요." />
+									<button type="button" id="_contentSearch" class="btn-search7">
+										<span>검색</span>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<!-- 검색리스트 -->
+					<div class="agree_list agree_1_list">
+						<!-- checkbox id와 label 값을 동일하게 해주세요. -->
+						<ul id="_consentList"></ul>
+						<ul class="list" id="_consentListTemplate" style='display: none;'>
+							<li><span class="list_txt _formName"></span></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- 작성 동의서 영역 -->
+				<div class="agree_section agree_2_section hide">
+					<!-- 검색 -->
+					<div class="form_section">
+						<!-- checkbox id와 label 값을 동일하게 해주세요. -->
+						<div class="form_area" style="display: none;">
+							<span class="form_box form_box_radio"><input type="radio"
+								name="radio_cmt_type" id="radio_tmp_21" checked value="A" /><label
+								for="radio_tmp_21">전체</label></span> <span
+								class="form_box form_box_radio"><input type="radio"
+								name="radio_cmt_type" id="radio_tmp_22" value="V" /><label
+								for="radio_tmp_22">확인부서</label></span> <span
+								class="form_box form_box_select"> <select
+								id="_efromCmtClnDept" disabled="disabled"></select>
+							</span>
+						</div>
+						<!-- checkbox id와 label 값을 동일하게 해주세요. -->
+						<div class="form_area cal_area">
+							<span class="form_box form_box_input cal_box"> <input
+								type="text" id="_consentStartDate" class="_calendar" value=""
+								readonly="readonly" placeholder="검색 시작일" />
+								<button type="button" class="btn-cal _calendar">
+									<span>달력</span>
+								</button>
+							</span> <span class="cal_txt">~</span> <span
+								class="form_box form_box_input cal_box"> <input
+								type="text" id="_consentendDate" class="_calendar" value=""
+								readonly="readonly" placeholder="검색 종료일" />
+								<button type="button" class="btn-cal _calendar">
+									<span>달력</span>
+								</button>
+							</span>
+							<button type="button" id="_contentAllSearch" class="btn-search7">
+								<span>검색</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- 검색리스트 -->
+					<div class="agree_list agree_2_list">
+						<ul id="_consentAllList"></ul>
+						<ul class="list" id="_consentAllListTemplate"
+							style='display: none;'>
+							<li><span class="list_txt"> <span class="_formName"></span>
+									<!-- <span class="_formUserInfo"></span> -->
+							</span></li>
+						</ul>
+
+						<ul class="list" id="_writeConsent" style='display: none;'>
+							<li><span class="list_txt" style='display: inline-block;'>
+									<span class="_formInfo"></span> <span class="_formName"
+									style="margin-left: 15px; height: 25px; font-size: 13px; display: inline-block;"></span>
+									<!-- <span class="_formUserInfo"></span> -->
+							</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- //2021-12-02 -->
+			<div id="treateMentBigLayout"
+				style="display: none; width: 90%; height: 100%;">
+				<div class="ctns cnts_1" style="width: 29%; display: block;">
+
+					<div class="form_section" style="height: 100%;">
+						<div class="form_area" style="margin-top: 10px;">
+							<span class="form_box form_box_checkbox"
+								style='padding-bottom: 10px; width: 190px;'><input
+								id="myWriteFlag" type="checkbox"
+								style="font-size: 14px; width: 20px; height: 20px; opacity: 1; margin-left: 5px;"><label for="" id="myWriteFlagLabel"
+								style="margin-left: 31px; color: white; width: 176px;">내가
+									작성한 동의서만 조회</label> <br> <br> <input id="myConsentYn"
+								type="checkbox"
+								style="font-size: 14px; width: 20px; height: 20px; opacity: 1; margin-left: 5px;"><label for="" id="myConsentYnLabel"
+								style="margin-left: 31px; color: white;">★표시 동의서만 조회</label> </span> </span> <span
+								style="width: 96%; margin-left: 0%; margin-top: 10pxfont-size:14px;"
+								class="form_box form_box_input"> <input type="number"
+								id="myConsentPatientCd" placeholder="등록번호" value="" />
+							</span> <span class="form_box form_box_select"
+								style="font-size: 14px; margin-top: 10px; width: 46%; margin-right: 2.5%; padding-bottom: 10px;">
+								<select id="treateMentDept">
+									<option value="">진료과</option>
+							</select>
+							</span> <span class="form_box form_box_select"
+								style="font-size: 14px; margin-top: 10px; width: 46%; padding-bottom: 10px;">
+								<select id="treateMentWard">
+									<option value="">병동</option>
+							</select>
+							</span> <span class="form_box form_box_select"
+								style="font-size: 14px; width: 97%; padding-bottom: 10px;">
+								<select id="treateMentDoc">
+									<option value="">주치의</option>
+							</select>
+							</span> <span>
+
+								<fieldset id="treatmentRadioType"
+									style="font-size: 14px; margin-top: 10px; width: 100%; color: white; padding-bottom: 16px;">
+									<input type="radio" id="treatMentVisitTypeAll"
+										name="treatMentVisitType" value="I,D,O,S,E" checked><label
+										for="treatMentVisitTypeAll">전체</label> <input type="radio"
+										id="treatMentVisitTypeI" name="treatMentVisitType" value="I,D"><label
+										for="treatMentVisitTypeI">입원</label> <input type="radio"
+										id="treatMentVisitTypeO" name="treatMentVisitType" value="O,S"><label
+										for="treatMentVisitTypeO">외래</label> <input type="radio"
+										id="treatMentVisitTypeE" name="treatMentVisitType" value="E"><label
+										for="treatMentVisitTypeE">응급</label>
+							</span>
+							</fieldset>
+
+							</span>
+							<div
+								style="display: table-cell; vertical-align: middle; padding-bottom: 10px;">
+								<label
+									style="color: white; display: table-cell; margin-top: 10px;">출력일</label>
+								<span class="form_box form_box_input cal_box"
+									style="width: 38%; float: none; display: table-cell;"> <input
+									type="text" id="_treatStartDate" class="_calendar" value=""
+									style="width: 100%;" readonly="readonly" placeholder="검색 시작일" />
+								</span> <span class="cal_txt"
+									style="color: white; display: table-cell;">~</span> <span
+									class="form_box form_box_input cal_box"
+									style="display: table-cell; width: 38%; float: none;"> <input
+									type="text" id="_treatEndDate" class="_calendar" value=""
+									readonly="readonly" style="width: 100%;" placeholder="검색 종료일" />
+							</div>
+							</span> <span>
+									
+								<!-- 2022-02-03 전체다사용 -->
+								<fieldset id="treatmentRadioConsent"
+									style="font-size: 14px;; margin-top: 10px; width: 100%; color: white; padding-bottom: 16px;">
+									<!-- <input type="radio" id="treatMentConsentAll" name="treatMentConsentType" value=""
+                                        checked><label for="treatMentConsentAll">전체</label> <input type="radio"
+                                        id="treatMentConsentTemp" name="treatMentConsentType" value="TEMP"><label
+                                        for="treatMentConsentTemp">임시저장</label>
+                                    <input type="radio" id="treatMentConsentEnd" name="treatMentConsentType"
+                                        value="ELECTR_CMP"><label for="treatMentConsentEnd">인증저장</label> -->
+
+									<span class="form_box form_box_checkbox consentStateCheckBox"
+										style='padding-bottom: 10px; margin: 0 5px 10px 0; width: 95px;'>
+										<input id="NEW" type="checkbox" checked="checked"
+										style="font-size: 14px; width: 25px; height: 20px; opacity: 1;"><label
+										for="" style="margin-left: 31px; color: white;">작성대기</label>
+									</span> <span class="form_box form_box_checkbox consentStateCheckBox"
+										style='padding-bottom: 10px; margin: 0 5px 10px 0; width: 95px;'>
+										<input id="TEMP" type="checkbox" checked="checked"
+										style="font-size: 14px; width: 25px; height: 20px; opacity: 1;"><label
+										for="" style="margin-left: 31px; color: white;">임시저장</label>
+									</span> <span class="form_box form_box_checkbox consentStateCheckBox"
+										style='padding-bottom: 10px; width: 90px; margin: 0 5px 10px 0;'>
+										<input id="ELECTR_TEMP" type="checkbox" checked="checked"
+										style="font-size: 14px; width: 25px; height: 20px; opacity: 1;"><label
+										for="" style="margin-left: 31px; color: white;">진행중</label>
+									</span> <span class="form_box form_box_checkbox consentStateCheckBox"
+										style='padding-bottom: 10px; margin: 0 5px 10px 0; width: 95px;'>
+										<input id="ELECTR_CMP" type="checkbox" checked="checked"
+										style="font-size: 14px; width: 25px; height: 20px; opacity: 1;"><label
+										for="" style="margin-left: 31px; color: white;">인증저장</label>
+									</span> 
+									
+									<br>
+									<span class="form_box form_box_checkbox consentStateCheckBox"
+										style='padding-bottom: 10px; margin: 0 5px 10px 0; width: 95px;'>
+										<input id="ELECTR_VERBAL" type="checkbox"  
+										style="font-size: 14px; width: 25px; height: 20px; opacity: 1;"><label
+										for="" style="margin-left: 31px; color: white;">구두동의</label>
+									</span> 
+									<span class="form_box form_box_checkbox consentStateCheckBox"
+										style='padding-bottom: 10px; margin: 0 5px 10px 0; width: 170px;'>
+										<input id="ELECTR_MULTI" type="checkbox" 
+										style="font-size: 14px; width: 25px; height: 20px; opacity: 1;"><label
+										for="" style="margin-left: 31px; color: white;">응급동의(의료인2인)</label>
+									</span>
+								</fieldset>
+							</span>
+						</div>
+						<!-- 버튼 영역 -->
+						<div class="btn-area">
+							<button type="button" id="myConsentInit" class="btn-reset">
+								<span>초기화</span>
+							</button>
+							<button type="button" id="myConsentSearch" class="btn-search">
+								<span>검색</span>
+							</button>
+						</div>
+						<!-- 2021-12-02 -->
+						<span id="treatCnt"
+							style="color: white;
+	/* margin-top: 20px; */ position: absolute; bottom: 16px;">총
+							조회 건수 : - 건</span>
+					</div>
+				</div>
+				<div
+					style="width: 69%; height: 97.5%; background: white; margin-top: 9px; border-radius: 10px; margin-bottom: 9px; border: solid 1px gray;">
+
+					<div class="list_header"
+						style="height: 10%; background: white; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom: solid 1px lightgray; font-weight: bold; color: gray; background: rgb(245, 245, 245);">
+						<ul
+							style="width: 100%; display: flex; width: 100%; text-align: center; height: 50%;">
+							<li class="no treatmentLi"><span class="_sort"
+								attr-key="patientCode" attr-orderby="desc">등록번호</span></li>
+							<li class="name treatmentLi" style="margin-left: 30px;"><span
+								class="_sort" attr-key="patientName" attr-orderby="desc">성명</span>
+							</li>
+							<li class="age treatmentLi" style="margin-left: 10px;"><span
+								class="_sort" attr-key="patientSex" attr-orderby="desc">S</span>/
+								<span class="_sort" attr-key="patientAge" attr-orderby="desc">A</span></li>
+
+							<li class="room treatmentLi" style="margin-left: 10px;"><span
+								class="_sort" attr-key="wardName" attr-orderby="desc">진료과</span></li>
+							<li class="clinic treatmentLi" style="margin-left: 19px;"><span
+								id='myconsentChange' class="_sort" attr-key="ordDrNm"
+								attr-orderby="desc">진료의</span></li>
+							<li class="doctor treatmentLi"
+								style="width: 70px; margin-left: 47px;"><span class="_sort"
+								attr-key="roomCd" attr-orderby="desc">병동/병실</span></li>
+						</ul>
+						<ul
+							style="width: 100%; display: flex; width: 100%; text-align: center; height: 43%;">
+							<li class="doctor treatmentLi"
+								style="margin-top: 1%; width: 18%;"><span class="_sort"
+								attr-key="createDatetime" attr-orderby="desc">출력일시/작성자명</span></li>
+							<li class="doctor treatmentLi"
+								style="margin-top: 1%; margin-left: 35%;"><span
+								class="_sort" attr-key="formName" attr-orderby="desc">서식명</span>
+							</li>
+						</ul>
+					</div>
+					<div class="list_body5 treatMentConsent"
+						style="width: 100%; height: 87%; background: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; overflow-x: hidden;">
+
+					</div>
+					<div style="border: 0.5px solid lightgray; display: none;"
+						id="treatMentConsentTemplates">
+						<ul class='btn_flow_ul'
+							style="width: 100%; display: flex; width: 100%; text-align: center; height: 43%; font-size: 15px;">
+							<span class="btn_flow "
+								style="width: 75px; height: 30px; padding-top: 7px; color: white; font-size: 14px;"></span>
+							<li class=" treatmentLis treatmentNum no"
+								style="width: 60px; margin-left: 25px; margin-top: 2%;"></li>
+							<li class=" treatmentLis treatmentPatientNm name"
+								style="margin-left: 30px; width: 70px; margin-top: 2%;"></li>
+							<li class=" treatmentLis treatmentSA age"
+								style="width: 20px; margin-left: 22px; margin-top: 2%;"></li>
+							<li class=" treatmentLis treatmentDeptNm room"
+								style="margin-left: 15px; margin-top: 2%; width: 110px;"></li>
+							<li class=" treatmentLis treatmentNm clinic"
+								style="margin-left: 13px; margin-top: 2%;"></li>
+							<li class="treatmentLis treatmentWard clinic"
+								style="margin-left: 50px; margin-top: 2%;"></li>
+						</ul>
+						<ul
+							style="width: 100%; display: flex; width: 100%; text-align: left; height: 43%; font-size: 15px;">
+
+							<!-- 2021-12-02 -->
+							<span class="btn_flows flow_treatment"
+								style="visibility: hidden; margin-bottom: 0px; margin-top:5px; height: 30px; width: 75px; text-align: center; padding-top: 7px; font-size: 14px;">시술의</span>
+
+							<li class="treatmentConsentNm treatmentList no"
+								style="width: 86%; margin-left: 10px; margin-bottom: 1%; margin-top: 1%;"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="Change_Dept" style="display: none;">
+		<span id="_userDeptChange_txt"></span> <select id="_userDeptChange">
+			<option value="">과 선택</option>
+		</select>
+		<div id="deptChange_btn">
+			<button class="btn-login1 deptChange_enter">변경하기</button>
+			<button class="btn-login1 deptChange_close">취소</button>
+		</div>
+	</div>
+
+
+	<div class="Consent_List" style="display: none;">
+		<span id="_Conset_List_txt">Co-sign 수신부서 지정</span> <span
+			id="_Conset_List_txts">(수신자가 의사이면 진료과, 간호사이면 병동을 지정 하세요.)</span>
+
+		<div id="Consent_List_Big_div"></div>
+
+		<div id="Consent_List_btn">
+			<button class="btn-login1 Consent_open_close"
+				style="margin-top: 0; width: 90px; height: 50px;">취소</button>
+			<button class="btn-login1 Consent_open_enter"
+				style="margin-top: 0; width: 90px; height: 50px;">열기</button>
+		</div>
+	</div>
+
+	<div class="Treatment_List" style="display: none;">
+		<span id="_Treatment_List_txt">시술의 목록</span>
+		<button type="button" id="treatCloseBtn"
+			style="position: initial; z-index: 10; margin-left: 295px; margin-top: 5px;"
+			class="btn-close">
+			<span>CLOSE</span>
+		</button>
+		<div id="Treatment_List_Big_div">
+
+			<div
+				style="width: 100%; height: 50px; border-bottom: solid 1px gray; display: table;">
+				<div
+					style="display: table-cell; vertical-align: middle; width: 310px; height: 50px; text-align: left; background: #F6F6F6; padding-left: 15px;"
+					class="treatmentList treatementName">입력 안함</div>
+			</div>
+			<!--           <div style="width: 100%; height: 50px; border-bottom: solid 1px gray; display: table;">
+                <div style="display: table-cell; vertical-align: middle; width: 310px; height: 50px; text-align: left; background: #F6F6F6; padding-left:15px;" class="treatmentList treatementName">입력 없음</div>
+            </div>
+ -->
+			<fieldset id="treatmentRadio">
+				<div class="treatementExam">
+					시술의 명을 입력 후 추가 버튼을 눌러주세요.<br>추가한 내용은 유지됩니다.
+				</div>
+			</fieldset>
+		</div>
+
+
+		<div id="Treatment_List_btn">
+			<input type="text" placeholder="시술의 명" id="addTreatmentName"
+				style="font-size: 16px; width: 64%;" />
+			<button class="btn-login1 Consent_add_Treatment"
+				style="margin-top: 0; width: 90px; height: 50px;">추가</button>
+		</div>
+	</div>
+	<!-- 팝업 - 새로만든 공인인증 비밀번호 입력 -->
+	<div class="popup popup-pwd" id="sign_popup">
+		<div class="pop-header">
+			<h1>인증서 패스워드 입력</h1>
+		</div>
+		<div class="pop-body">
+			<div class="pop-cont">
+				<input id="_certpassword" style="font-size: 30px;" type="password"
+					value="" placeholder="비밀번호를 입력해주세요." maxlength="30" />``
+			</div>
+			<!-- button -->
+			<div class="btn-area">
+				<button id="_btnPopupOk" type="button">
+					<span>입력</span>
+				</button>
+				<button id="_btnPopupCancle" type="button">
+					<span>취소</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 팝업 - 알림 -->
+	<div class="popup popup-notice">
+		<div class="pop-header">
+			<h1 class="_noticeTitle">알림</h1>
+		</div>
+		<div class="pop-body">
+			<div class="pop-cont">
+				<p class="_noticeMessage"></p>
+			</div>
+			<!-- button -->
+			<div class="btn-area">
+				<button type="button" class="_noticeOk">
+					<span>확인</span>
+				</button>
+				<!-- 			<button type="button"><span></span></button> -->
+			</div>
+		</div>
+	</div>
+
+	<!-- 팝업 - 종료 확인 -->
+	<div class="popup popup-confirm">
+		<div class="pop-header">
+			<h1>종료 확인</h1>
+		</div>
+		<div class="pop-body">
+			<div class="pop-cont">
+				<p>전자동의서 어플리케이션을 종료 하시겠습니까?</p>
+			</div>
+			<!-- button -->
+			<div class="btn-area">
+				<button type="button">
+					<span>Yes</span>
+				</button>
+				<button type="button">
+					<span>No</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 팝업 - 재로그인 -->
+	<div class="popup popup-relogin" id="_popuprelogin">
+		<div class="pop-header">
+			<h1>재 로그인</h1>
+			<!-- 		<div class="btn-area"> -->
+			<!-- 			<button type="button" class="btn-popup-close"><span>닫기</span></button> -->
+			<!-- 		</div> -->
+		</div>
+		<div class="pop-body">
+			<div class="pop-cont">
+				<div class="login_box login_id_box">
+					<span><input type="text" id="_reLoginId" class="input_id"
+						tabindex="1" placeholder="ID를 입력해주세요." readonly="readonly" /></span>
+					<!-- -. 5개이후 자동 스크롤 -->
+					<div id="_latelyList" class="login_id_list">
+						<ul></ul>
+					</div>
+				</div>
+				<div class="login_box login_pw_box">
+					<span><input type="password" id="_reLoginPw"
+						class="input_pw" tabindex="2" placeholder="비밀번호를 입력해주세요." /></span>
+				</div>
+			</div>
+			<!-- button -->
+			<div class="btn-area">
+				<button type="button" id="_reLoginOk" class="btn-relogin">
+					<span>로그인</span>
+				</button>
+				<button type="button" id="_reLoginCancle" class="btn-relogout">
+					<span>종료</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 도움말 -->
+	<div class="help_section">
+		<!-- 내용 -->
+		<div class="help_area">
+			<!-- 첫번째 화면 -->
+			<div class="help_box help_box_1">
+				<dl class="help_11" style="margin-left: 10%; margin-top: 18%;"
+					data-target-class="gnb_5" data-align="left">
+					<dt>조회구분</dt>
+					<dd>
+						입원,외래,응급,수술,환자 검색,Co-sign<br />아이콘을 클릭하면 조회구분에<br />맞는 검색조건 및
+						환자목록을 보여줍니다.
+					</dd>
+				</dl>
+				<dl class="help_12" style="bottom: 10%; left: 13%;"
+					data-target-class="user_info" data-align="left">
+					<dt>사용자 정보</dt>
+					<dd>로그인 사용자의 정보(사용자ID/사용자과/사용자명)를 보여 줍니다.</dd>
+				</dl>
+				<dl class="help_13" style="margin-left: 41%;"
+					data-target-class="cnts_1:visible form_section" data-align="left">
+					<dt>검색조건</dt>
+					<dd>
+						조회구분에 따른 검색조건을 구성하여<br />환자를 조회합니다.
+					</dd>
+				</dl>
+				<dl class="help_14" style="left: 48%; bottom: 30%;"
+					data-target-class="cnts_1:visible list_section" data-align="left">
+					<dt>환자목록</dt>
+					<dd>
+						조회구분, 검색조건에 맞는<br />환자 목록을 보여줍니다.
+					</dd>
+				</dl>
+				<dl class="help_15" style="right: 2%; bottom: 29%;"
+					data-target-class="cnts_3:visible agree_list" data-align="center">
+					<dt>동의서 목록</dt>
+					<dd>
+						작성할 동의서나 작성된 동의서 탭을 클릭하면<br />해당 동의서 목록을 보여줍니다.
+					</dd>
+				</dl>
+			</div>
+
+			<!-- 두번째 화면 -->
+			<div class="help_box help_box_2">
+				<dl class="help_21" style="bottom: 3%; left: 10%;"
+					data-target-class="btn-logout" data-align="left">
+					<dt>로그인페이지 이동</dt>
+					<dd>로그인 페이지로 이동합니다.</dd>
+				</dl>
+				<dl class="help_22" style="left: 41%; top: 23%;"
+					data-target-class="patient_section" data-align="center">
+					<dt>환자정보</dt>
+					<dd>
+						환자목록 리스트에서 선택한 환자의<br />상세정보를 보여줍니다.
+					</dd>
+				</dl>
+				<dl class="help_23" style="right: 3%; top: 14%;"
+					data-target-class="relation_section h2_tit" data-align="center">
+					<dt>작성동의서</dt>
+					<dd>
+						임시저장, 완료, Co-sign 동의서<br />목록을 보여줍니다.
+					</dd>
+				</dl>
+			</div>
+		</div>
+
+		<!-- 버튼 -->
+		<div class="btn-area">
+			<button type="button" class="btn-arrow btn-arrow-left off"
+				data-type="1">
+				<span>왼쪽</span>
+			</button>
+			<button type="button" class="btn-arrow btn-arrow-right" data-type="2">
+				<span>오른쪽</span>
+			</button>
+			<button type="button" class="btn-close">
+				<span>도움말 닫기</span>
+			</button>
+		</div>
+
+		<!-- 하단 페이지 표시 -->
+		<div class="paging">
+			<ul>
+				<li class="page_1 on">첫번째</li>
+				<li class="page_2">두번째</li>
+			</ul>
+		</div>
+	</div>
+	<div id="loading_bar" style="display: none;">
+		<img id="loading_img" src="../../images/loading.gif" alt="">
+	</div>
+	<div id="help_layouts" style="display: none;">
+
+
+		<button type="button" id="helpCloseBtns"
+			style="top: 45px; position: fixed; z-index: 10; right: 75px;"
+			class="btn-close">
+			<span>CLOSE</span>
+		</button>
+	</div>
+	<div style="display: none;">
+		<div class="ConList_List_div" id="Consent_List_clone" style="">
+			<span class="Consent_Title">(마취)수술후 자가통증치료에 대한 설명 및 동의서</span>
+			<div class="_cosignDeptWardList">
+				<select id="_CosignDeptList" style="">
+					<option value="">진료과 지정</option>
+				</select> <select id="_CosignWardList" style="">
+					<option value="">병동 지정</option>
+				</select>
+			</div>
+			<input type="hidden" class="cosignDeptValue" value="-1" />
+		</div>
+	</div>
+	<!-- dimmed layer -->
+	<div class="dimmed"></div>
+	<script type="text/javascript" src="../../js/header.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../js/plugin.js"></script>
+	<script type="text/javascript" src="../../cordova.js"></script>
+</body>
+
+</html>

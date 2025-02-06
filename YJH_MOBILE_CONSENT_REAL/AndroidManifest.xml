@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest android:hardwareAccelerated="true" android:versionCode="102" android:versionName="YJH_CONSENT_SIGN_REAL_V_1.02" package="kr.co.less.consent.yjh.real" xmlns:android="http://schemas.android.com/apk/res/android" >
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28" />
+    
+    <!-- permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" /> 
+	<!-- 절전 모드 관련 -->
+ 	<uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    
+    <!-- 네트워크 관련  -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.BROADCAST_STICKY" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>  
+	<!-- by sangu02 저장 이슈로 인해 안드 14버젼 부터  아래 두가지 추가-->
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- 안드 13부터는 알림권한도 있어야함 -->
+	
+    <!-- efrom viewer 정상 종료 확인 권한  -->
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+   
+    <!-- Read LogCat -->
+    <uses-permission android:name="android.permission.READ_LOGS" /> 
+    
+    <application
+        android:hardwareAccelerated="true" 
+        android:icon="@drawable/icon" 
+        android:label="@string/app_name" 
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        >
+         <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="kr.co.less.consent.yjh.real.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider> 
+        <activity 
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" 
+            android:label="@string/activity_name" 
+            android:launchMode="singleTop" 
+            android:name="MainActivity" 
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" 
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="sensorLandscape"
+            >      
+            <intent-filter android:label="@string/launcher_name">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>            
+        </activity>
+        <service android:name="kr.co.less.consent.yjh.real.MyForegroundService"></service>
+    </application>
+</manifest>
