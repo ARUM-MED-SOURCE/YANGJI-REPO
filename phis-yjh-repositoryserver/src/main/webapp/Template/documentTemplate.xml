@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<documentTemplates>
+	<documentTemplate id="CustomDocTemp1" name="type 3 (ENG)" url="http://emrdev.yjh.com/eform/Template/TYPE 3 (ENG).epp" description="type 3 (ENG)" />
+	<documentTemplate id="CustomDocTemp2" name="type 3 (KOR)" url="http://emrdev.yjh.com/eform/Template/TYPE 3 (KOR).epp" description="type 3 (KOR)" />
+	<documentTemplate id="CustomDocTemp3" name="type 5"       url="http://emrdev.yjh.com/eform/Template/TYPE 5.epp"       description="type 5" />
+	<documentTemplate id="CustomDocTemp4" name="type 6 (ENG)" url="http://emrdev.yjh.com/eform/Template/TYPE 6 (ENG).epp" description="type 6 (ENG)" />
+	<documentTemplate id="CustomDocTemp5" name="type 6 (KOR)" url="http://emrdev.yjh.com/eform/Template/TYPE 6 (KOR).epp" description="type 6 (KOR)" />
+	<documentTemplate id="CustomDocTemp6" name="type 7 (ENG)" url="http://emrdev.yjh.com/eform/Template/TYPE 7 (ENG).epp" description="type 7 (ENG)" />
+	<documentTemplate id="CustomDocTemp7" name="type 7 (KOR)" url="http://emrdev.yjh.com/eform/Template/TYPE 7 (KOR).epp" description="type 7 (KOR)" />
+	<documentTemplate id="CustomDocTemp8" name="type -"       url="http://emrdev.yjh.com/eform/Template/TYPE -.epp"       description="type EMPTY" />
+</documentTemplates>

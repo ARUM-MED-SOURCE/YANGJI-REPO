@@ -1,0 +1,13 @@
+
+n	java:S135"YReduce the total number of break and continue statements in this loop to use at most one.(»ÎÌ¥
+
+java:S4165ì"eRemove this useless assignment; "eptData" already holds the assigned value along all execution paths.(œ¶Ö×ıÿÿÿÿ
+w	java:S1163"bRename this field "DATA_FIELD_SIGN_USER_NM" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–ŠŸ½
+X
+java:S1126È"AReplace this if-then-else statement by a single return statement.(İ¨¿
+]
+java:S3457í"AFormat specifiers should be used instead of string concatenation.(¸Ñ»£øÿÿÿÿ
+]
+java:S3457ó"AFormat specifiers should be used instead of string concatenation.(Æ¤Ïùÿÿÿÿ
+]
+java:S3457ú"AFormat specifiers should be used instead of string concatenation.(‘ÔøÈüÿÿÿÿ

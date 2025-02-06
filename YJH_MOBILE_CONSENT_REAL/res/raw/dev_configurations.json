@@ -1,0 +1,8 @@
+{
+    "serviceUrl"	: "http://59.11.2.207:8090/",    
+    "uploadUrl"		: "http://59.11.2.207:8089/",
+    "downloadUrl"	: "http://59.11.2.207:8090/DEPLOY",
+    "eformUrl"		: "http://emr013.cmcnu.or.kr/eform/",
+    "eSignUrl"		: "192.168.0.11",
+    "eSignPort"		: "8070"
+}

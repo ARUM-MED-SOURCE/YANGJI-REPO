@@ -1,0 +1,1494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NU_CONSENT">
+
+    <select id="getConsentMstRid" resultType="long">
+		SELECT SEQ_CONSENT_MST.NEXTVAL FROM DUAL
+    </select>
+
+    <select id="getConsentDataRid" resultType="long">
+		SELECT SEQ_CONSENT_DATA.NEXTVAL FROM DUAL
+    </select>
+
+    <select id="getConsentDataFieldRid" resultType="long">
+		SELECT SEQ_CONSENT_DATA_FIELD.NEXTVAL FROM DUAL
+    </select>
+
+    <select id="getConsentImageRid" resultType="long">
+		SELECT 	SEQ_CONSENT_IMAGE.NEXTVAL FROM DUAL
+    </select>
+    
+    <select id="getConsentRecordRid" resultType="long">
+		SELECT 	SEQ_CONSENT_RECORD.NEXTVAL FROM DUAL
+    </select>
+
+    <select id="getNowTime" resultType="String">
+        SELECT TO_CHAR(sysdate,'yyyy-mm-dd hh24:mi:ss') from dual
+    </select>
+
+    <select id="getApkVersion" resultType="kr.co.clipsoft.biz.model.consent.NuAppDto">
+        SELECT SEQ_NO seqNo,
+               APP_TYPE appType,
+               APP_VERSION appVersion,
+               APK_NAME apkName,
+               MEMO memoByteValue,
+               CREATE_USER_ID createUserId,
+               CREATE_DATETIME createDatetime
+          FROM CONSENT_APP_INFO
+         WHERE USE_YN = 'Y'
+           AND APP_TYPE = 'C'
+    </select>
+
+    <select id="getApkVersionList" resultType="kr.co.clipsoft.biz.model.consent.NuAppDto">
+        SELECT SEQ_NO seqNo,
+               APP_TYPE appType,
+               APP_VERSION appVersion,
+               APK_NAME apkName,
+               MEMO memoByteValue,
+               CREATE_USER_ID createUserId,
+               CREATE_DATETIME createDatetime
+          FROM CONSENT_APP_INFO
+         WHERE USE_YN = 'Y'
+		<![CDATA[
+		   AND APP_TYPE <> 'P'
+		]]>
+    </select>
+    
+    
+    <select id="getPcExeVersionList" resultType="kr.co.clipsoft.biz.model.consent.NuAppDto">
+        SELECT SEQ_NO seqNo,
+               APP_TYPE appType,
+               APP_VERSION appVersion,
+               APK_NAME apkName,
+               MEMO memoByteValue,
+               CREATE_USER_ID createUserId,
+               CREATE_DATETIME createDatetime
+          FROM CONSENT_APP_INFO
+         WHERE USE_YN = 'Y'
+           AND APP_TYPE NOT IN('C','V')
+    </select>
+
+
+    <select id="getDeviceMst" resultType="kr.co.clipsoft.biz.model.consent.NuConsentDeviceMstDto">
+		SELECT DEVICEID	deviceId	
+			 , USEDEPTCD useDeptCd
+			 , USEDEPTNM useDeptNm
+			 , USEUSERID useUserId
+			 , USEUSERNM useUserNm
+			 , MEMO memo
+			 , FSTRGSTRID                                  fstRgstRid
+			 , TO_CHAR(FSTRGSTDT,'yyyy-mm-dd hh24:mi:ss')  fstRgstDt
+			 , LASTUPDTRID                                 lastUpdtRid
+			 , TO_CHAR(LASTUPDTDT,'yyyy-mm-dd hh24:mi:ss') lastUpdtDt
+		  FROM CONSENT_DEVICE_MST
+		 WHERE 1=1
+	       AND DEVICEID = #{deviceId}
+    </select>
+    
+    <select id="getConsentMst" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto">
+	  SELECT MST.CONSENT_MST_RID consentMstRid
+     	   , MST.CERT_CNT certCnt
+     	   , MST.OCR_TAG ocrTag
+     	   , MST.COMPLETE_YN completeYn
+     	   , MST.MODIFY_DATETIME modifyDatetime
+  	       , MST.MODIFY_USER_ID modifyUserId
+  	       , MST.MODIFY_USER_NAME modifyUserName
+  	       , MST.MODIFY_USER_DEPT_CD modifyUserDeptCd
+  	       , MST.MODIFY_USER_DEPT_NAME modifyUserDeptName
+  	    FROM CONSENT_MST MST
+ 	   WHERE CONSENT_MST_RID = #{consentMstRid}
+	</select>
+    
+	<select id="getConsentMsts" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto">
+		SELECT CM.CONSENT_MST_RID consentMstRid
+		     , DECODE(CM.CONSENT_STATE, 'TEMP' ,'임시', 'ELECTR_CMP', '완료', 'ELECTR_TEMP', '진행') AS consentStateDisp
+             , CM.FORM_NAME AS formName
+	         , CM.COSIGN_DEPT_CODE cosignDeptCode
+             , CM.COSIGN_DEPT_NAME cosignDeptName
+             , CM.COSIGN_USER_ID cosignUserId
+             , CM.COSIGN_USER_NAME cosignUserName
+	         , CM.FORM_VERSION formVersion
+             , CM.HOS_TYPE hosType
+             , CM.PATIENT_CODE patientCode
+             , CM.PATIENT_NAME patientName
+             , CM.CERT_NO certNo
+             , CM.OCR_TAG ocrTag
+             , CM.VISIT_TYPE visitType
+             , CM.ORDER_NAME orderName
+             , CM.ORDER_DATE orderDate
+             , CM.CLN_DEPT_CD clnDeptCd
+             , CM.CLN_DATE clnDate
+             , CM.WARD_CD wardCd
+             , CM.WARD_NAME wardName
+             , CM.ROOM_CD roomCd
+             , CM.FORM_ID formId
+             , CM.FORM_CD formCd
+             , CM.CONSENT_STATE consentState
+             , CM.CREATE_USER_ID createUserId
+             , CM.CREATE_USER_NAME createUserName
+             , CM.CREATE_USER_DEPT_CD createUserDeptCd
+             , CM.CREATE_USER_DEPT_NAME createUserDeptName
+             , CM.CREATE_DATETIME createDateTime
+             , CM.MODIFY_USER_ID modifyUserId
+             , CM.MODIFY_USER_NAME modifyUserName
+             , CM.MODIFY_USER_DEPT_CD modifyUserDeptCd
+             , CM.MODIFY_USER_DEPT_NAME modifyUserDeptName
+             , CM.MODIFY_DATETIME modifyDateTime
+             , ( SELECT COUNT(*) AS CNT 
+                   FROM CONSENT_RECORD CR 
+                  WHERE CR.CONSENT_MST_RID = CM.CONSENT_MST_RID 
+                    AND CR.USE_YN = 'Y' ) AS recordCnt
+             , NVL(EX.COSIGN_YN,'N') cosignYn
+             , NVL(EX.OPDR_YN,'N') opdrYn
+             , NVL(CM.OPDR_SIGN_YN,'N') opdrSignYn
+             , NVL(EX.NURS_CERT_YN,'N') nursCertYn
+             , NVL(CM.CERT_CNT,0) certCnt
+             , NVL(EX.CERT_NEED_CNT,1) certNeedCnt
+             , CM.USE_YN useYn
+             , EX.LIFELONG_KIND lifelongKind
+          FROM CONSENT_MST CM
+          LEFT OUTER JOIN CONSENT_FORM_EX EX
+            ON CM.FORM_ID = EX.FORM_ID
+           AND CM.FORM_VERSION = EX.FORM_VERSION
+           AND EX.INST_CD = #{instCd}
+         WHERE 1=1
+           AND CM.HOS_TYPE = #{instCd}
+
+		  <if test="isFormMaster == false">
+		   AND CM.USE_YN = 'Y'
+		  </if>
+		  
+		  <if test="searchMode == 'normal'">
+		   AND CM.PATIENT_CODE = #{patientCode}
+	       AND TO_CHAR(TO_DATE(CM.CREATE_DATETIME, 'YYYY-MM-DD HH24:MI:SS'), 'YYYYMMDD') BETWEEN #{startDate} and #{endDate}
+		  </if>
+
+		  <if test="searchMode == 'cosign-receive'">
+          <![CDATA[
+           AND (COSIGN_DEPT_CODE = #{userDeptCd} OR COSIGN_USER_ID = #{userId})
+		   AND CONSENT_STATE <> 'ELECTR_CMP'
+		  ]]>
+		  </if>
+
+		  <if test="searchMode == 'cosign-send'">
+          <![CDATA[
+		   AND CM.MODIFY_USER_ID = #{userId}
+		   AND (COSIGN_DEPT_CODE IS NOT NULL OR COSIGN_USER_ID IS NOT NULL)
+		   AND CONSENT_STATE <> 'ELECTR_CMP'
+		   ]]>
+		  </if>
+		 
+		 ORDER BY CM.MODIFY_DATETIME DESC
+	
+	</select>
+	
+	<select id="getConsentMstDetail" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDetailDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentMstDetailDto">
+		SELECT Z.sortFlag /*작성상태 정렬값 NEW(1),그외(2)*/
+		     , Z.hosType /*기관코드*/
+		     , Z.consentMstRid /*전자동의서 RID*/
+		     , Z.ocrTag /*OCR TAG*/
+		     , Z.consentState /*작성상태*/
+		     , DECODE(Z.consentState,'NEW','작성대기','TEMP','임시','ELECTR_TEMP','진행','ELECTR_CMP','완료') AS consentStateDisp /*작성상태명*/
+		     , Z.patientCode, Z.patientName, Z.patientSex, Z.patientAge /*환자번호, 이름, 성별, 나이*/
+		     , Z.RRGSTNO rrgstNo/*주민등록번호*/		    
+		     , Z.patientName hngnm                   /*환자명(처방동의서전용)*/
+		     , Z.BRTHDD brthdd                       /*생년월일(처방동의서전용)*/
+		     , Z.ZIPNM zipnm                         /*주소(처방동의서전용)*/
+		     , Z.MPPHONTEL mpphontel                 /*휴대폰번호(처방동의서전용)*/
+		     , Z.HOMETEL hometel                     /*집전화번호(처방동의서전용)*/
+		     , (Z.patientSex||'/'||Z.patientAge) AS sa /*성별,나이(처방동의서전용)*/	     
+		     , Z.certNo /*수진번호*/
+		     , Z.visitType /*진료형태*/
+		     , Z.orderSeqNo /*처방 연계 전자동의서 연동 테이블 시퀀스*/
+		     , Z.orderName /*처방명*/
+		     , Z.orderDate /*처방일자*/
+		     , Z.orderCd /*처방코드*/
+		     , Z.orderNo /*처방번호*/
+		     , Z.clnDeptCd /*진료과코드*/
+		     , Z.clnDate  /*수진(진료)일자*/
+		     , Z.ordDrNm   /*주치의명*/
+		     , Z.clnDeptNm /*진료과명*/
+		     , Z.clnDeptAbbr /*진료과 영문약어*/
+		     , Z.atDoctId  /*주치의ID*/
+		     , Z.wardCd, Z.wardName /*병동코드, 병동명*/         
+		     , Z.roomCd /*병실코드*/
+		     , Z.DIAGNM diagNm /*진단한글명*/
+		     , Z.DIAGENGNM diagEngNm /*진단영문명*/
+		     , Z.useYn  /*작성동의서 사용여부*/
+		     , Z.formId, Z.formCd, Z.formVersion, Z.formName /*서식ID, 코드, 버전, 명*/
+		     , NVL(FORMEX.COSIGN_YN,'N') cosignYn /*코사인 서식 여부*/
+		     , NVL(FORMEX.OPDR_YN,'N') opdrYn /*시술의 서식 여부*/
+		     , NVL(FORMEX.NURS_CERT_YN,'N') nursCertYn /*간호사 인증가능 서식 여부*/
+		     , NVL(FORMEX.CERT_NEED_CNT,1) certNeedCnt /*필요 전자인증 개수*/
+		     , FORMEX.LIFELONG_KIND lifelongKind /*연명서식 속성*/
+		     , (SELECT COUNT(*) AS CNT FROM CONSENT_RECORD CR WHERE CR.CONSENT_MST_RID = Z.consentMstRid AND CR.USE_YN = 'Y' ) AS recordCnt /*녹취 개수*/
+		     , Z.cosignDeptCode, Z.cosignDeptName /*코사인 부서코드, 부서명*/
+		     , Z.opdrSignYn /*시술의 서식 완료 여부*/
+		     , NVL(Z.certCnt,0) certCnt /*전자인증 누적 개수*/
+		     , Z.FORMEXTNNM formExtnNm /*서식확장명*/
+		     , Z.FORMPRNTNM formPrntNm /*서식출력명*/
+		     , Z.FORMFROMDT formFromDt /*서식시작일시*/
+		     , Z.OCRSEQ ocrSeq /*전자동의서 OCRSEQ*/
+		     , Z.PAPER paper /*페이퍼사용유무*/
+		     , Z.ECO eco /*전자동의서사용유무*/
+		     , Z.TMP01 tmp01, Z.TMP02 tmp02, Z.TMP03 tmp03, Z.TMP04 tmp04, Z.TMP05 tmp05 /*데이타1~5*/
+		     , Z.TMP06 tmp06, Z.TMP07 tmp07, Z.TMP08 tmp08, Z.TMP09 tmp09, Z.TMP10 tmp10 /*데이타6~10*/
+		     , Z.createUserId, Z.createUserName, Z.createUserDeptCd, Z.createUserDeptName, Z.createDateTime /*작성자 아이디, 명, 부서코드, 부서명, 출력일*/
+		     , Z.modifyUserId, Z.modifyUserName, Z.modifyUserDeptCd, Z.modifyUserDeptName, Z.modifyDateTime /*수정자 아이디, 명, 부서코드, 부서명, 수정일*/
+		  FROM (
+		        SELECT '2' AS sortFlag
+		             , X.hosType
+		             , X.consentMstRid
+		             , X.ocrTag
+		             , X.consentState
+		             , X.patientCode, X.patientName, X.patientSex, X.patientAge
+		             , X.RRGSTNO, X.BRTHDD, X.ZIPNM, X.HOMETEL, X.MPPHONTEL
+		             , X.certNo
+		             , X.visitType
+		             , X.clnDeptCd
+		             , X.ordDrNm  
+		             , X.clnDeptNm
+		             , X.clnDeptAbbr
+		             , X.atDoctId    
+		             , X.wardCd, X.wardName         
+		             , X.roomCd
+		             , '' AS DIAGNM
+		             , '' AS DIAGENGNM
+		             , X.useYn
+		             , X.formId, X.formCd, X.formVersion, X.formName
+		             , X.cosignDeptCode, X.cosignDeptName
+		             , X.opdrSignYn
+		             , X.certCnt
+		             , null orderSeqNo
+		             , X.orderDate
+		             , null orderNo
+		             , X.orderCd
+		             , X.orderName
+		             , '' FORMEXTNNM
+		             , '' FORMPRNTNM
+		             , '' FORMFROMDT
+		             , X.clnDate
+		             , null OCRSEQ
+		             , null FORMRID
+		             , '' PAPER
+		             , '' ECO
+		             , '' TMP01, '' TMP02, '' TMP03, '' TMP04, '' TMP05, '' TMP06, '' TMP07, '' TMP08, '' TMP09, '' TMP10
+		             , X.createUserId, X.createUserName, X.createUserDeptCd, X.createUserDeptName, X.createDateTime
+		             , X.modifyUserId, X.modifyUserName, X.modifyUserDeptCd, X.modifyUserDeptName, X.modifyDateTime
+		          FROM (
+		                SELECT CM.HOS_TYPE hosType
+		                     , CM.CONSENT_MST_RID consentMstRid
+		                     , CM.OCR_TAG ocrTag
+		                     , CM.CONSENT_STATE consentState
+		                     , CM.PATIENT_CODE patientCode
+		                     , CM.PATIENT_NAME patientName
+		                     , PTBS.SEX patientSex 
+		                     , COM.FN_ZZ_GETAGE('-', '-', INPT.INDD, 'B', PTBS.BRTHDD) AS patientAge
+		                     , PTBS.RRGSTNO1 || '-' || PTBS.RRGSTNO2 AS RRGSTNO
+		                     , PTBS.BRTHDD
+		                     , (PTBS.ZIPCDADDR || ' ' || PTBS.DETLADDR) AS ZIPNM
+		                     , PTBS.HOMETEL AS HOMETEL
+		                     , PTBS.MPPHONTEL AS MPPHONTEL
+		                     , CM.CERT_NO certNo
+		                     , CM.VISIT_TYPE visitType
+		                     , INPT.ORDDEPTCD clnDeptCd
+		                     , (SELECT USERNM FROM COM.ZSUMUSRB WHERE USERID = INPT.MEDISPCLID AND INPT.DSCHDD BETWEEN USERFROMDD AND USERTODD) AS ordDrNm  
+		                     , (SELECT DEPTHNGNM FROM COM.ZSDDDEPT WHERE INSTCD = INPT.INSTCD AND DEPTCD = INPT.ORDDEPTCD AND INPT.DSCHDD BETWEEN VALIFROMDD AND VALITODD) AS clnDeptNm
+		                     , (SELECT DEPTENGABBR FROM COM.ZSDDDEPT WHERE INSTCD = INPT.INSTCD AND DEPTCD = INPT.ORDDEPTCD AND INPT.DSCHDD BETWEEN VALIFROMDD AND VALITODD) AS clnDeptAbbr
+		                     , INPT.MEDISPCLID atDoctId    
+		                     , INPT.WARDCD wardCd
+		                     , (SELECT DEPTHNGNM FROM COM.ZSDDDEPT WHERE INSTCD = INPT.INSTCD AND DEPTCD = INPT.WARDCD AND INPT.DSCHDD BETWEEN VALIFROMDD AND VALITODD) AS wardName         
+		                     , INPT.ROOMCD AS roomCd
+		                     , CM.USE_YN useYn
+		                     , CM.FORM_ID formId
+		                     , CM.FORM_CD formCd
+		                     , CM.FORM_VERSION formVersion
+		                     , CM.FORM_NAME formName
+		                     , CM.COSIGN_DEPT_CODE cosignDeptCode
+		                     , CM.COSIGN_DEPT_NAME cosignDeptName
+		                     , NVL(CM.OPDR_SIGN_YN,'N') opdrSignYn
+		                     , NVL(CM.CERT_CNT,0) certCnt
+		                     , CM.CREATE_USER_ID createUserId
+		                     , CM.CREATE_USER_NAME createUserName
+		                     , CM.CREATE_USER_DEPT_CD createUserDeptCd
+		                     , CM.CREATE_USER_DEPT_NAME createUserDeptName
+		                     , CM.CREATE_DATETIME createDateTime
+		                     , CM.MODIFY_USER_ID modifyUserId
+		                     , CM.MODIFY_USER_NAME modifyUserName
+		                     , CM.MODIFY_USER_DEPT_CD modifyUserDeptCd
+		                     , CM.MODIFY_USER_DEPT_NAME modifyUserDeptName
+		                     , CM.MODIFY_DATETIME modifyDateTime
+		                     , CM.CLN_DATE clnDate
+		                     , CM.ORDER_DATE orderDate
+		                     , CM.ORDER_CD orderCd
+		                     , CM.ORDER_SEQ_NO orderSeqNo
+		                     , CM.ORDER_NAME orderName
+		                     , CM.ORDER_DIV orderDiv
+		                  FROM CONSENT_MST CM 
+		                     , PAM.PMIHINPT INPT
+		                     , PAM.PMCMPTBS PTBS
+		                 WHERE 1=1
+		                   AND CM.HOS_TYPE     = INPT.INSTCD
+		                   AND CM.PATIENT_CODE = INPT.PID
+		                   AND CM.CLN_DATE     = INPT.INDD
+		                   AND CM.CERT_NO      = INPT.CRETNO
+		                   AND INPT.MSKIND     = 'M'
+		                   AND INPT.HISTSTAT   = 'Y'
+		                   AND CM.HOS_TYPE = PTBS.INSTCD
+		                   AND CM.PATIENT_CODE = PTBS.PID
+		                   AND TO_CHAR(TO_DATE(CM.create_Datetime, 'YYYY-MM-DD HH24:MI:SS'), 'YYYYMMDD') BETWEEN #{startDate} AND #{endDate} /*[param]출력일(시작일,종료일)*/
+		                   AND CM.HOS_TYPE = #{instCd} /*[param]기관코드*/
+		
+		                  <if test='atDoctId != null and atDoctId != ""'>
+		                   AND INPT.MEDISPCLID = #{atDoctId} /*[param]의료진ID*/
+		                  </if>
+		
+		                  <if test='patientCode != null and patientCode != ""'>
+		                   AND CM.patient_Code = #{patientCode} /*[param]환자번호*/
+		                  </if>
+		
+		                  <if test="isFormMaster == false">
+		                   AND CM.use_Yn = 'Y'
+		                  </if>
+		
+		                  <if test='clnDeptCd != null and clnDeptCd != ""'>
+		                   AND CM.cln_Dept_Cd = #{clnDeptCd} /*[param]진료과코드*/
+		                  </if>
+		
+		                  <if test='wardCd != null and wardCd != ""'>
+		                   AND INPT.WARDCD = #{wardCd} /*[param]병동코드*/
+		                  </if>
+		
+		                  <if test='visitType != null and visitType != ""'>
+		                   AND CM.visit_Type IN (${visitType}) /*[param]방문종류*/
+		                  </if>
+		
+		                UNION ALL
+		                SELECT CM.HOS_TYPE hosType
+		                     , CM.CONSENT_MST_RID consentMstRid
+		                     , CM.OCR_TAG ocrTag
+		                     , CM.CONSENT_STATE consentState
+		                     , CM.PATIENT_CODE patientCode
+		                     , CM.PATIENT_NAME patientName
+		                     , PTBS.SEX patientSex
+		                     , COM.FN_ZZ_GETAGE('-', '-', OTPT.ORDDD, 'B', PTBS.BRTHDD) AS patientAge
+		                     , PTBS.RRGSTNO1 || '-' || PTBS.RRGSTNO2 AS RRGSTNO
+		                     , PTBS.BRTHDD
+		                     , (PTBS.ZIPCDADDR || ' ' || PTBS.DETLADDR) AS ZIPNM
+		                     , PTBS.HOMETEL AS HOMETEL
+		                     , PTBS.MPPHONTEL AS MPPHONTEL
+		                     , CM.CERT_NO certNo
+		                     , CM.VISIT_TYPE visitType
+		                     , OTPT.ORDDEPTCD clnDeptCd
+		                     , (SELECT USERNM FROM COM.ZSUMUSRB WHERE USERID = OTPT.ORDDRID AND OTPT.ORDDD BETWEEN USERFROMDD AND USERTODD) AS ordDrNm  
+		                     , (SELECT DEPTHNGNM FROM COM.ZSDDDEPT WHERE INSTCD = OTPT.INSTCD AND DEPTCD = OTPT.ORDDEPTCD AND OTPT.ORDDD BETWEEN VALIFROMDD AND VALITODD) AS clnDeptNm
+                             , (SELECT DEPTENGABBR FROM COM.ZSDDDEPT WHERE INSTCD = OTPT.INSTCD AND DEPTCD = OTPT.ORDDEPTCD AND OTPT.ORDDD BETWEEN VALIFROMDD AND VALITODD) AS clnDeptAbbr
+		                     , OTPT.ORDDRID atDoctId    
+		                     , '' wardCd
+		                     , '' AS wardName 
+		                     , '외래' AS roomCd  
+		                     , CM.USE_YN useYn
+		                     , CM.FORM_ID formId
+		                     , CM.FORM_CD formCd
+		                     , CM.FORM_VERSION formVersion
+		                     , CM.FORM_NAME AS formName
+		                     , CM.COSIGN_DEPT_CODE cosignDeptCode
+		                     , CM.COSIGN_DEPT_NAME cosignDeptName
+		                     , NVL(CM.OPDR_SIGN_YN,'N') opdrSignYn
+		                     , NVL(CM.CERT_CNT,0) certCnt
+		                     , CM.CREATE_USER_ID createUserId
+		                     , CM.CREATE_USER_NAME createUserName
+		                     , CM.CREATE_USER_DEPT_CD createUserDeptCd
+		                     , CM.CREATE_USER_DEPT_NAME createUserDeptName
+		                     , CM.CREATE_DATETIME createDateTime
+		                     , CM.MODIFY_USER_ID modifyUserId
+		                     , CM.MODIFY_USER_NAME modifyUserName
+		                     , CM.MODIFY_USER_DEPT_CD modifyUserDeptCd
+		                     , CM.MODIFY_USER_DEPT_NAME modifyUserDeptName
+		                     , CM.MODIFY_DATETIME modifyDateTime
+		                     , CM.CLN_DATE clnDate
+		                     , CM.ORDER_DATE orderDate
+		                     , CM.ORDER_CD orderCd
+		                     , CM.ORDER_SEQ_NO orderSeqNo
+		                     , CM.ORDER_NAME orderName
+		                     , CM.ORDER_DIV orderDiv
+                                  FROM CONSENT_MST CM
+		                 INNER JOIN PAM.PMOHOTPT OTPT
+		                    ON CM.HOS_TYPE = OTPT.INSTCD
+		                   AND CM.PATIENT_CODE = OTPT.PID
+		                   AND CM.CLN_DATE = OTPT.ORDDD
+		                   AND CM.CERT_NO = OTPT.CRETNO
+		                   AND OTPT.HISTSTAT IN ('R', 'T')
+		                 INNER JOIN PAM.PMCMPTBS PTBS
+		                    ON CM.HOS_TYPE = PTBS.INSTCD
+		                   AND CM.PATIENT_CODE = PTBS.PID
+		                 WHERE TO_CHAR(TO_DATE(CM.create_Datetime, 'YYYY-MM-DD HH24:MI:SS'), 'YYYYMMDD') BETWEEN #{startDate} AND #{endDate} /*[param]출력일(시작일,종료일)*/
+		                   AND CM.HOS_TYPE = #{instCd} /*[param]기관코드*/
+
+		                  <if test='atDoctId != null and atDoctId != ""'>
+		                   AND OTPT.ORDDRID = #{atDoctId} /*[param]의료진ID*/
+		                  </if>
+		
+		                  <if test='patientCode != null and patientCode != ""'>
+		                   AND CM.patient_Code = #{patientCode} /*[param]환자번호*/
+		                  </if>
+		
+		                  <if test="isFormMaster == false">
+		                   AND CM.use_Yn = 'Y'
+		                  </if>
+		
+		                  <if test='clnDeptCd != null and clnDeptCd != ""'>
+		                   AND CM.cln_Dept_Cd = #{clnDeptCd} /*[param]진료과코드*/
+		                  </if>
+		
+		                  <if test='wardCd != null and wardCd != ""'>
+		                   AND 1 = 0 /*[param]병동코드*/
+		                  </if>
+		
+		                  <if test='visitType != null and visitType != ""'>
+		                   AND CM.visit_Type IN (${visitType}) /*[param]방문종류*/
+		                  </if>
+		
+		             ) X
+		         WHERE 1=1
+		
+		        UNION ALL
+		
+		        SELECT '1' AS sortFlag
+		             , Y.INSTCD AS HOSTYPE
+		             , null AS CONSENTMSTRID
+		             , '' AS OCRTAG
+		             , 'NEW' AS CONSENTSTATE
+		             , Y.PID AS PATIENTCODE
+		             , Y.HNGNM AS PATIENTNAME
+		             , Y.SEX AS PATIENTSEX
+		             , Y.AGE AS PATIENTAGE
+		             , Y.RRGSTNO
+		             , Y.BRTHDD
+		             , Y.ZIPNM
+		             , Y.HOMETEL
+		             , Y.MPPHONTEL
+		             , Y.CRETNO AS CERTNO
+		             , Y.ORDTYPE AS VISITTYPE
+		             , Y.ORDDEPTCD AS CLNDEPTCD
+		             , Y.ORDDRNM AS ORDDRNM
+		             , Y.ORDDEPTNM AS CLNDEPTNM
+		             , Y.ORDDEPTABBR AS CLNDEPTABBR
+		             , Y.ORDDRID AS ATDOCTID
+		             , Y.WARDCD AS WARDCD
+		             , Y.WARDNM AS WARDNAME
+		             , Y.ROOMCD AS ROOMCD
+		             , Y.DIAGNM AS DIAGNM
+		             , Y.DIAGENGNM AS DIAGENGNM
+		             , '' AS USEYN
+		             , (SELECT FORM_ID FROM CLIP_MAPPING_ID WHERE DOCUMENT_CODE = Y.FORMCD) AS FORMID
+		             , Y.FORMCD AS FORMCD
+		             , Y.FORMVERSION AS FORMVERSION
+		             , Y.FORMNM AS FORMNAME
+		             , null AS COSIGNDEPTCODE
+		             , null AS COSIGNDEPTNAME
+		             , '' AS OPDRSIGNYN
+		             , 0 AS CERTCNT		           
+		             , Y.orderSeqNo
+		             , Y.orderDate
+		             , Y.orderNo
+		             , Y.orderCd
+		             , Y.orderName
+		             , Y.FORMEXTNNM
+		             , Y.FORMPRNTNM
+		             , Y.FORMFROMDT
+		             , Y.clnDate
+		             , Y.OCRSEQ
+		             , Y.FORMRID
+		             , Y.PAPER
+		             , Y.ECO
+		             , Y.TMP01, Y.TMP02, Y.TMP03, Y.TMP04, Y.TMP05, Y.TMP06, Y.TMP07, Y.TMP08, Y.TMP09, Y.TMP10
+		             , '' AS CREATEUSERID
+		             , '' AS CREATEUSERNAME
+		             , '' AS CREATEUSERDEPTCD
+		             , '' AS CREATEUSERDEPTNAME
+		             , '' AS CREATEDATETIME
+		             , '' AS MODIFYUSERID
+		             , '' AS MODIFYUSERNAME
+		             , '' AS MODIFYUSERDEPTCD
+		             , '' AS MODIFYUSERDEPTNAME
+		             , '' AS MODIFYDATETIME
+                  FROM (
+		                SELECT TO_CHAR(MECH.SEQNO) AS orderSeqNo
+		                     , PRC.PRCPDD orderDate
+                             , PRC.PRCPNO orderNo
+                             , PRC.PRCPCD orderCd
+                             , PRC.PRCPNM orderName
+		                     , FORM.FORMCD, FORM.FORMNM, FORM.FORMEXTNNM, FORM.FORMPRNTNM, FORM.FORMFROMDT
+		                     , PRC.INSTCD, PRC.PID, PRC.ORDDD clnDate, PRC.CRETNO
+		                     , INPT.ORDTYPE
+		                     , AUTH.OCRSEQ, AUTH.FORMGUID, AUTH.FORMVERSION, AUTH.FORMRID
+		                     , MECO.PAPER, MECO.ECO
+		                     , MECH.TMP01, MECH.TMP02, MECH.TMP03, MECH.TMP04, MECH.TMP05, MECH.TMP06, MECH.TMP07, MECH.TMP08, MECH.TMP09, MECH.TMP10
+		                     , PTBS.HNGNM, PTBS.SEX
+		                     , COM.FN_ZZ_GETAGE('-', '-', MECH.PRCPDD, 'B', PTBS.BRTHDD) AS AGE
+                             , PTBS.RRGSTNO1 || '-' || PTBS.RRGSTNO2 AS RRGSTNO
+                             , PTBS.BRTHDD
+                             , (PTBS.ZIPCDADDR || ' ' || PTBS.DETLADDR) AS ZIPNM
+                             , PTBS.HOMETEL AS HOMETEL
+                             , PTBS.MPPHONTEL AS MPPHONTEL
+		                     , INPT.ORDDEPTCD, INPT.MEDISPCLID AS ORDDRID
+		                     , INPT.WARDCD
+		                     , INPT.ROOMCD
+		                     , (SELECT DEPTHNGNM FROM COM.ZSDDDEPT WHERE INSTCD = INPT.INSTCD AND DEPTCD = INPT.ORDDEPTCD AND INPT.DSCHDD BETWEEN VALIFROMDD AND VALITODD) AS ORDDEPTNM
+                             , (SELECT DEPTENGABBR FROM COM.ZSDDDEPT WHERE INSTCD = INPT.INSTCD AND DEPTCD = INPT.ORDDEPTCD AND INPT.DSCHDD BETWEEN VALIFROMDD AND VALITODD) AS ORDDEPTABBR
+		                     , (SELECT USERNM FROM COM.ZSUMUSRB WHERE USERID = INPT.MEDISPCLID AND INPT.DSCHDD BETWEEN USERFROMDD AND USERTODD) AS ORDDRNM
+		                     , (SELECT DEPTHNGNM FROM COM.ZSDDDEPT WHERE INSTCD = INPT.INSTCD AND DEPTCD = INPT.WARDCD AND INPT.DSCHDD BETWEEN VALIFROMDD AND VALITODD) AS WARDNM
+                             , (SELECT TERM.TERMHNGNM
+                                FROM EMR.MMOHDIAG DIAG, EMR.MRTMTERM TERM
+                                WHERE DIAG.DIAGCD = TERM.TERMCD
+                                AND DIAG.INSTCD = TERM.INSTCD
+                                <![CDATA[
+                                AND DIAG.DIAGDD >= TERM.TERMFROMDD
+                                AND DIAG.DIAGDD <= TERM.TERMTODD
+                                ]]>	
+                                AND DIAG.PID = INPT.PID
+                                AND DIAG.ORDDD = INPT.INDD
+                                AND DIAG.CRETNO = INPT.CRETNO
+                                AND DIAG.ORDDEPTCD = INPT.ORDDEPTCD
+                                AND DIAG.INSTCD = INPT.INSTCD
+                                AND DIAG.DIAGHISTCD = 'O'
+                                AND DIAG.DIAGTYPECD = 'D'
+                                AND DIAG.DIAGKINDCDFLAG = 'M'
+                                AND ROWNUM = 1) AS DIAGNM
+                             , (SELECT TERM.TERMENGNM
+                                FROM EMR.MMOHDIAG DIAG, EMR.MRTMTERM TERM
+                                WHERE DIAG.DIAGCD = TERM.TERMCD
+                                AND DIAG.INSTCD = TERM.INSTCD
+                                <![CDATA[
+                                AND DIAG.DIAGDD >= TERM.TERMFROMDD
+                                AND DIAG.DIAGDD <= TERM.TERMTODD
+                                ]]>	
+                                AND DIAG.PID = INPT.PID
+                                AND DIAG.ORDDD = INPT.INDD
+                                AND DIAG.CRETNO = INPT.CRETNO
+                                AND DIAG.ORDDEPTCD = INPT.ORDDEPTCD
+                                AND DIAG.INSTCD = INPT.INSTCD
+                                AND DIAG.DIAGHISTCD = 'O'
+                                AND DIAG.DIAGTYPECD = 'D'
+                                AND DIAG.DIAGKINDCDFLAG = 'M'
+                                AND ROWNUM = 1) AS DIAGENGNM
+		                  FROM EMR.ECOLINK_MRFMCALCMECH MECH
+		                     , EMR.MMOHIPRC   PRC
+		                     , PAM.PMIHINPT   INPT
+		                     , PAM.PMCMPTBS   PTBS
+		                     , EMR.MRFMFORM   FORM
+		                     , EMR.MRFHAUTH   AUTH
+		                     , EMR.MRFMECOOCR MECO
+		                 WHERE 1=1
+		                   AND MECH.PRNTYN = 'N'
+		                   AND MECH.INSTCD = PRC.INSTCD
+		                   AND MECH.PRCPDD = PRC.PRCPDD
+		                   AND MECH.PRCPNO = PRC.PRCPNO
+		                   AND PRC.PRCPHISTCD = 'O'
+		                   AND MECH.INSTCD = INPT.INSTCD
+		                   AND MECH.PID = INPT.PID
+		                   AND MECH.ORDDD = INPT.INDD
+		                   AND MECH.CRETNO = INPT.CRETNO
+		                   AND INPT.MSKIND = 'M'
+		                   AND INPT.HISTSTAT = 'Y'
+		                   AND MECH.INSTCD = PTBS.INSTCD
+		                   AND MECH.PID = PTBS.PID
+		                   AND MECH.INSTCD = FORM.INSTCD
+		                   AND MECH.FORMCD = FORM.FORMCD
+		                   AND TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') BETWEEN FORM.FORMFROMDT AND FORM.FORMTODT
+		                   AND FORM.INSTCD = AUTH.INSTCD
+		                   AND FORM.FORMCD = AUTH.FORMCD
+		                   AND TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') BETWEEN AUTH.USEFROMDD || AUTH.USEFROMTIME AND AUTH.USETODD || AUTH.USETOTIME
+		                   AND AUTH.USEYN = 'Y'
+		                   AND AUTH.INSTCD = MECO.INSTCD
+		                   AND AUTH.FORMCD = MECO.FORMCD
+		                   AND AUTH.OCRSEQ = MECO.OCRSEQ
+		                   AND AUTH.FORMGUID = MECO.FORMGUID
+		                   AND AUTH.FORMVERSION = MECO.FORMVERSION
+		                   AND MECO.ECO = 'Y'
+		                   AND MECH.INSTCD = #{instCd} /*[param]기관코드*/
+		                   AND MECH.PRCPDD BETWEEN #{startDate} AND #{endDate} /*[param]출력일(시작일,종료일)*/
+		
+		                  <if test='atDoctId != null and atDoctId != ""'>
+		                   AND INPT.MEDISPCLID = #{atDoctId} /*[param]의료진ID*/
+		                  </if>
+		
+		                  <if test='patientCode != null and patientCode != ""'>
+		                   AND MECH.PID = #{patientCode} /*[param]환자번호*/
+		                  </if>
+		
+		                UNION ALL
+		
+		                SELECT TO_CHAR(MECH.SEQNO) AS orderSeqNo
+		                     , PRC.PRCPDD orderDate
+		                     , PRC.PRCPNO orderNo
+		                     , PRC.PRCPCD orderCd
+		                     , PRC.PRCPNM orderName
+		                     , FORM.FORMCD, FORM.FORMNM, FORM.FORMEXTNNM, FORM.FORMPRNTNM, FORM.FORMFROMDT
+		                     , PRC.INSTCD, PRC.PID, PRC.ORDDD clnDate, PRC.CRETNO
+		                     , OTPT.ORDTYPE
+		                     , AUTH.OCRSEQ, AUTH.FORMGUID, AUTH.FORMVERSION, AUTH.FORMRID
+		                     , MECO.PAPER, MECO.ECO
+		                     , MECH.TMP01, MECH.TMP02, MECH.TMP03, MECH.TMP04, MECH.TMP05, MECH.TMP06, MECH.TMP07, MECH.TMP08, MECH.TMP09, MECH.TMP10
+		                     , PTBS.HNGNM, PTBS.SEX
+		                     , COM.FN_ZZ_GETAGE('-', '-', MECH.PRCPDD, 'B', PTBS.BRTHDD) AS AGE
+                             , PTBS.RRGSTNO1 || '-' || PTBS.RRGSTNO2 AS RRGSTNO
+                             , PTBS.BRTHDD
+                             , (PTBS.ZIPCDADDR || ' ' || PTBS.DETLADDR) AS ZIPNM
+                             , PTBS.HOMETEL AS HOMETEL
+                             , PTBS.MPPHONTEL AS MPPHONTEL
+		                     , OTPT.ORDDEPTCD, OTPT.ORDDRID
+		                     , '' AS WARDCD
+		                     , '외래' AS ROOMCD
+		                     , (SELECT DEPTHNGNM FROM COM.ZSDDDEPT WHERE INSTCD = OTPT.INSTCD AND DEPTCD = OTPT.ORDDEPTCD AND OTPT.ORDDD BETWEEN VALIFROMDD AND VALITODD) AS ORDDEPTNM
+                             , (SELECT DEPTENGABBR FROM COM.ZSDDDEPT WHERE INSTCD = OTPT.INSTCD AND DEPTCD = OTPT.ORDDEPTCD AND OTPT.ORDDD BETWEEN VALIFROMDD AND VALITODD) AS ORDDEPTABBR
+		                     , (SELECT USERNM FROM COM.ZSUMUSRB WHERE USERID = OTPT.ORDDRID AND OTPT.ORDDD BETWEEN USERFROMDD AND USERTODD) AS ORDDRNM
+		                     , '' AS WARDNM
+                             , (SELECT TERM.TERMHNGNM
+                                FROM EMR.MMOHDIAG DIAG, EMR.MRTMTERM TERM
+                                WHERE DIAG.DIAGCD = TERM.TERMCD
+                                AND DIAG.INSTCD = TERM.INSTCD
+                                <![CDATA[
+                                AND DIAG.DIAGDD >= TERM.TERMFROMDD
+                                AND DIAG.DIAGDD <= TERM.TERMTODD
+                                ]]>	
+                                AND DIAG.PID = OTPT.PID
+                                AND DIAG.ORDDD = OTPT.ORDDD
+                                AND DIAG.CRETNO = OTPT.CRETNO
+                                AND DIAG.ORDDEPTCD = OTPT.ORDDEPTCD
+                                AND DIAG.INSTCD = OTPT.INSTCD
+                                AND DIAG.DIAGHISTCD = 'O'
+                                AND DIAG.DIAGTYPECD = 'D'
+                                AND DIAG.DIAGKINDCDFLAG = 'M'
+                                AND ROWNUM = 1) AS DIAGNM
+                             , (SELECT TERM.TERMENGNM
+                                FROM EMR.MMOHDIAG DIAG, EMR.MRTMTERM TERM
+                                WHERE DIAG.DIAGCD = TERM.TERMCD
+                                AND DIAG.INSTCD = TERM.INSTCD
+                                <![CDATA[
+                                AND DIAG.DIAGDD >= TERM.TERMFROMDD
+                                AND DIAG.DIAGDD <= TERM.TERMTODD
+                                ]]>	
+                                AND DIAG.PID = OTPT.PID
+                                AND DIAG.ORDDD = OTPT.ORDDD
+                                AND DIAG.CRETNO = OTPT.CRETNO
+                                AND DIAG.ORDDEPTCD = OTPT.ORDDEPTCD
+                                AND DIAG.INSTCD = OTPT.INSTCD
+                                AND DIAG.DIAGHISTCD = 'O'
+                                AND DIAG.DIAGTYPECD = 'D'
+                                AND DIAG.DIAGKINDCDFLAG = 'M'
+                                AND ROWNUM = 1) AS diagengnm
+		                  FROM EMR.ECOLINK_MRFMCALCMECH MECH
+		                     , EMR.MMOHOPRC PRC
+		                     , PAM.PMOHOTPT OTPT
+		                     , PAM.PMCMPTBS PTBS
+		                     , EMR.MRFMFORM FORM
+		                     , EMR.MRFHAUTH AUTH
+		                     , EMR.MRFMECOOCR MECO
+		                 WHERE 1=1
+		                   AND MECH.PRNTYN = 'N'
+		                   AND MECH.INSTCD = PRC.INSTCD
+		                   AND MECH.PRCPDD = PRC.PRCPDD
+		                   AND MECH.PRCPNO = PRC.PRCPNO
+		                   AND PRC.PRCPHISTCD = 'O'
+		                   AND MECH.INSTCD = OTPT.INSTCD
+		                   AND MECH.PID = OTPT.PID
+		                   AND MECH.ORDDD = OTPT.ORDDD
+		                   AND MECH.CRETNO = OTPT.CRETNO
+		                   AND OTPT.HISTSTAT IN ('R','T')
+		                   AND MECH.INSTCD = PTBS.INSTCD
+		                   AND MECH.PID = PTBS.PID
+		                   AND MECH.INSTCD = FORM.INSTCD
+		                   AND MECH.FORMCD = FORM.FORMCD
+		                   AND TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') BETWEEN FORM.FORMFROMDT AND FORM.FORMTODT
+		                   AND FORM.INSTCD = AUTH.INSTCD
+		                   AND FORM.FORMCD = AUTH.FORMCD
+		                   AND TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') BETWEEN AUTH.USEFROMDD || AUTH.USEFROMTIME AND AUTH.USETODD || AUTH.USETOTIME
+		                   AND AUTH.USEYN = 'Y'
+		                   AND AUTH.INSTCD = MECO.INSTCD
+		                   AND AUTH.FORMCD = MECO.FORMCD
+		                   AND AUTH.OCRSEQ = MECO.OCRSEQ
+		                   AND AUTH.FORMGUID = MECO.FORMGUID
+		                   AND AUTH.FORMVERSION = MECO.FORMVERSION
+		                   AND MECO.ECO = 'Y'
+		                   AND MECH.INSTCD = #{instCd} /*[param]기관코드*/
+		                   AND MECH.PRCPDD BETWEEN #{startDate} AND #{endDate} /*[param]출력일(시작일,종료일)*/
+		
+		                  <if test='patientCode != null and patientCode != ""'>
+		                   AND MECH.PID = #{patientCode} /*[param]환자번호*/
+		                  </if>
+		
+		                  <if test='atDoctId != null and atDoctId != ""'>
+		                   AND OTPT.ORDDRID = #{atDoctId} /*[param]의료진ID*/
+		                  </if>
+		
+		               ) Y
+		           WHERE 1=1
+		
+		            <if test='clnDeptCd != null and clnDeptCd != ""'>
+		             AND Y.ORDDEPTCD = #{clnDeptCd} /*[param]진료과코드*/
+		            </if>
+		         
+		            <if test='wardCd != null and wardCd != ""'>
+		             AND Y.WARDCD = #{wardCd} /*[param]병동코드*/
+		            </if>
+		         
+		            <if test='visitType != null and visitType != ""'>
+		             AND Y.ORDTYPE IN (${visitType}) /*[param]방문타입*/
+		            </if>
+		
+		       ) Z
+		  LEFT OUTER JOIN CONSENT_FORM_EX FORMEX
+		    ON Z.HOSTYPE = FORMEX.INST_CD
+		   AND Z.FORMCD = FORMEX.FORM_CD
+		   AND Z.FORMID = FORMEX.FORM_ID
+		   AND Z.FORMVERSION = FORMEX.FORM_VERSION
+		 
+		 WHERE 1=1
+		
+		  <if test='consentState != null and consentState != ""'>
+		   AND Z.consentState IN (${consentState}) /*[param]작성상태*/
+		  </if>
+		
+		  <if test='fvrtYn == "Y"'>
+		   AND Z.FORMID IN ( SELECT FORM_ID FROM CONSENT_USER_FORM UF WHERE UF.FVRT_YN = 'Y' AND UF.USER_ID = #{userId} ) /*[param]접속자ID*/
+		  </if>
+		
+		 ORDER BY
+		       Z.sortFlag
+		     , Z.patientName
+
+
+	</select>
+    
+    <insert id="saveConsentMst" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto">
+            MERGE INTO CONSENT_MST
+             USING DUAL
+                ON (
+                     CONSENT_MST_RID = #{consentMstRid}
+                   )
+              WHEN MATCHED THEN
+              UPDATE SET CONSENT_STATE = #{consentState},
+            			 COMPLETE_YN = #{completeYn},
+            			 COMPLETE_DATETIME = #{completeDatetime},
+            			 COSIGN_DEPT_CODE = #{cosignDeptCode},
+            			 COSIGN_DEPT_NAME = #{cosignDeptName},
+            			 COSIGN_USER_ID   = #{cosignUserId},
+            			 COSIGN_USER_NAME = #{cosignUserName},
+            			 OPDR_SIGN_YN = #{opdrSignYn},
+				         CERT_CNT = #{certCnt},
+           				 
+	      			<if test='orderDate != null and orderDate != ""'>
+            			 ORDER_DATE = #{orderDate},
+				    </if>
+
+	      			<if test='orderName != null and orderName != ""'>
+            			 ORDER_NAME = #{orderName},
+				    </if>
+						
+				    <if test='orderCd != null and orderCd != ""'>
+            			 ORDER_CD = #{orderCd},
+				    </if>
+						 
+	      			     MODIFY_USER_ID = #{modifyUserId},
+            			 MODIFY_USER_NAME = #{modifyUserName},
+            			 MODIFY_USER_DEPT_CD = #{modifyUserDeptCd},
+            			 MODIFY_USER_DEPT_NAME = #{modifyUserDeptName},
+				         MODIFY_DATETIME = TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+            			 
+              WHEN NOT MATCHED THEN
+              insert 
+              (
+       			         CONSENT_MST_RID,
+			             HOS_TYPE,
+			             PATIENT_CODE,
+			             OCR_TAG,
+			             CERT_NO,
+			             PATIENT_NAME,
+			             VISIT_TYPE,
+			             ORDER_DIV,
+			             ORDER_DATE,
+			             ORDER_NAME,
+			             ORDER_CD,
+			             CLN_DEPT_CD,
+			             CLN_DATE,
+			             WARD_CD,
+			             WARD_NAME,
+			             ROOM_CD,
+			             FORM_ID,
+			             FORM_CD,
+			             FORM_NAME,
+						 FORM_VERSION,
+						 COSIGN_DEPT_CODE,
+						 COSIGN_DEPT_NAME,
+            			 COSIGN_USER_ID,
+            			 COSIGN_USER_NAME,
+			             CONSENT_STATE,
+			             COMPLETE_YN,
+			             COMPLETE_DATETIME,
+			             REISSUE_YN,
+			             REISSUE_CONSENT_MST_RID,
+			             REWRITE_YN,
+			             REWRITE_CONSENT_MST_RID,
+			             USE_YN,
+			             CREATE_USER_ID,
+			             CREATE_USER_NAME,
+			             CREATE_USER_DEPT_CD,
+			             CREATE_USER_DEPT_NAME,
+			             CREATE_DATETIME,
+			             MODIFY_USER_ID,
+			             MODIFY_USER_NAME,
+			             MODIFY_USER_DEPT_CD,
+			             MODIFY_USER_DEPT_NAME,
+			             MODIFY_DATETIME,
+			             ORDER_SEQ_NO,
+			             OPDR_SIGN_YN,
+			             CERT_CNT
+               )
+               values
+               (
+                  		 #{consentMstRid},
+			             #{hosType},
+			             #{patientCode},
+			             #{ocrTag},
+			             #{certNo},
+			             #{patientName},
+			             #{visitType},
+			             #{orderDiv},
+			             #{orderDate},
+			             #{orderName},
+			             #{orderCd},
+			             #{clnDeptCd},
+			             #{clnDate},
+			             #{wardCd},
+			             #{wardName},
+			             #{roomCd},
+			             #{formId},
+			             #{formCd},
+			             (SELECT FORM_NAME FROM CLIP_FORM WHERE FORM_ID = #{formId}),
+			             #{formVersion},
+			             #{cosignDeptCode},
+			             #{cosignDeptName},
+            			 #{cosignUserId},
+            			 #{cosignUserName},
+			             #{consentState},
+			             #{completeYn},
+			             #{completeDatetime},
+			             #{reissueYn},
+			             #{reissueConsentMstRid},
+			             #{rewriteYn},
+			             #{rewriteConsentMstRid},
+			             'Y',
+			             #{createUserId},
+			             #{createUserName},
+			             #{createUserDeptCd},
+			             #{createUserDeptName},
+			             #{createDatetime},
+			             #{modifyUserId},
+			             #{modifyUserName},
+			             #{modifyUserDeptCd},
+			             #{modifyUserDeptName},
+			             TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss'),
+			             #{orderSeqNo},
+                      	 	     #{opdrSignYn},
+                      	 	     #{certCnt}
+               )           
+    </insert>
+    
+    <update id="updateConsentMstUseYn" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto">
+        UPDATE
+            CONSENT_MST
+        SET MODIFY_USER_ID = #{modifyUserId},
+            MODIFY_USER_NAME = #{modifyUserName},
+            MODIFY_USER_DEPT_CD = #{modifyUserDeptCd},
+            MODIFY_USER_DEPT_NAME = #{modifyUserDeptName},
+            MODIFY_DATETIME = TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss'),
+            USE_YN = #{useYn}
+      WHERE 1=1
+        AND CONSENT_MST_RID = #{consentMstRid}
+        AND CONSENT_STATE = 'TEMP' 
+        AND COSIGN_DEPT_CODE IS NULL
+    </update>
+    
+	<select id="getConsentXmlData" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto">
+		SELECT mainCd.FORM_XML formXmlByteValue
+		  FROM CONSENT_DATA mainCd
+		 WHERE 1=1
+		   and mainCd.CONSENT_MST_RID = #{consentMstRid} 
+		   and mainCd.CONSENT_DATA_RID = (
+                                   select max(consent_data_rid)
+                                     from CONSENT_DATA cd
+                                    where cd.CONSENT_MST_RID = #{consentMstRid}
+                                  )
+    </select>    
+    
+    <insert id="insertConsentData" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto">
+        insert 
+        into CONSENT_DATA (
+             CONSENT_DATA_RID,
+             CONSENT_MST_RID,
+             FORM_ID,
+             DEVICE_TYPE,
+             DEVICE_IDENT_NO,
+             COMPLETE_YN,
+             CREATE_USER_ID,
+             CREATE_DATETIME,
+             FORM_XML,
+             DATA_XML,
+             SAVE_DATA_JSON,
+             SAVE_DATA_LENGTH
+        )
+        values
+        (
+             #{consentDataRid},
+             #{consentMstRid},
+             #{formId},
+             #{deviceType},
+             #{deviceIdentNo},
+             #{completeYn},
+             #{createUserId},
+             TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss'),
+             #{formXmlByteValue},
+             null,
+             #{saveDataJson},
+             #{saveDataLength}
+        )
+    </insert>
+    
+    
+    <update id="updateConsentDataNullRecent" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto">
+		UPDATE CONSENT_DATA DATA
+		   SET DATA.FORM_XML = NULL
+		     , DATA.DATA_XML = NULL
+		 WHERE DATA.CONSENT_DATA_RID = (SELECT MAX(CONSENT_DATA_RID) FROM CONSENT_DATA WHERE CONSENT_MST_RID = #{consentMstRid})
+    </update>
+  
+    
+    <insert id="insertConsentImage" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentImageDto">
+        insert 
+        into CONSENT_IMAGE (
+             CONSENT_IMAGE_RID,
+             CONSENT_MST_RID,
+             CONSENT_DATA_RID,
+             FORM_ID,
+             IMAGE_DATA,
+             IMAGE_PATH,
+             IMAGE_FILENAME,
+             IMAGE_FULL_PATH,
+             IMAGE_SIZE_BYTE,
+             COMPLETE_YN,
+             CREATE_USER_ID,
+             CREATE_DATETIME
+        )
+        values
+        (
+             #{consentImageRid},
+             #{consentMstRid},
+             #{consentDataRid},
+             #{formId},
+             #{imageData},
+             #{imagePath},
+             #{imageFilename},
+             #{imageFullPath},
+             #{imageSizeByte},
+             #{completeYn},
+             #{createUserId},
+             TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+        )
+    </insert>
+
+
+    <update id="updateConsentImage" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentImageDto">
+        UPDATE CONSENT_IMAGE 
+           SET CONSENT_DATA_RID = #{consentDataRid}
+		 WHERE CONSENT_MST_RID = #{consentMstRid}
+		   AND CONSENT_IMAGE_RID = #{consentImageRid}
+    </update>
+
+    
+    
+    <insert id="insertConsentSignImage" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentImageSignDto">
+        insert 
+        into CONSENT_IMAGE_SIGN (
+             CONSENT_DATA_RID,
+             CONSENT_MST_RID,
+             CONSENT_IMAGE_RID,
+             CERT_TARGET,
+             CERT_RESULT,
+             CERT_STATUS,
+             CREATE_USER_ID,
+             CREATE_DATETIME,
+             MODIFY_USER_ID,
+             MODIFY_DATETIME
+        )
+        values
+        (
+             #{consentDataRid},
+             #{consentMstRid},
+             #{consentImageRid},
+             #{certTargetByteValue},
+             #{certResultByteValue},
+             'Y',
+             #{createUserId},
+             TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss'),
+             #{modifyUserId},
+             TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+        )
+    </insert>
+    
+    <update id="updateConsentSignImage" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentImageSignDto">
+        UPDATE
+            CONSENT_IMAGE_SIGN
+        SET CERT_STATUS = #{certStatus}
+          , MODIFY_USER_ID = #{modifyUserId}
+          , MODIFY_DATETIME = TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+      WHERE 1=1
+        AND CONSENT_MST_RID = #{consentMstRid}
+        AND CONSENT_DATA_RID = #{consentDataRid}
+        
+        <if test='consentImageRid == null'>
+        AND CONSENT_IMAGE_RID IS NULL
+        </if>
+		      
+        <if test='consentImageRid != null'>
+        AND CONSENT_IMAGE_RID = #{consentImageRid}
+        </if>
+
+    </update>
+    
+    <select id="getConsentDrow" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDrowDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentDrowDto">
+		SELECT DROW drowByteValue
+   		  FROM CONSENT_DROW
+		 WHERE 1=1
+		   AND USER_ID = #{userId} 
+		   AND FORM_ID = #{formId} 
+		   AND FORM_VERSION = #{formVersion} 
+    </select>
+    
+    <insert id="insertConsentDrow" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDrowDto">
+        INSERT 
+          INTO CONSENT_DROW (
+               CONSENT_DROW_RID,
+               USER_ID,
+               FORM_ID,
+               FORM_VERSION,
+               DROW,
+               CREATE_USER_ID,
+               CREATE_DATETIME,
+               MODIFY_USER_ID,
+               MODIFY_DATETIME
+        )
+        VALUES
+        (
+               SEQ_CONSENT_DROW.NEXTVAL,
+               #{userId},
+               #{formId},
+               #{formVersion},
+               #{drowByteValue},
+               #{createUserId},
+               TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss'),
+               #{modifyUserId},
+               TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+        )
+    </insert>
+    
+    <update id="updateConsentDrow" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDrowDto">
+        UPDATE
+            CONSENT_DROW
+        SET DROW = #{drowByteValue},
+            MODIFY_USER_ID = #{modifyUserId},
+            MODIFY_DATETIME = TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+      WHERE 1=1
+        AND FORM_ID = #{formId}
+        AND FORM_VERSION = #{formVersion}
+        AND USER_ID = #{userId}
+    </update>
+    
+
+    <insert id="insertConsentImgUploadRst" parameterType="java.util.List">
+  		<foreach item="item" collection="list" open="INSERT ALL"  close="SELECT * FROM DUAL" separator=" " >
+		  into TBLLINK_CONSENTINFO (
+	             CMD
+			   , PATID
+			   , ORDDATE
+			   , OCRTAG
+			   , IMGPATH
+			   , IMGINDEX
+			   , SPCID
+			   , ORDDD
+			   , CRETNO
+			   , ACPTTIME
+			   , PATFLG
+			   , EXAMTYP
+			   , USERID
+			   , LASTEDITDT
+			   , EXAMNAME
+			   , FORMCD
+		     )
+		values
+		     (
+	             #{item.cmd}
+	           , #{item.patId}
+	           , TO_DATE(#{item.ordDate}, 'YYYYMMDD')
+	           , #{item.ocrTag}
+	           , #{item.imgPath}
+	           , #{item.imgIndex}
+	           , #{item.spcId}
+	           , TO_DATE(#{item.ordDd}, 'YYYYMMDD')
+	           , #{item.cretNo}
+	           , sysdate
+	           , #{item.patFlg}
+	           , #{item.examTyp}
+	           , #{item.userId}
+	           , SYSTIMESTAMP
+	           , #{item.examName}
+	           , #{item.formCd}
+		     )
+		</foreach>
+    </insert>
+
+   	<select id="getConsentRecord" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentRecordDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentRecordDto">
+		SELECT CONSENT_MST_RID    consentMstRid
+		     , CONSENT_RECORD_RID consentRecordRid
+		     , FORM_ID            formId
+		     , RECORD_PATH        recordPath
+		     , RECORD_FILENAME    recordFileName
+		     , RECORD_FULL_PATH   recordFullPath
+		     , RECORD_SIZE_BYTE   recordSizeByte
+		     , COMPLETE_YN        completeYn
+		     , USE_YN             useYn
+		     , CREATE_USER_ID     createUserId
+		     , CREATE_DATETIME    createDatetime
+		  FROM CONSENT_RECORD
+		 WHERE CONSENT_MST_RID = #{consentMstRid}
+		 ORDER BY
+		       RECORD_FILENAME
+	</select>
+    
+    <insert id="insertConsentRecordRst" parameterType="java.util.List">
+  		<foreach item="item" collection="list" open="INSERT ALL"  close="SELECT * FROM DUAL" separator=" " >
+	   into CONSENT_RECORD (
+               CONSENT_MST_RID,
+               CONSENT_RECORD_RID,
+               FORM_ID,
+               RECORD_PATH,
+               RECORD_FILENAME,
+               RECORD_FULL_PATH,
+               RECORD_SIZE_BYTE,
+               COMPLETE_YN,
+               USE_YN,
+               CREATE_USER_ID,
+               CREATE_DATETIME
+        )
+		values
+        (
+             #{item.consentMstRid},
+             #{item.consentRecordRid},
+             #{item.formId},
+             #{item.recordPath},
+             #{item.recordFileName},
+             #{item.recordFullPath},
+             #{item.recordSizeByte},
+             #{item.completeYn},
+             #{item.useYn},
+             #{item.createUserId},
+             TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+        )
+		</foreach>
+    </insert>
+    
+    <insert id="insertConsentDeviceLog" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDeviceLogsDto">
+		insert 
+          into CONSENT_DEVICE_LOGS (
+                SAVEDT,
+                DEVICEID,
+                OCRTAG,
+                STATCD,
+                SAVEUSERID,
+                SAVEDEPTCD,
+                DEVICEIP,
+                DEVICEMAC,
+                FSTRGSTRID,
+                LASTUPDTRID
+        )
+        values
+        (
+             TO_CHAR(SYSDATE,'yyyymmddhh24miss'),
+             #{deviceId},
+             #{ocrTag},
+             #{statCd},
+             #{saveUserId},
+             #{saveDeptCd},
+             #{deviceIp},
+             #{deviceMac},
+             #{fstRgstRid},
+             #{lastUpdtRid}
+        )
+    </insert>
+    
+    <insert id="saveUserForm" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentUserFormDto">
+            MERGE INTO CONSENT_USER_FORM
+             USING DUAL
+                ON (
+                         FORM_CD = #{formCd}
+                     AND FORM_ID = #{formId}
+                     AND USER_ID = #{userId}
+                   )
+              WHEN MATCHED THEN
+              UPDATE SET FVRT_YN = #{fvrtYn},
+            			 MODIFY_USER_ID = #{userId},
+           				 MODIFY_DATETIME = TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+              WHEN NOT MATCHED THEN
+              insert 
+              (
+       			         FORM_CD,
+			             FORM_ID,
+			             USER_ID,
+			             FVRT_YN,
+			             MODIFY_USER_ID,
+			             MODIFY_DATETIME,
+			             CREATE_USER_ID,
+			             CREATE_DATETIME
+               )
+               values
+               (
+                  		 #{formCd},
+			             #{formId},
+			             #{userId},
+			             #{fvrtYn},
+			             #{userId},
+						 TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss'),
+			             #{userId},
+						 TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+               )           
+    </insert>    
+    
+    <select id="getOpdrYnCnt" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto" resultType="int">
+		SELECT COUNT(*) OPDRYCNT
+		  FROM CONSENT_FORM_EX
+		 WHERE 1=1
+		   AND INST_CD = #{hosType}
+		   AND FORM_CD = #{formCd}
+		   AND FORM_ID = #{formId}
+		   AND FORM_VERSION = #{formVersion}
+		   AND OPDR_YN = 'Y'
+    </select>
+
+    <insert id="insertTblLinkConsentInfo" parameterType="java.util.List">
+  		<foreach item="item" collection="list" open="INSERT ALL"  close="SELECT * FROM DUAL" separator=" " >
+		  into TBLLINK_CONSENTINFO (
+	             CMD
+			   , PATID
+			   , ORDDATE
+			   , OCRTAG
+			   , IMGPATH
+			   , IMGINDEX
+			   , SPCID
+			   , ORDDD
+			   , CRETNO
+			   , ACPTTIME
+			   , PATFLG
+			   , EXAMTYP
+			   , USERID
+			   , LASTEDITDT
+			   , EXAMNAME
+			   , FORMCD
+		     )
+		values
+		     (
+	             #{item.cmd}
+	           , #{item.patId}
+	           , TO_DATE(#{item.ordDate}, 'YYYYMMDD')
+	           , #{item.ocrTag}
+	           , #{item.imgPath}
+	           , #{item.imgIndex}
+	           , #{item.spcId}
+	           , TO_DATE(#{item.ordDd}, 'YYYYMMDD')
+	           , #{item.cretNo}
+	           , sysdate
+	           , #{item.patFlg}
+	           , #{item.examTyp}
+	           , #{item.userId}
+	           , SYSTIMESTAMP
+	           , #{item.examName}
+	           , #{item.formCd}
+		     )
+		</foreach>
+    </insert>
+
+    <select id="getTblLinkConsentInfo" parameterType="kr.co.clipsoft.biz.model.consent.NuTblLinkConsentInfoDto" resultType="kr.co.clipsoft.biz.model.consent.NuTblLinkConsentInfoDto">
+		SELECT CMD       cmd
+		     , PATID     patId
+		     , TO_CHAR(ORDDATE,'YYYYMMDD') ordDate
+		     , OCRTAG    ocrTag
+		     , IMGPATH   imgPath
+		     , IMGINDEX  imgIndex
+		     , SPCID     spcId
+		     , TO_CHAR(ORDDD,'YYYYMMDD') ordDd
+		     , CRETNO    cretNo
+		     , PATFLG    patFlg
+		     , EXAMTYP   examTyp
+		     , USERID    userId
+		     , RESULT    result
+		     , EXAMNAME  examName
+		     , FORMCD    formCd
+		  FROM (
+		         SELECT *
+		          FROM TBLLINK_CONSENTINFO
+		         WHERE 1=1
+		           AND CMD   IN ('A','D')
+		           AND PATID  = #{patId}
+		           AND TO_CHAR(ORDDATE,'YYYYMMDD') = #{ordDate}
+		           AND OCRTAG = #{ocrTag}
+		         ORDER BY 
+                       LASTEDITDT DESC
+		             , IMGINDEX DESC
+		       ) X
+		WHERE 1=1
+		  AND ROWNUM = 1
+    </select>
+    
+    <update id="saveConsentFormEx" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentFormExDto">
+      MERGE INTO CONSENT_FORM_EX EX
+      USING DUAL
+         ON ( 
+                 EX.INST_CD = #{instCd}
+             AND EX.FORM_CD = #{formCd}
+             AND EX.FORM_ID = #{formId}
+             AND EX.FORM_VERSION = #{formVersion}
+            )
+       WHEN MATCHED THEN
+         UPDATE SET 
+                COSIGN_YN       = #{cosignYn}
+              , OPDR_YN         = #{opdrYn}
+              , NURS_CERT_YN    = #{nursCertYn}
+              , CERT_NEED_CNT   = #{certNeedCnt}
+              , EXTERNAL_CNT    = #{externalCnt}
+              , LIFELONG_KIND   = #{lifelongKind}
+              , COMMIT_COMMENT  = #{commitComment}
+              , MODIFY_USER_ID  = #{userId}
+              , MODIFY_DATETIME = TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+       WHEN NOT MATCHED THEN
+         INSERT 
+             (
+               INST_CD
+             , FORM_CD
+             , FORM_ID 
+             , FORM_VERSION
+             , FORM_TYPE
+             , COSIGN_YN
+             , OPDR_YN 
+             , NURS_CERT_YN
+             , CERT_NEED_CNT
+             , EXTERNAL_CNT
+             , LIFELONG_KIND
+             , COMMIT_COMMENT
+             , MODIFY_USER_ID
+             , MODIFY_DATETIME
+             , CREATE_USER_ID
+             , CREATE_DATETIME
+             )
+        VALUES
+             (
+               #{instCd}
+             , #{formCd}
+             , #{formId}
+             , #{formVersion}
+             , #{formType}
+             , #{cosignYn}
+             , #{opdrYn}
+             , #{nursCertYn}
+             , #{certNeedCnt}
+             , #{externalCnt}
+             , #{lifelongKind}
+             , #{commitComment}
+             , #{userId}
+             , TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+             , #{userId}
+             , TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+             )
+	</update>
+	
+ 	<select id="getConsentFormEx" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentFormExDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentFormExDto">
+      SELECT INST_CD instCd
+           , FORM_CD formCd
+           , FORM_ID formId
+           , FORM_VERSION formVersion
+           , FORM_TYPE formType
+           , EXTERNAL_CNT externalCnt
+           , COSIGN_YN cosignYn
+           , OPDR_YN opdrYn
+           , NURS_CERT_YN nursCertYn
+           , NVL(CERT_NEED_CNT,1) certNeedCnt
+           , LIFELONG_KIND lifelongKind
+           , COMMIT_COMMENT commitComment
+           , CREATE_USER_ID createUserId
+           , CREATE_DATETIME createDateitme
+           , MODIFY_USER_ID modifyUserId
+           , MODIFY_DATETIME modifyDatetime
+        FROM CONSENT_FORM_EX
+       WHERE 1=1
+         AND INST_CD = #{instCd}
+         AND FORM_ID = #{formId}
+         AND FORM_VERSION = #{formVersion}
+	</select>
+	
+ 	<select id="getConsentImageSigns" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentImageSignDto" 
+ 	resultType="kr.co.clipsoft.biz.model.consent.NuConsentImageSignDto">
+		SELECT CONSENT_MST_RID consentMstRid
+		     , CONSENT_DATA_RID consentDataRid
+		     , CONSENT_IMAGE_RID consentImageRid
+		     , CERT_STATUS certStatus
+		     , CREATE_USER_ID createUserId
+		     , CREATE_DATETIME createDatetime
+		  FROM CONSENT_IMAGE_SIGN
+		 WHERE 1=1
+		   AND CONSENT_MST_RID = #{consentMstRid}
+		   AND CERT_STATUS = 'Y'
+		 ORDER BY 
+		       CREATE_DATETIME DESC
+	</select>
+	
+	<select id="getWritedLifelongKinds" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto" 
+ 	resultType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto">
+		SELECT EX.LIFELONG_KIND lifelongKind
+		  FROM CONSENT_MST MST
+		     , CONSENT_FORM_EX EX
+		 WHERE 1 = 1
+		   AND MST.HOS_TYPE = EX.INST_CD
+		   AND MST.FORM_CD  = EX.FORM_CD
+		   AND MST.FORM_ID  = EX.FORM_ID
+		   AND MST.FORM_VERSION = EX.FORM_VERSION
+		   AND MST.USE_YN = 'Y'
+		   AND MST.PATIENT_CODE = #{patientCode}
+		   AND EX.LIFELONG_KIND IN(1, 10, 11, 12)
+		   <![CDATA[
+		   AND MST.CERT_CNT > 0
+		   ]]>		  
+		 ORDER BY MST.MODIFY_DATETIME DESC
+	</select>
+	
+	<select id="getConsentDataCnt" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto" resultType="int">
+		SELECT COUNT(*) DATACNT
+          FROM CONSENT_DATA
+         WHERE CONSENT_MST_RID = #{consentMstRid}
+    </select>
+	
+	<delete id="deleteConsentData" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto">
+		DELETE
+		FROM 
+			CONSENT_DATA
+		WHERE
+			CONSENT_MST_RID = #{consentMstRid}
+			AND CONSENT_DATA_RID = #{consentDataRid}
+    </delete>
+
+
+    <select id="getConsentMstRidByOcrTag" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentMstDto" resultType="String">
+        SELECT CONSENT_MST_RID consentMstRid
+          FROM CONSENT_MST
+         WHERE OCR_TAG = #{ocrTag}
+    </select>
+
+</mapper>

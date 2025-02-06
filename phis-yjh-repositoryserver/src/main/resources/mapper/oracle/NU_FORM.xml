@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NU_FORM">
+	<resultMap id="getList_all_resultMap" type="java.util.HashMap">
+		<result property="productId" column="PRODUCT_ID" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="formId" column="FORM_ID" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="formType" column="FORM_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="formName" column="FORM_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="useYN_stringValue" column="USE_YN" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="createDate" column="CREATE_DATE" javaType="java.util.Date" jdbcType="DATE" />
+		<result property="createUserId" column="CREATE_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.util.Date" jdbcType="DATE" />
+		<result property="updateUserId" column="UPDATE_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="formCategoryId" column="FORM_CATEGORY_ID" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="lastFormVersion" column="FORM_VERSION" javaType="java.lang.Long" jdbcType="NUMERIC" />
+	</resultMap>
+
+	<sql id="ALL_COLUMN">
+		PRODUCT_ID
+		, FORM_ID
+		, FORM_TYPE
+		, FORM_CATEGORY_ID
+		, FORM_NAME
+		, USE_YN
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMN_RENAME">
+		PRODUCT_ID AS productId
+		, FORM_ID AS formId
+		, FORM_TYPE AS formType
+		, FORM_CATEGORY_ID AS formCategoryId
+		, FORM_NAME AS formName
+		, USE_YN AS useYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	<sql id="CLIP_MAPPING_ID_COL">
+		DOCUMENT_KEY
+		, FORM_ID
+		, DOCUMENT_CODE
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="SELECT_COLUMN">
+		PRODUCT_ID AS productId
+		, FORM_ID AS formId
+		, FORM_TYPE AS formType
+		, FORM_CATEGORY_ID AS formCategoryId
+		, FORM_NAME AS formName
+		, USE_YN AS useYN_stringValue
+		, DOCUMENT_CODE AS documentCode
+		, FORM_VERSION AS formVersion
+		, FORM_DATA AS formDataByteValue
+		, COMMIT_COMMENT AS commitComment
+		, PUBLICATION_YN as publicationYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	<sql id="CLIP_MAPPING_ID_COL_RENM">
+		DOCUMENT_KEY as documentKey
+		, FORM_ID as formId
+		, DOCUMENT_CODE as documentCode
+		, CREATE_DATE as createDate
+		, CREATE_USER_ID as createUserId
+		, UPDATE_DATE as updateDate
+		, UPDATE_USER_ID as updateUserId
+	</sql>
+	
+	<sql id="INNER_JOIN_SELECT_COLUMN">
+		form.PRODUCT_ID AS productId
+		, form.FORM_ID AS formId
+		, form.FORM_TYPE AS formType
+		, form.FORM_CATEGORY_ID AS formCategoryId
+		, form.FORM_NAME AS formName
+		, form.USE_YN AS useYN_stringValue
+		, mpp.DOCUMENT_CODE AS documentCode
+		, data.FORM_VERSION AS formVersion
+		, data.FORM_DATA AS formDataByteValue
+		, data.COMMIT_COMMENT AS commitComment
+		, data.PUBLICATION_YN AS publicationYN_stringValue
+		, data.CREATE_DATE AS createDate
+		, data.CREATE_USER_ID AS createUserId
+		, data.UPDATE_DATE AS updateDate
+		, data.UPDATE_USER_ID AS updateUserId
+	</sql>
+	<sql id="INNER_JOIN_SELECT_COLUMN_NOT_RENAME">
+		form.PRODUCT_ID
+		, form.FORM_ID
+		, form.FORM_TYPE
+		, form.FORM_CATEGORY_ID
+		, form.FORM_NAME
+		, form.USE_YN
+		, mpp.DOCUMENT_CODE
+		, data.FORM_VERSION
+		, data.FORM_DATA
+		, data.COMMIT_COMMENT
+		, data.PUBLICATION_YN
+		, data.CREATE_DATE
+		, data.CREATE_USER_ID
+		, data.UPDATE_DATE
+		, data.UPDATE_USER_ID
+	</sql>
+	<select id="getDocumentCode" parameterType="kr.co.clipsoft.biz.model.NuDocumentDto" resultType="kr.co.clipsoft.biz.model.NuDocumentDto">
+		SELECT 
+            <include refid="CLIP_MAPPING_ID_COL_RENM"></include>
+        FROM
+        	CLIP_MAPPING_ID
+      	WHERE
+      		FORM_ID = #{formId, jdbcType=NUMERIC}
+	</select> 
+	
+	<select id="getFormId" parameterType="kr.co.clipsoft.biz.model.NuDocumentDto" resultType="kr.co.clipsoft.biz.model.NuDocumentDto">
+		SELECT 
+            <include refid="CLIP_MAPPING_ID_COL_RENM"></include>
+        FROM
+        	CLIP_MAPPING_ID
+      	WHERE
+      		DOCUMENT_CODE = #{documentCode, jdbcType=VARCHAR}
+
+	</select> 
+	
+	<insert id="insertDocumentCode" parameterType="kr.co.clipsoft.biz.model.NuDocumentDto">
+		INSERT INTO CLIP_MAPPING_ID (
+            <include refid="CLIP_MAPPING_ID_COL"></include>
+        )
+		VALUES(
+			#{documentKey, jdbcType=NUMERIC}
+			, #{formId, jdbcType=NUMERIC}
+			, #{documentCode, jdbcType=VARCHAR}
+			, SYSDATE
+			, #{createUserId, jdbcType=VARCHAR}
+			, SYSDATE
+			, #{updateUserId, jdbcType=VARCHAR}
+		)		
+	</insert>
+	<update id="updateDocumentCode" parameterType="kr.co.clipsoft.biz.model.NuDocumentDto">
+		UPDATE 
+			CLIP_MAPPING_ID
+		SET
+			DOCUMENT_CODE = #{documentCode, jdbcType=VARCHAR}
+		WHERE
+			FORM_ID = #{formId, jdbcType=NUMERIC}
+	</update>
+	
+	<insert id="insert" parameterType="kr.co.clipsoft.biz.model.NuFormDto">
+		INSERT
+		INTO CLIP_FORM (
+			<include refid="ALL_COLUMN"></include>
+		) VALUES (
+			#{productId}
+			, #{formId}
+			, #{formType}
+			, #{formCategoryId, jdbcType=DECIMAL}
+			, #{formName}
+			, #{useYN_stringValue}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<insert id="insertMig" parameterType="kr.co.clipsoft.biz.model.NuFormDto">
+		INSERT
+		INTO CLIP_FORM (
+			<include refid="ALL_COLUMN"></include>
+		) VALUES (
+			#{productId}
+			, #{formId}
+			, #{formType}
+			, #{formCategoryId, jdbcType=DECIMAL}
+			, #{formName}
+			, #{useYN_stringValue}
+			, #{createDate}
+			, #{createUserId}
+			, #{updateDate}
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<select id="get" parameterType="java.util.HashMap" resultType="kr.co.clipsoft.biz.model.NuFormAndDataDto">
+		SELECT 
+            <include refid="INNER_JOIN_SELECT_COLUMN"></include>
+        FROM
+            CLIP_FORM form
+                LEFT OUTER JOIN
+            CLIP_FORM_DATA data
+                ON form.PRODUCT_ID = data.PRODUCT_ID
+                    AND form.FORM_ID = data.FORM_ID
+                LEFT OUTER JOIN
+            CLIP_MAPPING_ID mpp
+				ON form.FORM_ID = mpp.FORM_ID
+        WHERE
+        		form.PRODUCT_ID = #{productId}
+			AND form.FORM_ID = #{formId}
+			AND data.FORM_VERSION = #{formVersion}
+			AND form.FORM_TYPE = #{formType}
+	</select> 
+	
+	<select id="getRecent" parameterType="kr.co.clipsoft.biz.model.NuFormDto" resultType="kr.co.clipsoft.biz.model.NuFormAndDataDto">
+		SELECT
+			<include refid="SELECT_COLUMN"></include>
+		FROM 
+			(
+				SELECT 
+		            <include refid="INNER_JOIN_SELECT_COLUMN_NOT_RENAME"></include>
+		        FROM
+		            CLIP_FORM form
+		                INNER JOIN
+		            CLIP_FORM_DATA data 
+		                ON form.PRODUCT_ID = data.PRODUCT_ID
+		                    AND form.FORM_ID = data.FORM_ID
+		                LEFT OUTER JOIN
+		            CLIP_MAPPING_ID mpp
+						ON form.FORM_ID = mpp.FORM_ID
+		        WHERE
+		        		form.PRODUCT_ID = #{productId}
+					AND form.FORM_ID = #{formId}
+					AND form.FORM_TYPE = #{formType}
+				ORDER BY 
+					data.FORM_VERSION DESC
+			)
+		WHERE 
+			ROWNUM = 1
+	</select>
+	
+	
+	<select id="getList_all" parameterType="java.util.HashMap" resultMap="getList_all_resultMap">
+		SELECT
+		    form.PRODUCT_ID
+		    , form.FORM_ID
+		    , form.FORM_TYPE
+		    , form.FORM_NAME
+		    , CASE WHEN form.USE_YN = 'Y' THEN 'true'
+             	ELSE 'false'
+             	END AS setUseYN_stringValue
+		    , form.CREATE_DATE
+		    , form.CREATE_USER_ID
+		    , form.UPDATE_DATE
+		    , form.UPDATE_USER_ID
+		    , form.FORM_CATEGORY_ID
+		    , data.FORM_VERSION
+		FROM
+		    CLIP_FORM form
+		    INNER JOIN (
+		        SELECT PRODUCT_ID, FORM_ID, MAX(FORM_VERSION) AS FORM_VERSION
+		        FROM CLIP_FORM_DATA
+		        <if test="eForm_setPublicationYN != 'true'">
+		        WHERE
+		        	PUBLICATION_YN = 'Y'
+		        </if>
+		        GROUP BY PRODUCT_ID, FORM_ID
+		    ) data
+		        ON form.PRODUCT_ID = data.PRODUCT_ID
+		            AND form.FORM_ID = data.FORM_ID
+		    INNER JOIN CONSENT_FORM_EX formEx
+		        ON data.FORM_ID = formEx.FORM_ID
+		            AND data.FORM_VERSION = formEx.FORM_VERSION
+		WHERE
+		    form.PRODUCT_ID = #{productId}
+		    AND form.FORM_TYPE = #{formType}
+		    <if test="enableCheckUseYN == 'true'">
+				AND form.USE_YN = 'Y'
+			</if>
+			AND formEx.INST_CD = #{instCd}
+		ORDER BY
+		    form.FORM_NAME
+	</select>
+	
+	
+	<select id="getList_allVersion" parameterType="kr.co.clipsoft.biz.model.NuFormDto" resultType="kr.co.clipsoft.biz.model.NuFormAndDataDto">
+		SELECT 
+            <include refid="INNER_JOIN_SELECT_COLUMN"></include>
+        FROM
+            CLIP_FORM form
+                LEFT OUTER JOIN
+            CLIP_FORM_DATA data
+                ON form.PRODUCT_ID = data.PRODUCT_ID
+                    AND form.FORM_ID = data.FORM_ID
+                LEFT OUTER JOIN
+            CLIP_MAPPING_ID mpp
+				ON form.FORM_ID = mpp.FORM_ID
+        WHERE
+        		form.PRODUCT_ID = #{productId}
+			AND form.FORM_ID = #{formId}
+			AND form.FORM_TYPE = #{formType}
+		ORDER BY
+			data.FORM_VERSION DESC
+	</select>
+
+	<select id="getList_document" parameterType="kr.co.clipsoft.biz.model.NuFormDto" resultType="kr.co.clipsoft.biz.model.NuDocumentDto">
+		SELECT 
+             FORM_ID formId
+           , DOCUMENT_CODE documentCode
+        FROM
+            CLIP_MAPPING_ID mpp
+        WHERE
+       		mpp.DOCUMENT_CODE = #{documentCode}
+	</select>
+	
+	
+	<update id="updateClipForm" parameterType="kr.co.clipsoft.repository.model.ClipFormDto">
+		UPDATE 
+			CLIP_FORM
+		SET
+		    UPDATE_DATE = SYSDATE
+		  , UPDATE_USER_ID = #{updateUserId, jdbcType=VARCHAR}
+		 <if test='formName != null and formName != ""'>
+		  , FORM_NAME = #{formName, jdbcType=VARCHAR}
+		 </if>
+		WHERE
+			FORM_ID = #{formId, jdbcType=NUMERIC}
+	</update>
+	
+	
+    <select id="getClipFormAndConsentFormEx" parameterType="kr.co.clipsoft.biz.model.NuFormAndExDto" resultType="kr.co.clipsoft.biz.model.NuFormAndExDto">
+		select instCd
+		     , formCd
+		     , formCd documentCode
+		     , formId
+		     , formName
+		     , formExtName
+		     , formVersion
+		     , formType
+		     , cosignYn
+		     , opdrYn
+		     , nursCertYn
+		     , certNeedCnt
+		     , externalCnt
+		     , lifelongKind
+		     , commitComment
+		     , createUserId
+		     , createDatetime
+		     , modifyUserId
+		     , modifyDatetime
+		  FROM (
+		        SELECT AUTH.INSTCD instCd
+		             , AUTH.FORMCD formCd
+		             , AUTH.FORMGUID formId
+		             , AUTH.FORMNM formName
+		             , AUTH.FORMEXTNNM formExtName
+		             , AUTH.FORMVERSION formVersion
+		             , EX.FORM_TYPE formType
+		             , NVL(EX.COSIGN_YN,'N') cosignYn
+		             , NVL(EX.OPDR_YN,'N') opdrYn
+		             , NVL(EX.NURS_CERT_YN,'N') nursCertYn
+		             , NVL(EX.CERT_NEED_CNT,'1') certNeedCnt
+		             , NVL(EX.EXTERNAL_CNT,'0') externalCnt
+		             , EX.LIFELONG_KIND lifelongKind
+		             , EX.COMMIT_COMMENT commitComment
+		             , EX.CREATE_USER_ID  createUserId
+		             , EX.CREATE_DATETIME createDatetime
+		             , EX.MODIFY_USER_ID modifyUserId
+		             , EX.MODIFY_DATETIME modifyDatetime
+		          FROM (
+		                SELECT mrauth.INSTCD
+		                     , mrform.FORMCD
+		                     , TO_NUMBER(mrauth.FORMGUID) FORMGUID
+		                     , mrauth.FORMVERSION
+		                     , mrform.FORMNM
+		                     , mrform.FORMEXTNNM
+		                  FROM EMR.MRFHAUTH mrauth
+		                     , EMR.MRFMFORM mrform
+		                 WHERE 1=1
+		                   AND mrauth.INSTCD = mrform.INSTCD
+		                   AND mrauth.FORMCD = mrform.FORMCD
+		                   AND mrauth.INSTCD = #{instCd}
+		                   AND REGEXP_INSTR(mrauth.FORMGUID,'[^0-9.]') = 0
+		                   AND TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') BETWEEN mrform.FORMFROMDT AND mrform.FORMTODT
+		               ) AUTH
+		            LEFT OUTER JOIN CONSENT_FORM_EX EX
+		              ON AUTH.INSTCD = EX.INST_CD
+		             AND AUTH.FORMCD = EX.FORM_CD
+		             AND AUTH.FORMGUID = EX.FORM_ID
+		             AND AUTH.FORMVERSION = EX.FORM_VERSION
+		       ) X
+		   WHERE 1=1
+		   
+		       <if test='recentVersionYn != null and recentVersionYn == "Y"'>
+		        AND X.formVersion = (SELECT MAX(FORM_VERSION) FROM CLIP_FORM_DATA WHERE PUBLICATION_YN = 'Y' AND FORM_ID = TO_NUMBER(X.formId))
+		       </if>
+		         
+		       <if test='formId != null and formId != ""'>
+				 AND TO_NUMBER(X.formId) = #{formId}
+			   </if>
+				  
+			   <if test='formVersion != null and formVersion != ""'>
+				 AND X.formVersion = #{formVersion}
+			   </if>
+		       
+		       <if test='nursCertYn != null and nursCertYn != ""'>
+				 AND X.nursCertYn = #{nursCertYn}
+			   </if>
+		              
+		       <if test='opdrYn != null and opdrYn != ""'>
+				 AND X.opdrYn = #{opdrYn}
+			   </if>
+		       
+		       <if test='cosignYn != null and cosignYn != ""'>
+				 AND X.cosignYn = #{cosignYn}
+			   </if>
+			   
+			   <if test='certNeedCnt != null and certNeedCnt != ""'>
+				 AND X.certNeedCnt = #{certNeedCnt}
+			   </if>
+		
+			   <if test='lifelongKind != null and lifelongKind == "Y"'>
+				 AND X.lifelongKind IS NOT NULL
+			   </if>
+		
+			   <if test='lifelongKind != null and lifelongKind == "N"'>
+				 AND X.lifelongKind IS NULL
+			   </if>
+		       
+		       <if test='keyWord != null and keyWord != ""'>
+				 AND (X.formCd = #{keyWord} OR X.formName LIKE '%${keyWord}%')
+			   </if>		   
+		   
+		   ORDER BY
+		         X.formName
+		       , X.formId
+		       , X.formVersion DESC
+    </select>
+	
+	
+</mapper>

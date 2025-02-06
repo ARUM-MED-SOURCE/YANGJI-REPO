@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_FORM_USER_AUTH">
+	<resultMap id="getList_auth_getList_form_ResultMap" type="java.util.HashMap">
+		<result property="formId" column="formId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="authCode" column="authCode" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="auth" column="auth" javaType="java.lang.String" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="getList_auth_getList_category_ResultMap" type="java.util.HashMap">
+		<result property="formCategoryId" column="formCategoryId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="authCode" column="authCode" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="auth" column="auth" javaType="java.lang.String" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="ALL_COLUMN">
+		PRODUCT_ID
+		, USER_ID
+		, FORM_ID
+		, AUTH_CODE
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMN_RENAME">
+		PRODUCT_ID AS productId
+		, USER_ID AS userId
+		, FORM_ID AS formId
+		, AUTH_CODE AS authCode
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	
+	<insert id="new" parameterType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto">
+		INSERT
+		INTO CLIP_FORM_USER_AUTH (
+			<include refid="ALL_COLUMN"></include>
+		) VALUES(
+			#{productId}
+			, #{userId}
+			, #{formId}
+			, #{authCode}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<insert id="insertDefaultAuth_newForm" parameterType="java.util.HashMap">
+		INSERT 
+			INTO CLIP_FORM_USER_AUTH ( 
+				PRODUCT_ID
+				, USER_ID
+				, FORM_ID
+				, AUTH_CODE
+				, CREATE_DATE
+				, CREATE_USER_ID
+				, UPDATE_DATE
+				, UPDATE_USER_ID 
+			)
+			SELECT 
+				PRODUCT_ID
+				, USER_ID
+				, #{formId} AS FORM_ID
+				, #{authCode} AS AUTH_CODE
+				, SYSDATE AS CREATE_DATE
+				, #{createUserId} AS CREATE_USER_ID
+				, SYSDATE AS UPDATE_DATE
+				, #{updateUserId} AS UPDATE_USER_ID
+			FROM 
+				CLIP_USER
+			WHERE
+				PRODUCT_ID = #{productId}
+				AND USER_ID != 'admin'
+	</insert>
+	
+	<insert id="insertDefaultAuth_newUser" parameterType="java.util.HashMap">
+		INSERT 
+			INTO CLIP_FORM_USER_AUTH ( 
+				PRODUCT_ID
+				, USER_ID
+				, FORM_ID
+				, AUTH_CODE
+				, CREATE_DATE
+				, CREATE_USER_ID
+				, UPDATE_DATE
+				, UPDATE_USER_ID 
+			)
+			SELECT 
+				PRODUCT_ID
+				, #{userId} AS USER_ID
+				, FORM_ID
+				, #{authCode} AS AUTH_CODE
+				, SYSDATE AS CREATE_DATE
+				, #{createUserId} AS CREATE_USER_ID
+				, SYSDATE AS UPDATE_DATE
+				, #{updateUserId} AS UPDATE_USER_ID
+			FROM 
+				CLIP_FORM
+			WHERE
+				PRODUCT_ID = #{productId}
+	</insert>
+	
+	<delete id="delete" parameterType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto">
+		DELETE
+		FROM 
+			CLIP_FORM_USER_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+			AND FORM_ID = #{formId}
+			AND AUTH_CODE = #{authCode}
+	</delete>
+	
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto" resultType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM 
+			CLIP_FORM_USER_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+			AND FORM_ID = #{formId}
+			AND AUTH_CODE = #{authCode}
+	</select>
+	
+	<select id="getList" parameterType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto" resultType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM 
+			CLIP_FORM_USER_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			<if test="userId != null"> 
+			AND USER_ID LIKE #{userId}
+			</if>
+		ORDER BY USER_ID
+	</select>	
+	
+	<select id="getAddUserList" parameterType="kr.co.clipsoft.repository.model.ClipFormUserAuthDto" resultType="kr.co.clipsoft.repository.model.ClipUserDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_ID AS userId
+			, NAME AS name
+			, USE_YN AS useYN_stringValue
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM 
+			CLIP_USER
+		WHERE
+		 	USE_YN = 'Y'		 
+			AND USER_ID NOT IN
+				(
+					SELECT
+						USER_ID
+					FROM 
+						CLIP_FORM_USER_AUTH
+					WHERE 
+						PRODUCT_ID = #{productId}
+						AND FORM_ID = #{formId}
+				)	
+			<if test="userId != null"> 
+			AND USER_ID LIKE #{userId}
+			</if>
+	</select>
+	
+	<select id="getList_auth_getList_form" parameterType="java.util.HashMap" resultMap="getList_auth_getList_form_ResultMap">
+		SELECT 
+			form.FORM_ID AS formId
+			, code.CODE AS authCode
+			, (
+				CASE WHEN (groupAuth.AUTH_CODE IS NOT NULL OR userAuth.AUTH_CODE IS NOT NULL) THEN 'true'  
+				ELSE 'false' END
+			) AS auth
+		FROM 
+			CLIP_FORM form
+			INNER JOIN CLIP_CODE code
+				ON form.PRODUCT_ID = code.PRODUCT_ID
+					AND code.CODE_DIV = 'FORM_AUTH'
+			LEFT OUTER JOIN (
+				SELECT a.PRODUCT_ID, a.FORM_ID, a.AUTH_CODE
+				FROM CLIP_FORM_USER_GROUP_AUTH a
+					INNER JOIN CLIP_USER_GROUP_MAPPING b
+						ON a.PRODUCT_ID = b.PRODUCT_ID
+							AND a.USER_GROUP_ID = b.USER_GROUP_ID
+				WHERE a.PRODUCT_ID = #{productId}
+					AND b.USER_ID = #{userId}
+			) groupAuth
+				ON form.PRODUCT_ID = groupAuth.PRODUCT_ID
+					AND form.FORM_ID = groupAuth.FORM_ID
+			LEFT OUTER JOIN (
+				SELECT PRODUCT_ID, FORM_ID, AUTH_CODE
+				FROM CLIP_FORM_USER_AUTH
+				WHERE PRODUCT_ID = #{productId}
+					AND USER_ID = #{userId}	
+			) userAuth
+				ON form.PRODUCT_ID = userAuth.PRODUCT_ID
+					AND form.FORM_ID = userAuth.FORM_ID
+		WHERE
+			form.PRODUCT_ID = #{productId}
+		ORDER BY
+    		form.FORM_ID, code.CODE
+	</select>
+	
+	<select id="getList_auth_getList_category" parameterType="java.util.HashMap" resultMap="getList_auth_getList_category_ResultMap">
+		SELECT 
+			category.FORM_CATEGORY_ID AS formCategoryId
+			, code.CODE AS authCode
+			, (
+				CASE WHEN (groupAuth.AUTH_CODE IS NOT NULL OR userAuth.AUTH_CODE IS NOT NULL) THEN 'true'  
+				ELSE 'false' END
+			) AS auth
+		FROM 
+			CLIP_FORM_CATEGORY category
+			INNER JOIN CLIP_CODE code
+				ON category.PRODUCT_ID = code.PRODUCT_ID
+					AND code.CODE_DIV = 'CATEGORY_AUTH'
+			LEFT OUTER JOIN (
+				SELECT a.PRODUCT_ID, a.FORM_CATEGORY_ID, a.AUTH_CODE
+				FROM CLIP_FORM_CATEGORY_GROUP_AUTH a
+					INNER JOIN CLIP_USER_GROUP_MAPPING b
+						ON a.PRODUCT_ID = b.PRODUCT_ID
+							AND a.USER_GROUP_ID = b.USER_GROUP_ID
+				WHERE a.PRODUCT_ID = #{productId}
+					AND b.USER_ID = #{userId}
+			) groupAuth
+				ON category.PRODUCT_ID = groupAuth.PRODUCT_ID
+					AND category.FORM_CATEGORY_ID = groupAuth.FORM_CATEGORY_ID
+			LEFT OUTER JOIN (
+				SELECT PRODUCT_ID, FORM_CATEGORY_ID, AUTH_CODE
+				FROM CLIP_FORM_CATEGORY_USER_AUTH
+				WHERE PRODUCT_ID = #{productId}
+					AND USER_ID = #{userId}
+			) userAuth
+				ON category.PRODUCT_ID = userAuth.PRODUCT_ID
+					AND category.FORM_CATEGORY_ID = userAuth.FORM_CATEGORY_ID
+		WHERE
+			category.PRODUCT_ID = #{productId}
+		ORDER BY
+			category.FORM_CATEGORY_ID, code.CODE
+	</select>
+</mapper>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>CMC</title>
+	<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>  
+	 
+	<style>
+		html,
+		body,
+		div,
+		span,
+		applet,
+		object,
+		iframe,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p,
+		blockquote,
+		pre,
+		a,
+		abbr,
+		acronym,
+		address,
+		big,
+		cite,
+		code,
+		del,
+		dfn,
+		em,
+		img,
+		ins,
+		kbd,
+		q,
+		s,
+		samp,
+		small,
+		strike,
+		strong,
+		sub,
+		sup,
+		tt,
+		var,
+		b,
+		u,
+		i,
+		center,
+		dl,
+		dt,
+		dd,
+		ol,
+		ul,
+		li,
+		fieldset,
+		form,
+		label,
+		legend,
+		table,
+		caption,
+		tbody,
+		tfoot,
+		thead,
+		tr,
+		th,
+		td,
+		article,
+		aside,
+		canvas,
+		details,
+		embed,
+		figure,
+		figcaption,
+		footer,
+		header,
+		hgroup,
+		menu,
+		nav,
+		output,
+		ruby,
+		section,
+		summary,
+		time,
+		mark,
+		audio,
+		video,
+		input {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			text-decoration: none;
+			box-sizing: border-box;
+		}
+
+		.form_box {
+			display: inline-block;
+			border: 0;
+		}
+
+		.cnts_1 .form_box {
+			float: left;
+			width: 100%;
+			margin: 0 5px 10px 0;
+		}
+
+		.cnts_1 :nth-child(2n).form_box {
+			margin: 0 0px 10px 5px;
+		}
+
+		.form_area {
+			width: 100%;
+		}
+
+		.cnts_1 .form_area::after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		.form_section {
+			padding: 20px 15px;
+			border-radius: 5px;
+		}
+
+		.cnts_1 .form_section {
+			position: relative;
+			width: 100%;
+			background-color: #144c9a;
+			z-index: 10;
+		}
+
+		.ctns {
+			position: relative;
+			border: 1px #e3e3e3;
+			background-color: #fff;
+			border-radius: 10px;
+			margin: 8px 2px;
+			overflow: hidden;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-ms-flex-direction: column;
+			flex-direction: column;
+		}
+
+		.cnts_1 {
+			width: 100%;
+			margin-left: 4px;
+			border: 1px solid #e3e3e3;
+			border-radius: 10px;
+		}
+
+		.content {
+			-webkit-box-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+		}
+
+		.wrap {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		html,
+		body {
+			height: 100%;
+			font-size: 13px;
+			color: #333;
+			font-family: "나눔고딕", NanumGothic, "돋움", Dotum, "굴림", Gulim, Helvetica, "droid sans fallback", "AppleGothic", sans-serif;
+		}
+
+		body {
+			height: 100px;
+		}
+
+		body {
+			min-width: 0px;
+			min-height: 0px;
+			background-color: #f5f5f5;
+			overflow: hidden;
+		}
+
+		html {
+			-webkit-text-size-adjust: none;
+		}
+
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			border: 0;
+			display: block;
+		}
+
+		:focus {
+			outline: none !important;
+		}
+
+		select {
+			height: 38px;
+			line-height: 36px;
+			width: 50%;
+			border: 1px solid #96aac2;
+			border-radius: 10px;
+			font-size: 16px;
+			color: #000000;
+			background-image: url('./resources/select_arrow_white.png');
+			background-repeat: no-repeat;
+			background-position: right 0px;
+			background-color: #fff;
+			box-sizing: border-box;
+			display: inline-block;
+			-moz-appearance: none;
+			appearance: none;
+			-webkit-appearance: none;
+			padding: 0 10px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: pre;
+		}
+
+		.cnts_1 .form_box_select select {
+			border: 1px solid #fff;
+			border-radius: 0;
+			background-color: transparent;
+			color: #fff;
+			background-image: url('./resources/select_arrow_white.png');
+		}
+
+
+		.btn-area {
+			position: relative;
+		}
+
+		.cnts_1 .form_section .btn-area {
+			width: 100%;
+			padding-top: 10px;
+			text-align: center;
+			font-size: 0px;
+		}
+
+		.form_section {
+			padding: 20px 15px;
+		}
+
+		.cnts_1 .form_section {
+			position: relative;
+			width: 98%;
+			background-color: #144c9a;
+			z-index: 10;
+			margin-top: 1%;
+			margin-left: 1%;
+		}
+
+		.ctns {
+			position: relative;
+			border: 1px #e3e3e3;
+			background-color: #fff;
+			border-radius: 10px;
+			margin: 8px 2px;
+			overflow: hidden;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-ms-flex-direction: column;
+			flex-direction: column;
+		}
+
+		input,
+		label,
+		button {
+			-webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;
+		}
+
+		button {
+			position: relative;
+			border: 0;
+			background: transparent;
+			cursor: pointer;
+			border: none;
+			box-sizing: border-box;
+			padding: 0;
+		}
+
+		.btn-reset {
+			width: 115px;
+			background-color: #002e86;
+			color: #fff;
+			border-radius: 10px;
+		}
+
+		.cnts_1 .form_section .btn-area button:first-child {
+			margin-right: 10px;
+		}
+
+		.btn-search {
+			width: 20%;
+			background-color: #002e86;
+			color: #fff;
+			border-radius: 10px;
+		}
+
+		button span {
+			position: relative;
+			top: -2px;
+			font-size: 13px;
+		}
+
+		.btn-search span {
+			display: inline-block;
+			width: 100%;
+			height: 39px;
+			line-height: 39px;
+			padding: 0 0px 0 0px;
+
+			font-weight: bold;
+			top: 1px;
+
+		}
+
+		.btn-search span::before {
+			position: relative;
+			content: "";
+			display: inline-block;
+			width: 39px;
+			height: 39px; 
+			background-position: 0px 0px;
+			vertical-align: middle;
+			background-size: 33px;
+			top: 3px;
+			margin-right: -30%;
+		}
+
+		.btn-reset span {
+			display: inline-block;
+			width: 100%;
+			height: 39px;
+			line-height: 39px;
+			padding: 0 20px 0 8px;
+			font-weight: bold;
+			top: 1px;
+		}
+
+		.btn-reset span::before {
+			position: relative;
+			content: "";
+			display: inline-block;
+			width: 39px;
+			height: 39px;
+			background: url('../images/replace.png') no-repeat;
+			background-position: 4px 5px;
+			vertical-align: middle;
+			background-size: 26px;
+		}
+		select:disabled {
+			color: gray !important;
+			opacity: 0.5 !important;
+		}
+	</style>
+
+	<script>
+
+		var instCd = 'emr018';
+		var minInstCd = '018';
+		var Request = function () {
+			this.getParameter = function (name) {
+				var rtnval = '';
+				var nowAddress = unescape(location.href);
+				var parameters = (nowAddress.slice(nowAddress.indexOf('?') + 1,
+					nowAddress.length)).split('&');
+				for (var i = 0; i < parameters.length; i++) {
+					var varName = parameters[i].split('=')[0];
+					if (varName.toUpperCase() == name.toUpperCase()) {
+						rtnval = parameters[i].split('=')[1];
+						break;
+					}
+				}
+				return rtnval;
+			}
+		}
+		var request = new Request();
+
+
+		$(document).ready(function () {
+			var deptCd = request.getParameter('deptCd'); 
+			//var instCd = 'emr011'; 
+
+			searchDoctor(deptCd);
+			searchOutPatientClnDept();
+
+			$('#changeDept').click(function () {
+				if ($(this).find('span').text() != "다른과 검색") {
+					$('#choiceDept').css('display', 'none');
+					$('#choiceDeptDoc').css('display', 'none');
+					$('#choiceDoc').attr('disabled', false); 
+					$('#changeDept span').text('다른과 검색');
+
+					$('#choiceDept option:eq(0)').prop('selected', true);
+					$("#choiceDeptDoc option").remove();
+					$("#choiceDeptDoc").append($('<option>', {
+						value: '',
+						text: '진료과를 선택해주세요',
+						style: 'color : gray'
+					}));
+					$('#choiceDeptDoc').attr('disabled', true);
+
+				} else {
+					$('#choiceDept').css('display', 'inline-block');
+					$('#choiceDeptDoc').css('display', 'inline-block');
+					$('#choiceDoc').attr('disabled', true);
+					$('#changeDept span').text('기존과 사용');
+
+				}
+
+
+			});
+
+			$(document).on("change", "#choiceDept", function () {
+				var deptVal = $('#choiceDept option:selected').val();
+				if (deptVal != '') {
+					searchDoctor_sub(deptVal);
+				} else {
+
+					$("#choiceDeptDoc option").remove();
+					$("#choiceDeptDoc").append($('<option>', {
+						value: '',
+						text: '진료과를 선택해주세요',
+						style: 'color : gray'
+					}));
+					$('#choiceDeptDoc').attr('disabled', true);
+				}
+			});
+
+			$('#selectDoc').click(function () {
+				var choiceDoc = $('#choiceDoc').attr('disabled');
+				var choiceDeptDoc = $('#choiceDeptDoc').attr('disabled');
+				// undefined -> disabled false
+				// disabled -> disabled true
+				var choiceDocValue = $('#choiceDoc option:selected').text();
+				var choiceDeptDocValue = $('#choiceDeptDoc option:selected').text();
+
+				if (choiceDoc == 'disabled' && choiceDeptDoc == 'disabled') {
+					alert("집도의가 선택되지 않았습니다.");
+				} else if ((choiceDoc == 'disabled' && choiceDeptDocValue == "집도의") || (choiceDoc ==
+						'disabled' && choiceDeptDocValue == "진료과를 선택해주세요")) {
+					alert("집도의가 선택되지 않았습니다.");
+				} else if (choiceDeptDoc == 'disabled' && choiceDocValue == "집도의") {
+					alert("집도의가 선택되지 않았습니다.");
+				} else {  
+					if(choiceDoc == 'disabled'){ 
+						setControlsValueReturn(choiceDeptDocValue); 
+					}else{  
+						setControlsValueReturn(choiceDocValue);
+					} 
+				} 
+			});
+		});
+
+
+		function searchDoctor(deptcd) {
+			if (deptcd == "" || deptcd == undefined) {
+				$("#choiceDoc option").remove();
+				$("#choiceDoc").append($('<option>', {
+					value: '',
+					text: '집도의',
+					style: 'color : gray'
+				}));
+			} else {
+				$.ajax({
+					url: "http://"+instCd+".cmcnu.or.kr/cmcnu/.live", 
+					data: "submit_id=DRMRF00114&business_id=mr&deptcd=" + deptcd + "&instcd="+minInstCd+"&drflag=M",
+					type: 'get',
+					dataType: 'xml',
+					timeout: 40000,
+					success: function (result) {
+						$("#choiceDoc option").remove();
+						$("#choiceDoc").append($('<option>', {
+							value: '',
+							text: '집도의',
+							style: 'color : gray'
+						}));
+						if ($(result).find('usercombo').length > 0) {
+							$(result).find('usercombo').each(function () {
+								$("#choiceDoc").append($('<option>', {
+									value: $(this).find('userid').text(),
+									text: $(this).find('usernm').text(),
+									style: 'color : gray'
+								}));
+							});
+						}
+					},
+					error: function (error) {
+						alert("집도의 조회 중 문제가 발생하였습니다. 관리자에게 문의바랍니다\n" + error);
+					}
+
+				})
+			}
+
+		}
+
+
+		function searchDoctor_sub(deptcd) {
+			$('#choiceDeptDoc').attr('disabled', false);
+			if (deptcd == "" || deptcd == undefined) {
+				$("#choiceDeptDoc option").remove();
+				$("#choiceDeptDoc").append($('<option>', {
+					value: '',
+					text: '집도의',
+					style: 'color : gray'
+				}));
+			} else {
+				$.ajax({
+					url: "http://"+instCd+".cmcnu.or.kr/cmcnu/.live",
+					data: "submit_id=DRMRF00114&business_id=mr&deptcd=" + deptcd + "&instcd="+minInstCd+"&drflag=M",
+					type: 'get',
+					dataType: 'xml',
+					timeout: 40000,
+					success: function (result) {
+						$("#choiceDeptDoc option").remove();
+						$("#choiceDeptDoc").append($('<option>', {
+							value: '',
+							text: '집도의',
+							style: 'color : gray'
+						}));
+						if ($(result).find('usercombo').length > 0) {
+							$(result).find('usercombo').each(function () {
+								$("#choiceDeptDoc").append($('<option>', {
+									value: $(this).find('userid').text(),
+									text: $(this).find('usernm').text(),
+									style: 'color : gray'
+								}));
+							});
+						}
+					},
+					error: function (error) {
+						alert("집도의 조회 중 문제가 발생하였습니다. 관리자에게 문의바랍니다\n" + JSON.stringify(error));
+					}
+
+				})
+			}
+
+		}
+
+
+		function searchOutPatientClnDept() {
+			$.ajax({
+				url: "http://"+instCd+".cmcnu.or.kr/cmcnu/.live",
+				data: "submit_id=DRMRF00113&business_id=mr&instcd="+minInstCd+"&orddeptflag=O&drflag=M&selecttype=A",
+				type: 'get',
+				dataType: 'xml',
+				timeout: 40000,
+				success: function (result) {
+					$("#choiceDept option").remove();
+					$("#choiceDept").append($('<option>', {
+						value: '',
+						text: '진료과',
+						style: 'color : gray'
+					}));
+					if ($(result).find('dept').length > 0) {
+						$(result).find('dept').each(function () {
+							$("#choiceDept").append($('<option>', {
+								value: $(this).find('deptcd').text(),
+								text: $(this).find('depthngnm').text(),
+								style: 'color : gray'
+							}));
+						});
+					}
+				},
+				error: function (error) {
+					alert("진료과 조회 중 문제가 발생하였습니다. 관리자에게 문의바랍니다\n" + error);
+				}
+			});
+		}
+
+		
+		//버튼 OK버튼 클릭시 OS를 체크하여 리턴 해준다.
+        function btnOk_onclick() {
+			var os = OSCheck();
+			if(os == "iOS") {
+				window.location.href = "ios://iosPopupHelper?javaScriptDataMethod=getiOSPopupControlValue";
+			} else {
+				setControlsValueReturn();
+			}
+        }
+		
+		//버튼 Cancel버튼 클릭시 OS를 체크하여 종료 해준다.
+        function btnCancel_onclick() {
+			var os = OSCheck();
+			if(os == "iOS") {
+				window.location.href = "ios://iosPopupHelper?close=true";
+			} else {
+				Cancel();
+			}
+            
+        }
+		
+		//현재 브라우저가 띄워져 있는 환경을 체크하여 상위 오브젝트(e-Form Viewer)를 넘겨준다.
+        function getOsObject() {
+            var strOs = OSCheck();
+
+            var result;
+            if (strOs == "Android") {
+                result = window.android;
+            }
+            else if (strOs == "Windows") {
+                result = window.external; 
+            }
+
+            return result;
+        }
+
+		//현재 선택된 콤보박스의 값을 리턴해준다.
+        function setControlsValueReturn(value) {
+            var osObject = getOsObject();
+            
+			//받는 서식의 컨트롤에 value값을 리턴해준다.(SetControlValue('컨트롤아이디', 리턴값);)
+            osObject.SetControlValue('OpDocName', value);
+			
+			//받는 서식의 팝업컨트롤에 값을 리턴해준다. 
+            //osObject.SetPopupResult(value);
+            osObject.OkClose();
+
+        }
+		
+		//현재 선택된 콤보박스의 값을 Json형태로 리턴해준다.
+		function getiOSPopupControlValue() {
+		    var jsonObject = new Object();
+		    var value = "";
+		    var radio = document.getElementsByName("R1");
+		    for (var i = 0; radio.length > i; i++) {
+		        if (radio[i].checked == true) {
+		            value = radio[i].value;
+		        }
+		    }
+
+		    jsonObject.OpName = value;
+			
+			return JSON.stringify(jsonObject);
+		}
+
+        function setPopupValueReturn() {
+            var osObject = getOsObject();
+            osObject.SetPopupResult('나한테 값 돌아옴');
+            osObject.OkClose();
+        }
+
+
+        function Cancel() {
+            var osObject = getOsObject();
+            osObject.CancelClose();
+        }
+
+		//현재 브라우저가 띄워져 있는 환경을 체크한다.
+        function OSCheck() {
+
+            var playerOS = 'dont know';
+
+            if (navigator.userAgent.match(/iPhone|iPad/gi)) {
+                playerOS = 'iOS';
+            }
+            else
+                if (navigator.userAgent.match(/Android/gi)) {
+                    playerOS = 'Android';
+                }
+                else
+                    if (navigator.userAgent.match(/Windows/gi)) {
+                        playerOS = 'Windows';
+                    }
+                    else
+                        if (navigator.userAgent.match(/Linux/gi)) {
+                            playerOS = 'Linux';
+                        }
+            if (navigator.userAgent.match(/OSX/gi)) {
+                playerOS = 'Mac OS';
+            }           
+            return playerOS;
+
+        }
+	</script>
+</head>
+
+<body>
+	<div class="wrap">
+		<div class="content">
+			<div class="ctns cnts_1 gnb_part_1">
+				<div class="form_section">
+					<div class="form_area"><span class="form_box form_box_select">
+							<select id="choiceDoc" style="margin-left:5%; width:40%;">
+								<option value="">집도의</option>
+							</select>
+							<button style="margin-left:5%;" class="btn-search" id="selectDoc" type="button">
+								<span>선택</span>
+							</button>
+							<button style="" class="btn-search" id="changeDept" type="button">
+								<span>다른과 검색</span>
+							</button><br>
+							<select name="진료과 선택" id="choiceDept"
+								style="display:none;margin-left:5%; margin-top:3%; margin-bottom:0%; width:40%;">
+								<option value="">-</option>
+							</select>
+							<select name="집도의 선택" id="choiceDeptDoc" disabled
+								style="display:none;margin-left:5%; margin-top:3%; margin-bottom:0%; width:40%;">
+								<option value="">진료과를 선택해주세요</option>
+							</select>
+
+
+						</span>
+					</div>
+				</div>
+				<div
+					style="width:98%; height:99%; background-color:whitesmoke; margin-left:1%; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</!DOCTYPE>
