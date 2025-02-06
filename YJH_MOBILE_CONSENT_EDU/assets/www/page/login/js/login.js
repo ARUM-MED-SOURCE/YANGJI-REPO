@@ -638,8 +638,8 @@ function fnGoPage(params) {
 	localStorage.setItem("userGroupCode", params.userGroupCode);
 	localStorage.setItem("jobkindcd", params.jobkindcd);
 	localStorage.setItem("docYN", params.docYN);
-	alert("사용자 인증 비밀번호 초기화");
-	localStorage.setItem("signPwd", "");
+//	alert("사용자 인증 비밀번호 초기화");
+//	localStorage.setItem("signPwd", "");
 	COMMON.plugin.storage("set", params, function () {
 		loadingbar_display();
 		location.href = '../main/main.html';
