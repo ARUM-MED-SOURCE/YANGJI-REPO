@@ -1,0 +1,52 @@
+
+n
+java:S1192¹"WDefine a constant instead of duplicating this literal "eForm_setPublicationYN" 5 times.(ˆÕëÛ
+g	java:S117¹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÕëÛ
+g	java:S117Î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÕëÛ
+g	java:S117ã"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÕëÛ
+g	java:S117÷"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÕëÛ
+g	java:S117‹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÕëÛ
+r	java:S116"]Rename this field "EFORM25_PRODUCT_ID" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚÔÎ 
+z	java:S116"eRename this field "EFORM25_FORM_TYPE_EXTERNAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’®‹—
+7
+java:S1170"!Make this final field static too.(’®‹—
+4
+java:S2129"Remove this "Long" constructor(ÚÔÎ 
+h	java:S100,"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾­¬ûÿÿÿÿ
+`
+java:S4488+"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(¥µ¼ô
+e
+java:S4488>"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ß¾ııÿÿÿÿ
+e
+java:S4488Q"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ê›õÆşÿÿÿÿ
+e
+java:S4488d"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(äùúõúÿÿÿÿ
+`
+java:S4488w"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(êğìù
+a
+java:S4488Š"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ôÜ¬½
+f
+java:S4488"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÍÄÜßÿÿÿÿÿ
+f
+java:S4488°"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÏàÛ€ùÿÿÿÿ
+X
+java:S2130¹"AUse "Boolean.parseBoolean" for this string-to-boolean conversion.(ˆÕëÛ
+a
+java:S4488Å"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(÷•õş
+X
+java:S2130Î"AUse "Boolean.parseBoolean" for this string-to-boolean conversion.(ˆÕëÛ
+i	java:S100Û"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ô•´Ûúÿÿÿÿ
+a
+java:S4488Ú"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(’œü‹
+X
+java:S2130ã"AUse "Boolean.parseBoolean" for this string-to-boolean conversion.(ˆÕëÛ
+c	java:S100ğ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹Ê±	
+a
+java:S4488ï"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Úú—¼
+X
+java:S2130÷"AUse "Boolean.parseBoolean" for this string-to-boolean conversion.(ˆÕëÛ
+i	java:S100ƒ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾·Şªûÿÿÿÿ
+`
+java:S4488‚"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Ûôã8
+X
+java:S2130‹"AUse "Boolean.parseBoolean" for this string-to-boolean conversion.(ˆÕëÛ

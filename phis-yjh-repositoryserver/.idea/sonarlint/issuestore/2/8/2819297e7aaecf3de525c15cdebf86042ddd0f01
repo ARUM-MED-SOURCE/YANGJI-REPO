@@ -1,0 +1,117 @@
+
+E
+java:S3740S"/Provide the parametrized type for this generic.(ıõı
+J
+java:S3740U"/Provide the parametrized type for this generic.(ÏÛÍ®øÿÿÿÿ
+J
+java:S3740`"/Provide the parametrized type for this generic.(Ğ‚…Ğøÿÿÿÿ
+J
+java:S3740`"/Provide the parametrized type for this generic.(Ğ‚…Ğøÿÿÿÿ
+J
+java:S3740l"/Provide the parametrized type for this generic.(¯€ñëúÿÿÿÿ
+J
+java:S3740t"/Provide the parametrized type for this generic.(¯€ñëúÿÿÿÿ
+K
+java:S3740"/Provide the parametrized type for this generic.(ÙÛˆéüÿÿÿÿ
+K
+java:S3740 "/Provide the parametrized type for this generic.(æè€òüÿÿÿÿ
+K
+java:S3740 "/Provide the parametrized type for this generic.(æè€òüÿÿÿÿ
+K
+java:S3740Ø"/Provide the parametrized type for this generic.(¯€ñëúÿÿÿÿ
+t
+java:S2293l"YReplace the type specification in this constructor call with the diamond operator ("<>").(¯€ñëúÿÿÿÿ
+t
+java:S2293t"YReplace the type specification in this constructor call with the diamond operator ("<>").(¯€ñëúÿÿÿÿ
+o
+java:S2293|"YReplace the type specification in this constructor call with the diamond operator ("<>").(‹ëõ¤
+u
+java:S2293 "YReplace the type specification in this constructor call with the diamond operator ("<>").(æè€òüÿÿÿÿ
+p
+java:S2293©"YReplace the type specification in this constructor call with the diamond operator ("<>").(­èèŒ
+u
+java:S2293¶"YReplace the type specification in this constructor call with the diamond operator ("<>").(¶ÛËûÿÿÿÿ
+u
+java:S2293ï"YReplace the type specification in this constructor call with the diamond operator ("<>").(¶ÛËûÿÿÿÿ
+u
+java:S2293Ø"YReplace the type specification in this constructor call with the diamond operator ("<>").(¯€ñëúÿÿÿÿ
+^
+java:S1192Å"GDefine a constant instead of duplicating this literal "formid" 3 times.(¥Æ¯Ö
+e
+java:S1192Ä"IDefine a constant instead of duplicating this literal "langflag" 5 times.(¶®Ûúÿÿÿÿ
+d
+java:S1192c"IDefine a constant instead of duplicating this literal "itemName" 3 times.(’áİÿÿÿÿÿ
+b
+java:S1192Ã"KDefine a constant instead of duplicating this literal "rgstinstcd" 5 times.(ëŞÓÅ
+d
+java:S1192¿"HDefine a constant instead of duplicating this literal "iswrite" 5 times.(¢¸‰õÿÿÿÿÿ
+d
+java:S1192¼"HDefine a constant instead of duplicating this literal "extname" 3 times.(×ÑÖßøÿÿÿÿ
+g
+java:S1192¾"KDefine a constant instead of duplicating this literal "categoryid" 5 times.(…ï¬èúÿÿÿÿ
+^
+java:S1192¹"GDefine a constant instead of duplicating this literal "isform" 3 times.(ºŸ÷ì
+`
+java:S1192Ù"IDefine a constant instead of duplicating this literal "authcode" 4 times.(à§éÄ
+_
+java:S1192º"HDefine a constant instead of duplicating this literal "doctype" 5 times.(åÇ´é
+^
+java:S1192Â"GDefine a constant instead of duplicating this literal "formcd" 5 times.(—š±¶
+g	java:S117¸"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯†š
+l	java:S117ò"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û‹í‹øÿÿÿÿ
+b
+java:S2259j"GA "NullPointerException" could be thrown; "resultXml" is nullable here.(ôİùéıÿÿÿÿ
+J
+java:S2755¢"3Disable access to external entities in XML parsing.(²µŸš
+€
+java:S6833("eReplace the "@Controller" annotation by "@RestController" and remove all "@ResponseBody" annotations.(íœ¡ñùÿÿÿÿ
+X
+java:S68135"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S68138"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S6813;"BRemove this field injection and use constructor injection instead.(êæÄŞ
+W
+java:S1854C"ARemove this useless assignment to local variable "userLoginInfo".(•ôÅÚ
+e
+java:S4488?"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÕŞñËüÿÿÿÿ
+H
+java:S1481C"2Remove this unused "userLoginInfo" local variable.(•ôÅÚ
+b	java:S100K"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹Ê±	
+e
+java:S4488J"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ëÍşÿÿÿÿ
+h	java:S100`"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ğ‚…Ğøÿÿÿÿ
+o
+java:S3776"SRefactor this method to reduce its Cognitive Complexity from 150 to the 15 allowed.(ÙÛˆéüÿÿÿÿ
+O
+java:S1854©"8Remove this useless assignment to local variable "item".(­èèŒ
+S
+java:S1854Ç"=Remove this useless assignment to local variable "deptCount".(Õ‚ş9
+Q
+java:S1854Å":Remove this useless assignment to local variable "formid".(¥Æ¯Ö
+S
+java:S1854"=Remove this useless assignment to local variable "deptCount".(Õ‚ş9
+V
+java:S1854®":Remove this useless assignment to local variable "formid".(¡„¢ºúÿÿÿÿ
+]
+java:S3457³"AFormat specifiers should be used instead of string concatenation.(Ò¼»Ÿşÿÿÿÿ
+B
+java:S1481Å"+Remove this unused "formid" local variable.(¥Æ¯Ö
+D
+java:S1481Ç".Remove this unused "deptCount" local variable.(Õ‚ş9
+I
+java:S1481È"-Remove this unused "deptName" local variable.(çı¤§üÿÿÿÿ
+]
+java:S3457é"AFormat specifiers should be used instead of string concatenation.(Ò¼»Ÿşÿÿÿÿ
+B
+java:S1481ÿ"+Remove this unused "formid" local variable.(õ±ô›
+D
+java:S1481".Remove this unused "deptCount" local variable.(Õ‚ş9
+I
+java:S1481‚"-Remove this unused "deptName" local variable.(çı¤§üÿÿÿÿ
+N
+java:S1135Ö"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
+C
+java:S1068-".Remove this unused "PRODUCT_ID" private field.(ÉŠÏJ
+ã
+java:S6541"ÆA "Brain Method" was detected. Refactor it to reduce at least one of the following metrics: LOC from 160 to 64, Complexity from 40 to 14, Nesting Level from 6 to 2, Number of Variables from 46 to 6.(ÙÛˆéüÿÿÿÿ

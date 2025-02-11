@@ -271,7 +271,7 @@ public class PermissionHelper {
 	// 설정화면으로 이동
 	public void moveSetting() {
 		Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-		intent.setData(Uri.parse("package:" + "kr.co.less.consent.yjh.edu"));
+		intent.setData(Uri.parse("package:" + "kr.co.less.consent.yjh.real"));
 		((Activity) context).startActivity(intent);
 	}
 	
@@ -283,7 +283,7 @@ public class PermissionHelper {
 	 */
 	public void moveNotiSetting() {
 		Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-		intent.putExtra(Settings.EXTRA_APP_PACKAGE, "kr.co.less.consent.yjh.edu");
+		intent.putExtra(Settings.EXTRA_APP_PACKAGE, "kr.co.less.consent.yjh.real");
 		((Activity) context).startActivity(intent);
 	}
 	

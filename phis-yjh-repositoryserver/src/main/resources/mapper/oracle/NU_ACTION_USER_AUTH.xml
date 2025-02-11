@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NU_ACTION_USER_AUTH">
+	
+	<insert id="save" parameterType="kr.co.clipsoft.biz.model.NuActionUserAuthDto">
+		MERGE INTO CLIP_ACTION_USER_AUTH
+		USING DUAL
+		   ON (
+		           PRODUCT_ID  = #{productId}
+	           AND USER_ID     = #{userId}
+		       AND ACTION_CODE = #{actionCode}
+		       AND AUTH_CODE   = #{authCode}
+		       )
+		  WHEN NOT MATCHED THEN
+		  insert 
+		   (
+					PRODUCT_ID,
+					USER_ID,
+					ACTION_CODE,
+					AUTH_CODE,
+					CREATE_DATE,
+					CREATE_USER_ID,
+					UPDATE_DATE,
+					UPDATE_USER_ID
+		    )
+		    values
+		    (
+				     #{productId},
+				     #{userId},
+				     #{actionCode},
+				     #{authCode},
+				     SYSDATE,
+				     #{createUserId},
+				     SYSDATE,
+				     #{updateUserId}
+		    )   
+	</insert>
+</mapper>

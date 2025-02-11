@@ -911,7 +911,7 @@ public class EFromViewer {
 			fos += "			<form-get-parameters> ";
 			fos += "			</form-get-parameters>";
 			fos += "			<connection connection-type='xml' name='xmlConn'>";
-			fos += "				<connection-prop prop-type='setdata-service-url' value='http://emrdev.ncc.re.kr/EMR/EPPSERVER/eformservice.aspx' data-post-key='DataXml'>";
+			fos += "				<connection-prop prop-type='setdata-service-url' value='http://emr.ncc.re.kr/EMR/EPPSERVER/eformservice.aspx' data-post-key='DataXml'>";
 			fos += "				</connection-prop>";
 			fos += "			</connection>";
 			fos += "			<parameters>";

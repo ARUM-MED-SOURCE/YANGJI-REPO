@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_FORM_USER_GROUP_AUTH">
+	<sql id="ALL_COLUMN">
+		PRODUCT_ID
+		, USER_GROUP_ID
+		, FORM_ID
+		, AUTH_CODE
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMN_RENAME">
+		PRODUCT_ID AS productId
+		, USER_GROUP_ID AS userGroupId
+		, FORM_ID AS formId
+		, AUTH_CODE AS authCode
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	
+	<insert id="new" parameterType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto">
+		INSERT
+		INTO CLIP_FORM_USER_GROUP_AUTH (
+			<include refid="ALL_COLUMN"></include>
+		) VALUES(
+			#{productId}
+			, #{userGroupId}
+			, #{formId}
+			, #{authCode}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<insert id="insertDefaultAuth_allForm" parameterType="java.util.HashMap">
+		INSERT 
+		INTO CLIP_FORM_USER_GROUP_AUTH ( 
+			PRODUCT_ID
+			, USER_GROUP_ID
+			, FORM_ID
+			, AUTH_CODE
+			, CREATE_DATE
+			, CREATE_USER_ID
+			, UPDATE_DATE
+			, UPDATE_USER_ID 
+		)
+		SELECT 
+			PRODUCT_ID
+			, #{userGroupId} AS USER_GROUP_ID
+			, FORM_ID
+			, #{authCode} AS AUTH_CODE
+			, SYSDATE AS CREATE_DATE
+			, #{createUserId} AS CREATE_USER_ID
+			, SYSDATE AS UPDATE_DATE
+			, #{updateUserId} AS UPDATE_USER_ID
+		FROM 
+			CLIP_FORM
+		WHERE
+			PRODUCT_ID = #{productId}
+	</insert>
+	
+	<insert id="insertDefaultAuth_newForm" parameterType="java.util.HashMap">
+		INSERT 
+		INTO CLIP_FORM_USER_GROUP_AUTH ( 
+			PRODUCT_ID
+			, USER_GROUP_ID
+			, FORM_ID
+			, AUTH_CODE
+			, CREATE_DATE
+			, CREATE_USER_ID
+			, UPDATE_DATE
+			, UPDATE_USER_ID 
+		)
+		SELECT 
+			PRODUCT_ID
+			, USER_GROUP_ID
+			, #{formId} AS FORM_ID
+			, #{authCode} AS AUTH_CODE
+			, SYSDATE AS CREATE_DATE
+			, #{createUserId} AS CREATE_USER_ID
+			, SYSDATE AS UPDATE_DATE
+			, #{updateUserId} AS UPDATE_USER_ID
+		FROM 
+			CLIP_USER_GROUP
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID != 'administrators'
+	</insert>
+	
+	<delete id="delete" parameterType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto">
+		DELETE
+		FROM 
+			CLIP_FORM_USER_GROUP_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+			AND FORM_ID = #{formId}
+			AND AUTH_CODE = #{authCode}
+	</delete>
+	
+	<delete id="delete_userGroupDto" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		DELETE
+		FROM 
+			CLIP_FORM_USER_GROUP_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+	</delete>
+	
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto" resultType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM 
+			CLIP_FORM_USER_GROUP_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+			AND FORM_ID = #{formId}
+			AND AUTH_CODE = #{authCode}
+	</select>
+	
+	<select id="getList" parameterType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto" resultType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM 
+			CLIP_FORM_USER_GROUP_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			<if test="userGroupId != null"> 
+			AND USER_GROUP_ID LIKE #{userGroupId}
+			</if>
+			ORDER BY USER_GROUP_ID
+	</select>
+	
+	<select id="getAddGroupList" parameterType="kr.co.clipsoft.repository.model.ClipFormUserGroupAuthDto" resultType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_GROUP_ID AS userGroupId
+			, NAME AS name
+			, USE_YN AS useYN_stringValue
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM 
+			CLIP_USER_GROUP
+		WHERE
+		 	USE_YN = 'Y'
+			AND USER_GROUP_ID NOT IN
+				(
+					SELECT
+						USER_GROUP_ID
+					FROM 
+						CLIP_FORM_USER_GROUP_AUTH
+					WHERE 
+						PRODUCT_ID = #{productId}
+						AND FORM_ID = #{formId}
+				)	
+			<if test="userGroupId != null"> 
+			AND USER_GROUP_ID LIKE #{userGroupId}
+			</if>
+	</select>
+</mapper>

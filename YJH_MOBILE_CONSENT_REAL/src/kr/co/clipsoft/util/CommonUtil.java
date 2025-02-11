@@ -214,6 +214,7 @@ public class CommonUtil {
 			}
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(name, PackageManager.GET_META_DATA);
 			versionName = pInfo.versionName;
+			EFromViewer.writeLog("버전정보: " + versionName);// will be deleted
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

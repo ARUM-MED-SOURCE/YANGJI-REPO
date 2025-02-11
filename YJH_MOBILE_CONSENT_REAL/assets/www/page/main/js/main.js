@@ -1724,6 +1724,7 @@ $(document).ready(function () {
     $("#_btnPopupOk").on("click", function () {
         var id = getLocalStorage("userId");
         var pw = $("#_certpassword").val();
+        searchAppVersion(); // will be deleted (인증서dn이 없어서, 임시로 무조건 열리게 해둠)
         if (pw != "" && pw != undefined) {
             var ITnadePlugins = new ITnadePlugin();
             ITnadePlugins.setConnect("192.168.4.17", '6001', getLocalStorage("userId"), pw);
@@ -5711,6 +5712,7 @@ function consentSearchSuccessHandler(resData, type) {
                 if (consent.eco == "N" || consent.eco == "" || consent.eco == undefined) {
                     li.append("<div class='eco_text_div'>OCR</div>");
                 } else {
+
                     if (consent.cosignYn == "Y") {
                         li.append("<div class='cosign_text_div'>Co-sign</div>");
                     }
@@ -5724,7 +5726,8 @@ function consentSearchSuccessHandler(resData, type) {
                 li.attr("attr-data", JSON.stringify(consent));
 
                 // 해당 동의서 클릭 이벤트  
-                li.find(".list_txt").on("click", function () {                	 
+                li.find(".list_txt").on("click", function () {  
+                	//alert('클릭4');	// will be deleted              	 
                 	
                     $("#_consentList li").removeClass("on");
                     $(this).parent().parent().addClass("on"); 
@@ -5836,6 +5839,7 @@ function consentSearchSuccessHandler(resData, type) {
                               } 
                               if (ecoFlag != true && cosign_Flags != true && nurscert_Flag != true) {
                                   COMMON.plugin.loadingBar("hide", "뷰어를 실행하는 중입니다."); 
+                                  // 전자인증서 검사
                                   if (getLocalStorage("signPwd") == "" || getLocalStorage("signPwd") == null || getLocalStorage("signPwd") == undefined) {
                                       $('#sign_popup').css('display', 'block');
                                       $('#_certpassword').focus();
@@ -6225,6 +6229,7 @@ function addRecordBtn(li, type) {
 
 // 앱 버전 정보
 function searchAppVersion() {
+	//alert('2');	// will be deleted
     var detailPatient = JSON.parse($(".patient_info").attr("attr-data"));
     // if (isViewePossibility(detailPatient)) { 
     var consents = COMMON.LOCAL.eform.consent;
@@ -6567,6 +6572,7 @@ function isCertDown(result) {
 
 // 동의서 리스트 클릭 이벤트
 function consentOnClickEvent() {
+	//alert('1');	// will be deleted
     popupHide("popup-pwd");
     // 연속 출력이 있으므로 공통된 환자와 사용자 정보만 설정하고 서식과 관련된 정보는 네이티브에서 처리함.
     var consent = COMMON.LOCAL.eform.consent[0]; // 동의서 정보

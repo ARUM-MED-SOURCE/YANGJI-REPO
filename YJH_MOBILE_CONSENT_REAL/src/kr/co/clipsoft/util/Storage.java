@@ -130,6 +130,7 @@ public class Storage {
 	  * @return
 	  */
 	public String getStorage(String key){	
+		EFromViewer.writeLog("getStorage: " + key);	// will be deleted
 		String value = storage.getString(key, "");
 		if(value.equals("")){		
 			// 저장소에 해당 값들이 없을 경우 다시 설정 파일에서 가져와서 저장소에 저장 
@@ -147,6 +148,7 @@ public class Storage {
 		    	editor.commit();
 		    }else if(key.equals("CONSENT_APP_VERSION")){
 		    	value = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.real");
+		    	EFromViewer.writeLog("value: " + value);
 		    	editor.putString(key, value);
 		    	editor.commit();
 		    }else if(key.equals("EFORM_APP_VERSION")){ 	

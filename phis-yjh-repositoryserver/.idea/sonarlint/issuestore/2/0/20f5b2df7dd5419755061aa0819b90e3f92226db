@@ -1,0 +1,12 @@
+
+}
+java:S1488a"bImmediately return this expression instead of assigning it to the temporary variable "strNowTime".(Œˆ¥àıÿÿÿÿ
+}
+java:S1488g"bImmediately return this expression instead of assigning it to the temporary variable "imageIndex".(«º»¥ûÿÿÿÿ
+m	java:S116"XRename this field "NAS_ROOT_PATH" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Çªöä
+z	java:S116%"`Rename this field "NAS_IMAGE_PREFIX_PATH" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œèâºûÿÿÿÿ
+s	java:S116+"YRename this field "NAS_IMAGE_PATH" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÏÔÈĞúÿÿÿÿ
+W
+java:S3457A"AFormat specifiers should be used instead of string concatenation.(áúñ
+W
+java:S3457D"AFormat specifiers should be used instead of string concatenation.(áúñ

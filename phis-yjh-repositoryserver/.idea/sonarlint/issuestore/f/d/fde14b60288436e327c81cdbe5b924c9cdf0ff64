@@ -1,0 +1,40 @@
+
+\	java:S112®"FDefine and throw a dedicated exception instead of using a generic one.(ÓÍœ
+a	java:S112¸"FDefine and throw a dedicated exception instead of using a generic one.(˜Éşûÿÿÿÿ
+\	java:S112ö"FDefine and throw a dedicated exception instead of using a generic one.(ÓÍœ
+a	java:S112š"FDefine and throw a dedicated exception instead of using a generic one.(˜Éşûÿÿÿÿ
+a	java:S112ú"FDefine and throw a dedicated exception instead of using a generic one.(Ëèäôüÿÿÿÿ
+a	java:S112Ö"FDefine and throw a dedicated exception instead of using a generic one.(ìÀïúÿÿÿÿ
+\	java:S112Ø"FDefine and throw a dedicated exception instead of using a generic one.(Àæİ¨
+\	java:S112Ü"FDefine and throw a dedicated exception instead of using a generic one.(ïıÏÛ
+[	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Šª»`
+a	java:S112‡"FDefine and throw a dedicated exception instead of using a generic one.(Ö¶çÅüÿÿÿÿ
+p
+java:S1192‡"YDefine a constant instead of duplicating this literal "insert ë¹„ì •ìƒ ì²˜ë¦¬." 5 times.(€ëûÀ
+l	java:S117Ï"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µ·Ö¨ûÿÿÿÿ
+l	java:S117¡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©‚Ûæùÿÿÿÿ
+x
+java:S2629"\Invoke method(s) only conditionally. Use the built-in formatting to construct this argument.(„Óßöşÿÿÿÿ
+J
+java:S2755Ê"3Disable access to external entities in XML parsing.(ğ¨ºî
+J
+java:S2755Ã"3Disable access to external entities in XML parsing.(²µŸš
+M
+java:S1135w"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+]
+java:S3457"AFormat specifiers should be used instead of string concatenation.(„Óßöşÿÿÿÿ
+5
+java:S2129¥"Remove this "Long" constructor(¹¦Îà
+U
+java:S1155Ô">Use isEmpty() to check whether the collection is empty or not.(»ÑÁ¥
+R	java:S125ú"<This block of commented-out lines of code should be removed.(ÑÇéÓ
+N
+java:S1135ª"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+T
+java:S1155ô">Use isEmpty() to check whether the collection is empty or not.(‘·©
+O
+java:S1854Ê"8Remove this useless assignment to local variable "item".(­èèŒ
+@
+java:S1481Ê")Remove this unused "item" local variable.(­èèŒ
+N
+java:S1481Ò"2Remove this unused "sErrorMessage" local variable.(¹ºÙùÿÿÿÿ

@@ -1,0 +1,43 @@
+
+\	java:S112³"FDefine and throw a dedicated exception instead of using a generic one.(ãàçõ
+\	java:S112¸"FDefine and throw a dedicated exception instead of using a generic one.(ëéôÕ
+\	java:S112é"FDefine and throw a dedicated exception instead of using a generic one.(ãàçõ
+\	java:S112î"FDefine and throw a dedicated exception instead of using a generic one.(ëéôÕ
+\	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(ëéôÕ
+\	java:S112«"FDefine and throw a dedicated exception instead of using a generic one.(ëéôÕ
+a	java:S112Æ"FDefine and throw a dedicated exception instead of using a generic one.(±·Ûşùÿÿÿÿ
+a	java:S112Ò"FDefine and throw a dedicated exception instead of using a generic one.(³Üµùÿÿÿÿ
+a	java:S112–"FDefine and throw a dedicated exception instead of using a generic one.(ãÅÛ¦ûÿÿÿÿ
+p
+java:S1192¸"YDefine a constant instead of duplicating this literal "ë°ì´í„° insert ì‹¤íŒ¨." 4 times.(ëéôÕ
+?
+java:S2629i"$Invoke method(s) only conditionally.(Öá¾µùÿÿÿÿ
+`
+java:S4488L"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ı™éâ
+e
+java:S4488]"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Ä´ÿõûÿÿÿÿ
+f
+java:S4488‰"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÉÅûÿÿÿÿ
+i	java:S100™"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(õí¿¤şÿÿÿÿ
+a
+java:S4488˜"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(¥µ¼ô
+i	java:S100Ç"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾ØÒúÿÿÿÿ
+V
+java:S1854Ò"?Remove this useless assignment to local variable "loginUserId".(¥®Êó
+a
+java:S4488Æ"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(å¯ğÌ
+G
+java:S1481Ò"0Remove this unused "loginUserId" local variable.(¥®Êó
+f
+java:S4488ü"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ß¾ııÿÿÿÿ
+f
+java:S4488"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(£®Ê¨ùÿÿÿÿ
+f
+java:S4488º"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(äùúõúÿÿÿÿ
+d	java:S100æ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ç±Ãğ
+a
+java:S4488å"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(’œü‹
+a
+java:S4488ù"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(­ç®
+f
+java:S4488"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"( òêıÿÿÿÿ

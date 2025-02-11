@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_ACTION_GROUP_AUTH">
+	
+
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto">
+		INSERT
+		INTO CLIP_ACTION_GROUP_AUTH(
+			PRODUCT_ID
+			, USER_GROUP_ID
+			, ACTION_CODE
+			, AUTH_CODE
+			, CREATE_DATE
+			, CREATE_USER_ID
+			, UPDATE_DATE
+			, UPDATE_USER_ID
+		) VALUES(
+			#{productId}
+			, #{userGroupId}
+			, #{actionCode}
+			, #{authCode}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto">
+		DELETE
+		FROM
+			CLIP_ACTION_GROUP_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+			AND ACTION_CODE = #{actionCode}
+			AND AUTH_CODE = #{authCode}
+	</delete>
+
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto" resultType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_GROUP_ID AS userGroupId
+			, ACTION_CODE AS actionCode
+			, AUTH_CODE AS authCode
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM
+			CLIP_ACTION_GROUP_AUTH
+		WHERE	
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+			AND ACTION_CODE = #{actionCode}
+			AND AUTH_CODE = #{authCode}
+	</select>
+	
+	<select id="getList" parameterType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto" resultType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_GROUP_ID AS userGroupId
+			, ACTION_CODE AS actionCode
+			, AUTH_CODE AS authCode
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM
+			CLIP_ACTION_GROUP_AUTH
+		WHERE	
+			PRODUCT_ID = #{productId}
+			AND ACTION_CODE = #{actionCode}
+			<if test="userGroupId != null"> 
+			AND USER_GROUP_ID LIKE #{userGroupId}
+			</if>
+	</select>
+	
+	<select id="getAddGroupList" parameterType="kr.co.clipsoft.repository.model.ClipActionGroupAuthDto" resultType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_GROUP_ID AS userGroupId
+			, NAME AS name
+			, USE_YN AS useYN_stringValue
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM 
+			CLIP_USER_GROUP
+		WHERE
+		 	USE_YN = 'Y'
+			AND USER_GROUP_ID NOT IN
+				(
+					SELECT
+						USER_GROUP_ID
+					FROM 
+						CLIP_ACTION_GROUP_AUTH
+					WHERE 
+						PRODUCT_ID = #{productId}
+						AND ACTION_CODE = #{actionCode}
+				)	
+			<if test="userGroupId != null"> 
+			AND USER_GROUP_ID LIKE #{userGroupId}
+			</if>
+	</select>	
+</mapper>

@@ -833,7 +833,7 @@ if (!COMMON) {
 				//alert(result)
 			}, "ClipsoftPlugin", "timeNotMatch", []);
 		},
-//		GetDevicesUUID: function () {
+		GetDevicesUUID: function () {
 //			cordova.exec(function (result) {
 //				//				alert(result) 
 //				//				COMMON.plugin.storage("set", "DeviceId", result);
@@ -881,7 +881,7 @@ if (!COMMON) {
 //			}, function (result) {
 //				alert(result)
 //			}, "ClipsoftPlugin", "GetDevicesUUID", []);
-//		},
+		},
 		FileUploadTest: function (obj) {
 			cordova.exec(function (result) {
 				alert("success")
