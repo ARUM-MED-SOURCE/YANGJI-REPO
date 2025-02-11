@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+	<title>Insert title here</title>
+	
+	<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
+	
+	<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+	
+		textarea {
+			display: block;
+			width: 400px;
+			height: 160px;
+		}
+		h2 {
+			margin: 0 0 1em 0;
+		}
+		button {
+			width: 200px;
+			height: 50px;
+		}
+	
+		.box {
+			background: yellow;
+			margin: 10px;
+			padding: 10px;
+		}
+		
+		textarea.result {
+			background-color: gray;
+			color: white;
+		}
+		
+		.categoryTitle {
+			background-color: aqua;
+			font-size: 20pt;
+			font-weight: blod;
+		}
+		
+		.header {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 200px;
+			background-color: orange;
+			overflow: auto;
+		}
+		.header ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			float: left;
+		}
+		.header ul li {
+			margin: 0 0 5px 5px;
+			padding: 0;
+			cursor: pointer;
+		}
+		.header ul li:hover {
+			margin: 0 0 5px 5px;
+			padding: 0;
+			cursor: pointer;
+			background-color: yellow;
+		}
+		
+		.content { 
+			margin-top: 100px;
+		}
+	</style>
+	
+	<script>
+		function initBox0() { 
+			$('#box0 .callButton').click(function(){
+				var box = $('#box0');
+				
+				$.ajax({
+					url: './auth/login',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    userId : box.find('.userId').val()
+					    , password : box.find('.password').val()
+					}
+				}).done(function(data){
+					$('#box0 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox1() { 
+			$('#box1 .callButton').click(function(){
+				var box = $('#box1');
+				
+				$.ajax({
+					url: './auth/logout',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					}
+				}).done(function(data){
+					$('#box1 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+	
+		function initBox2() { 
+			$('#box2 .callButton').click(function(){
+				var box2 = $('#box2');
+				var parameter = {};
+				parameter.formId = box2.find('.formId').val();
+				parameter.formVersion = box2.find('.formVersion').val();
+				parameter.lock = box2.find('.lock').val();
+				
+				$.ajax({
+					url: './eForm25/form/get',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box2 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox3() {
+			$('#box3 .callButton').click(function(){
+				var box3 = $('#box3');
+				var parameter = {};
+				parameter.formId = box3.find('.formId').val();
+				parameter.includeFormData = box3.find('.includeFormData').val();
+				
+				$.ajax({
+					url: './eForm25/form/get/recent',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box3 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox4() {
+			$('#box4 .callButton').click(function(){
+				var box = $('#box4');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				
+				$.ajax({
+					url: './eForm25/form/new/version',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box4 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox5() {
+			$('#box5 .callButton').click(function(){
+				var box = $('#box5');
+				var parameter = {};
+				parameter.formId = parseInt(box.find('.formId').val());
+				parameter.formData = box.find('.formData').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				parameter.formCategoryId = box.find('.formCategoryId').val();
+				
+				parameter.formCategoryId = parameter.formCategoryId != "" ? parseInt(parameter.formCategoryId) : null;
+				
+				$.ajax({
+					url: './eForm25/form/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box5 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox6() {
+			$('#box6 .callButton').click(function(){
+				var box = $('#box6');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				
+				$.ajax({
+					url: './eForm25/form/update/formData',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box6 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox7() {
+			$('#box7 .callButton').click(function(){
+				var box = $('#box7');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './eForm25/form/getList/allVersion',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box7 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox8() {
+			$('#box8 .callButton').click(function(){
+				var box = $('#box8');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.publicationYN = box.find('.publicationYN').val() == 'true' ? true : false;
+				
+				$.ajax({
+					url: './eForm25/form/update/publication',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box8 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox9() {
+			$('#box9 .callButton').click(function(){
+				var box = $('#box9');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.useYN = box.find('.useYN').val() == 'true' ? true : false;
+				
+				$.ajax({
+					url: './eForm25/form/update/use',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box9 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+	
+		function initBox10() {
+			$('#box10 .callButton').click(function(){
+				var box = $('#box10');
+				var parameter = {};
+				parameter.formId = parseInt(box.find('.formId').val());
+				parameter.formData = box.find('.formData').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				
+				parameter.formCategoryId = parameter.formCategoryId == NaN ? null : parameter.formCategoryId;
+				
+				$.ajax({
+					url: './eForm25/external/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box10 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox11() {
+			$('#box11 .callButton').click(function(){
+				var box = $('#box11');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				
+				$.ajax({
+					url: './eForm25/external/new/version',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box11 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox12() {
+			$('#box12 .callButton').click(function(){
+				var box = $('#box12');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				
+				$.ajax({
+					url: './eForm25/external/update/formData',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box12 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox13() {
+			$('#box13 .callButton').click(function(){
+				var box = $('#box13');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.publicationYN = box.find('.publicationYN').val() == 'true' ? true : false;
+				
+				$.ajax({
+					url: './eForm25/external/update/publication',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box13 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox14() {
+			$('#box14 .callButton').click(function(){
+				var box = $('#box14');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.useYN = box.find('.useYN').val() == 'true' ? true : false;
+				
+				$.ajax({
+					url: './eForm25/external/update/use',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box14 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox15() {
+			$('#box15 .callButton').click(function(){
+				var box = $('#box15');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				
+				$.ajax({
+					url: './eForm25/external/get',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box15 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox16() {
+			$('#box16 .callButton').click(function(){
+				var box = $('#box16');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './eForm25/external/get/recent',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box16 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox17() {
+			$('#box17 .callButton').click(function(){
+				var box = $('#box17');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './eForm25/external/getList/allVersion',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box17 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox18() {
+			$('#box18 .callButton').click(function(){
+				var box = $('#box18');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box18 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox19() {
+			$('#box19 .callButton').click(function(){
+				var box = $('#box19');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/new/version',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box19 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox20() {
+			$('#box20 .callButton').click(function(){
+				var box = $('#box20');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.formData = box.find('.formData').val();
+				parameter.commitComment = box.find('.commitComment').val();
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/update/formData',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box20 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox21() {
+			$('#box21 .callButton').click(function(){
+				var box = $('#box21');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.publicationYN = box.find('.publicationYN').val() == 'true' ? true : false;
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/update/publication',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box21 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox22() {
+			$('#box22 .callButton').click(function(){
+				var box = $('#box22');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.useYN = box.find('.useYN').val() == 'true' ? true : false;
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/update/use',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box22 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox23() {
+			$('#box23 .callButton').click(function(){
+				var box = $('#box23');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/get',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box23 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox24() {
+			$('#box24 .callButton').click(function(){
+				var box = $('#box24');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/get/recent',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box24 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox25() {
+			$('#box25 .callButton').click(function(){
+				var box = $('#box25');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/getList/allVersion',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box25 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox26() {
+			$('#box26 .callButton').click(function(){
+				var box = $('#box26');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.formCategoryName = box.find('.formCategoryName').val();
+				parameter.seq = box.find('.seq').val();
+				parameter.parentFormCategoryId = parseInt(box.find('.parentFormCategoryId').val());
+				
+				$.ajax({
+					url: './category/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box26 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox27() {
+			$('#box27 .callButton').click(function(){
+				var box = $('#box27');
+				var parameter = {};
+				parameter.productId = parseInt(box.find('.productId').val());
+				parameter.itemName = box.find('.itemName').val();
+				
+				$.ajax({
+					url: './category/getList/allCategoryAndForm',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box27 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox28() {
+			$('#box28 .callButton').click(function(){
+				var box = $('#box28');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				parameter.parentFormCategoryId = parseInt(box.find('.parentFormCategoryId').val());
+				parameter.formCategoryName = box.find('.formCategoryName').val();
+				parameter.seq = parseInt(box.find('.seq').val());
+				
+				$.ajax({
+					url: './category/update',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box28 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox29() {
+			$('#box29 .callButton').click(function(){
+				var box = $('#box29');
+				var parameter = {};
+				
+				$.ajax({
+					url: './eForm25/external/getList/all',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box29 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox30() {
+			$('#box30 .callButton').click(function(){
+				var box = $('#box30');
+				var parameter = {};
+				
+				$.ajax({
+					url: './eForm25/pageTemplate/getList/all',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box30 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox31() {
+			$('#box31 .callButton').click(function(){
+				var box = $('#box31');
+				var parameter = {};
+				parameter.userId = box.find('.userId').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/category/user/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box31 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox32() {
+			$('#box32 .callButton').click(function(){
+				var box = $('#box32');
+				var parameter = {};
+				parameter.userId = box.find('.userId').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/category/user/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box32 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox33() {
+			$('#box33 .callButton').click(function(){
+				var box = $('#box33');
+				var parameter = {};
+				parameter.userId = box.find('.userId').val();
+				parameter.formId = parseInt(box.find('.formId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/form/user/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box33 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox34() {
+			$('#box34 .callButton').click(function(){
+				var box = $('#box34');
+				var parameter = {};
+				parameter.userId = box.find('.userId').val();
+				parameter.formId = parseInt(box.find('.formId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/form/user/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box34 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox35() {
+			$('#box35 .callButton').click(function(){
+				var box = $('#box35');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.name = box.find('.name').val();
+				
+				$.ajax({
+					url: './userGroup/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box35 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox36() {
+			$('#box36 .callButton').click(function(){
+				var box = $('#box36');
+				var parameter = {};
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/category/group/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box36 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox37() {
+			$('#box37 .callButton').click(function(){
+				var box = $('#box37');
+				var parameter = {};
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.formCategoryId = parseInt(box.find('.formCategoryId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/category/group/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box37 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox38() {
+			$('#box38 .callButton').click(function(){
+				var box = $('#box38');
+				var parameter = {};
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.formId = parseInt(box.find('.formId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/form/group/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box38 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox39() {
+			$('#box39 .callButton').click(function(){
+				var box = $('#box39');
+				var parameter = {};
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.formId = parseInt(box.find('.formId').val());
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/form/group/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box39 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox40() {
+			$('#box40 .callButton').click(function(){
+				var box = $('#box40');
+				var parameter = {};
+				
+				$.ajax({
+					url: './eForm25/get/formId',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box40 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox41() {
+			$('#box41 .callButton').click(function(){
+				var box = $('#box41');
+				var parameter = {};
+				
+				$.ajax({
+					url: './auth/getList/action',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)					    
+					}
+				}).done(function(data){
+					$('#box41 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox42() {
+			$('#box42 .callButton').click(function(){
+				var box = $('#box42');
+				var parameter = {};
+				
+				$.ajax({
+					url: './eForm25/category/get',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					}
+				}).done(function(data){
+					$('#box42 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox43() {
+			$('#box43 .callButton').click(function(){
+				var box = $('#box43');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val(); 
+				
+				$.ajax({
+					url: './eForm25/unlockFormData',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box43 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox44() {
+			$('#box44 .callButton').click(function(){
+				var box = $('#box44');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userId = box.find('.userId').val();
+				parameter.password = box.find('.password').val();
+				parameter.name = box.find('.name').val();
+				parameter.useYN = box.find('.useYN').val();
+				
+				$.ajax({
+					url: './user/insert',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box44 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox45() {
+			$('#box45 .callButton').click(function(){
+				var box = $('#box45');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userId = box.find('.userId').val();
+				parameter.password = box.find('.password').val();
+				parameter.name = box.find('.name').val();
+				parameter.useYN = box.find('.useYN').val();
+				
+				$.ajax({
+					url: './user/update',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box45 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox46() {
+			$('#box46 .callButton').click(function(){
+				var box = $('#box46');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.name = box.find('.name').val();
+				
+				$.ajax({
+					url: './userGroup/update',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box46 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox47() {
+			$('#box47 .callButton').click(function(){
+				var box = $('#box47');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.userId = box.find('.userId').val();
+				
+				$.ajax({
+					url: './userGroup/mapping/insert',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box47 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox48() {
+			$('#box48 .callButton').click(function(){
+				var box = $('#box48');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.userId = box.find('.userId').val();
+				
+				$.ajax({
+					url: './userGroup/mapping/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box48 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox49() {
+			$('#box49 .callButton').click(function(){
+				var box = $('#box49');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.actionCode = box.find('.actionCode').val();
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/action/group/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box49 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox50() {
+			$('#box50 .callButton').click(function(){
+				var box = $('#box50');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.actionCode = box.find('.actionCode').val();
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/action/group/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box50 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox51() {
+			$('#box51 .callButton').click(function(){
+				var box = $('#box51');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userId = box.find('.userId').val();
+				parameter.actionCode = box.find('.actionCode').val();
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/action/user/new',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box51 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox52() {
+			$('#box52 .callButton').click(function(){
+				var box = $('#box52');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userId = box.find('.userId').val();
+				parameter.actionCode = box.find('.actionCode').val();
+				parameter.authCode = box.find('.authCode').val();
+				
+				$.ajax({
+					url: './auth/action/user/delete',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box52 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox53() {
+			$('#box53 .callButton').click(function(){
+				var box = $('#box53');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.userGroupId = box.find('.userGroupId').val();
+				parameter.useYN = box.find('.useYN').val();
+				
+				$.ajax({
+					url: './userGroup/update/useYN',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box53 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox54() {
+			$('#box54 .callButton').click(function(){
+				var box = $('#box54');
+				var parameter = {};
+				parameter.productId = box.find('.productId').val();
+				parameter.formCategoryId = box.find('.formCategoryId').val();
+				parameter.useYN = box.find('.useYN').val();
+				
+				$.ajax({
+					url: './category/update/useYN',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+					}
+				}).done(function(data){
+					$('#box54 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox55() {
+			$('#box55 .callButton').click(function(){
+				var box = $('#box55');
+				var parameter = {};
+				
+				$.ajax({
+					url: './auth/is',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					}
+				}).done(function(data){
+					$('#box55 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox56() { 
+			$('#box56 .callButton').click(function(){
+				var box = $('#box56');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './eForm25/isLockFormData',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		parameter : JSON.stringify(parameter)
+				  	}
+				}).done(function(data){
+					$('#box57 .result').val(JSON.stringify(data));
+				});
+			});
+		}
+		
+		function initBox57() {
+			$('#box57 .callButton').click(function(){
+				var box = $('#box57');
+				var parameter = {};
+				
+				$.ajax({
+					url: './auth/getList/form',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					}
+				}).done(function(data){
+					$('#box57 .result').val(JSON.stringify(data));
+				});
+			});
+		}
+		
+		function initBox58() {
+			$('#box58 .callButton').click(function(){
+				var box = $('#box58');
+				var parameter = {};
+				
+				$.ajax({
+					url: './kumc/migration',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		password : box.find('.password').val()
+					}
+				}).done(function(data){
+					$('#box58 .result').val(JSON.stringify(data));
+				});
+			});
+		}
+		
+		function initBox59() {
+			$('#box59 .callButton').click(function(){
+				var box = $('#box57');
+				var parameter = {};
+				
+				$.ajax({
+					url: './auth/getList/category',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					}
+				}).done(function(data){
+					$('#box59 .result').val(JSON.stringify(data));
+				});
+			});
+		}
+		
+		$(document).ready(function(){
+			initBox0();
+			initBox1();
+			initBox2();
+			initBox3();
+			initBox4();
+			initBox5();
+			initBox6();
+			initBox7();
+			initBox8();
+			initBox9();
+			initBox10();
+			initBox11();
+			initBox12();
+			initBox13();
+			initBox14();
+			initBox15();
+			initBox16();
+			initBox17();
+			initBox18();
+			initBox19();
+			initBox20();
+			initBox21();
+			initBox22();
+			initBox23();
+			initBox24();
+			initBox25();
+			initBox26();
+			initBox27();
+			initBox28();
+			initBox29();
+			initBox30();
+			initBox31();
+			initBox32();
+			initBox33();
+			initBox34();
+			initBox35();
+			initBox36();
+			initBox37();
+			initBox38();
+			initBox39();
+			initBox40();
+			initBox41();
+			initBox42();
+			initBox43();
+			initBox44();
+			initBox45();
+			initBox46();
+			initBox47();
+			initBox48();
+			initBox49();
+			initBox50();
+			initBox51();
+			initBox52();
+			initBox53();
+			initBox54();
+			initBox55();
+			initBox56();
+			initBox57();
+			initBox58();
+			initBox59();
+		});
+		
+		function toScrollPosition(targetSelector) { 
+			$(window).scrollTop($(targetSelector).offset().top - 200);
+		}
+	</script>
+</head>
+<body>
+	<div class="header">
+		<ul>
+			<li onclick="toScrollPosition('#box58')">/kumc/migration</li>
+			<li onclick="toScrollPosition('#box0')">/auth/login</li>
+			<li onclick="toScrollPosition('#box1')">/auth/logout</li>
+			<li onclick="toScrollPosition('#box55')">/auth/is</li>
+			<li onclick="toScrollPosition('#box49')">/auth/action/group/new</li>
+			<li onclick="toScrollPosition('#box50')">/auth/action/group/delete</li>
+			<li onclick="toScrollPosition('#box51')">/auth/action/user/new</li>
+			<li onclick="toScrollPosition('#box52')">/auth/action/user/delete</li>
+			<li onclick="toScrollPosition('#box31')">/auth/category/user/new</li>
+			<li onclick="toScrollPosition('#box32')">/auth/category/user/delete</li>
+			<li onclick="toScrollPosition('#box36')">/auth/category/group/new</li>
+			<li onclick="toScrollPosition('#box37')">/auth/category/group/delete</li>
+			<li onclick="toScrollPosition('#box33')">/auth/form/user/new</li>
+			<li onclick="toScrollPosition('#box34')">/auth/form/user/delete</li>
+			<li onclick="toScrollPosition('#box38')">/auth/form/group/new</li>
+			<li onclick="toScrollPosition('#box39')">/auth/form/group/delete</li>
+			<li onclick="toScrollPosition('#box41')">/auth/getList/action</li>
+			<li onclick="toScrollPosition('#box57')">/auth/getList/form</li>
+			<li onclick="toScrollPosition('#box59')">/auth/getList/category</li>
+			<li onclick="toScrollPosition('#box44')">/user/insert</li>
+			<li onclick="toScrollPosition('#box45')">/user/update</li>
+			<li onclick="toScrollPosition('#box35')">/userGroup/new</li>
+			<li onclick="toScrollPosition('#box53')">/userGroup/update/useYN</li>
+			<li onclick="toScrollPosition('#box46')">/userGroup/update</li>
+			<li onclick="toScrollPosition('#box47')">/userGroup/mapping/insert</li>
+			<li onclick="toScrollPosition('#box48')">/userGroup/mapping/delete</li>
+			<li onclick="toScrollPosition('#box40')">/eForm25/get/formId</li>
+			<li onclick="toScrollPosition('#box43')">/eForm25/unlockFormData</li>
+			<li onclick="toScrollPosition('#box56')">/eForm25/isLockFormData</li>
+			<li onclick="toScrollPosition('#box5')">/eForm25/form/new</li>
+			<li onclick="toScrollPosition('#box4')">/eForm25/form/new/version</li>
+			<li onclick="toScrollPosition('#box6')">/eForm25/form/update/formData</li>
+			<li onclick="toScrollPosition('#box8')">/eForm25/form/update/publication</li>
+			<li onclick="toScrollPosition('#box9')">/eForm25/form/update/use</li>
+			<li onclick="toScrollPosition('#box2')">/eForm25/form/get</li>
+			<li onclick="toScrollPosition('#box3')">/eForm25/form/get/recent</li>
+			<li onclick="toScrollPosition('#box7')">/eForm25/form/getList/allVersion</li>
+			<li onclick="toScrollPosition('#box10')">/eForm25/external/new</li>
+			<li onclick="toScrollPosition('#box11')">/eForm25/external/new/version</li>
+			<li onclick="toScrollPosition('#box12')">/eForm25/external/update/formData</li>
+			<li onclick="toScrollPosition('#box13')">/eForm25/external/update/publication</li>
+			<li onclick="toScrollPosition('#box14')">/eForm25/external/update/use</li>
+			<li onclick="toScrollPosition('#box15')">/eForm25/external/get</li>
+			<li onclick="toScrollPosition('#box16')">/eForm25/external/get/recent</li>
+			<li onclick="toScrollPosition('#box17')">/eForm25/external/getList/allVersion</li>
+			<li onclick="toScrollPosition('#box29')">/eForm25/external/getList/all</li>
+			<li onclick="toScrollPosition('#box18')">/eForm25/pageTemplate/new</li>
+			<li onclick="toScrollPosition('#box19')">/eForm25/pageTemplate/new/version</li>
+			<li onclick="toScrollPosition('#box20')">/eForm25/pageTemplate/update/formData</li>
+			<li onclick="toScrollPosition('#box21')">/eForm25/pageTemplate/update/publication</li>
+			<li onclick="toScrollPosition('#box22')">/eForm25/pageTemplate/update/use</li>
+			<li onclick="toScrollPosition('#box23')">/eForm25/pageTemplate/get</li>
+			<li onclick="toScrollPosition('#box24')">/eForm25/pageTemplate/get/recent</li>
+			<li onclick="toScrollPosition('#box25')">/eForm25/pageTemplate/getList/allVersion</li>
+			<li onclick="toScrollPosition('#box30')">/eForm25/pageTemplate/getList/all</li>
+			<li onclick="toScrollPosition('#box26')">/category/new</li>
+			<li onclick="toScrollPosition('#box28')">/category/update</li>
+			<li onclick="toScrollPosition('#box54')">/category/update/useYN</li>
+			<li onclick="toScrollPosition('#box27')">/category/getList/allCategoryAndForm</li>
+		</ul>
+	</div>
+	<div class="content">
+		<div class="categoryTitle">
+			인증 관련
+			<hr>
+		</div>
+		
+		<div id="box0" class="box">
+			<h2>/auth/login</h2>
+			userId : <input class="userId" type="text" value="dpTablo" /><br />
+			password : <input class="password" type="password" value="1234" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box1" class="box">
+			<h2>/auth/logout</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div class="categoryTitle">
+			서식
+			<hr>
+		</div>
+		
+		<div id="box2" class="box">
+			<h2>/eForm25/form/get</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			lock : <input class="lock" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>	
+		
+		<div id="box3" class="box">
+			<h2>/eForm25/form/get/recent</h2>
+			formId : <input class="formId" type="text" /><br />
+			includeFormData : <input class="includeFormData" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box4" class="box">
+			<h2>/eForm25/form/new/version</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formName : <input class="formName" type="text" /><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box5" class="box">
+			<h2>/eForm25/form/new</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formName : <input class="formName" type="text"  /><br />
+			commitComment : <input class="commitComment" type="text"  /><br />
+			formCategoryId : <input class="formCategoryId" type="text"  /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box6" class="box">
+			<h2>/eForm25/form/update/formData</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box7" class="box">
+			<h2>/eForm25/form/getList/allVersion</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box8" class="box">
+			<h2>/eForm25/form/update/publication</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			publicationYN : <input class="publicationYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box9" class="box">
+			<h2>/eForm25/form/update/use</h2>
+			formId : <input class="formId" type="text" /><br />
+			useYN : <input class="useYN" type="text"  /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box10" class="box">
+			<h2>/eForm25/external/new</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formName : <input class="formName" type="text" /><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box11" class="box">
+			<h2>/eForm25/external/new/version</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formName : <input class="formName" type="text" /><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box12" class="box">
+			<h2>/eForm25/external/update/formData</h2>
+			formId : <input class="formId" type="text"  /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			commitComment : <input class="commitComment" type="text"  /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box13" class="box">
+			<h2>/eForm25/external/update/publication</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			publicationYN : <input class="publicationYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box14" class="box">
+			<h2>/eForm25/external/update/use</h2>
+			formId : <input class="formId" type="text"  /><br />
+			formVersion : <input class="formVersion" type="text"  /><br />
+			useYN : <input class="useYN" type="text"  /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box15" class="box">
+			<h2>/eForm25/external/get</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box16" class="box">
+			<h2>/eForm25/external/get/recent</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box17" class="box">
+			<h2>/eForm25/external/getList/allVersion</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box18" class="box">
+			<h2>/eForm25/pageTemplate/new</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formName : <input class="formName" type="text"  /><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box19" class="box">
+			<h2>/eForm25/pageTemplate/new/version</h2>
+			formId : <input class="formId" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			formName : <input class="formName" type="text" /><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box20" class="box">
+			<h2>/eForm25/pageTemplate/update/formData</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			formData : <textarea class="formData"></textarea><br />
+			commitComment : <input class="commitComment" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box21" class="box">
+			<h2>/eForm25/pageTemplate/update/publication</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			publicationYN : <input class="publicationYN" type="text"  /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box22" class="box">
+			<h2>/eForm25/pageTemplate/update/use</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			useYN : <input class="useYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box23" class="box">
+			<h2>/eForm25/pageTemplate/get</h2>
+			formId : <input class="formId" type="text" /><br />
+			formVersion : <input class="formVersion" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box24" class="box">
+			<h2>/eForm25/pageTemplate/get/recent</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box25" class="box">
+			<h2>/eForm25/pageTemplate/getList/allVersion</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box26" class="box">
+			<h2>/category/new</h2>
+			productId : <input class="productId" type="text" /><br />
+			formCategoryName : <input class="formCategoryName" type="text" /><br />
+			seq : <input class="seq" type="text" /><br />
+			parentFormCategoryId : <input class="parentFormCategoryId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box27" class="box">
+			<h2>/category/getList/allCategoryAndForm</h2>
+			productId : <input class="productId" type="text" /><br />
+			itemName : <input class="itemName" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box28" class="box">
+			<h2>/category/update</h2>
+			productId : <input class="productId" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			formCategoryName : <input class="formCategoryName" type="text" /><br />
+			seq : <input class="seq" type="text"  /><br />
+			parentFormCategoryId : <input class="parentFormCategoryId" type="text"  /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box29" class="box">
+			<h2>/eForm25/external/getList/all</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box30" class="box">
+			<h2>/eForm25/pageTemplate/getList/all</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box31" class="box">
+			<h2>/auth/category/user/new</h2>
+			userId : <input class="userId" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box32" class="box">
+			<h2>/auth/category/user/delete</h2>
+			userId : <input class="userId" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box33" class="box">
+			<h2>/auth/form/user/new</h2>
+			userId : <input class="userId" type="text" /><br />
+			formId : <input class="formId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box34" class="box">
+			<h2>/auth/form/user/delete</h2>
+			userId : <input class="userId" type="text" /><br />
+			formId : <input class="formId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box35" class="box">
+			<h2>/userGroup/new</h2>
+			productId : <input class="productId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			name : <input class="name" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box36" class="box">
+			<h2>/auth/category/group/new</h2>
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box37" class="box">
+			<h2>/auth/category/group/delete</h2>
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box38" class="box">
+			<h2>/auth/form/group/new</h2>
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			formId : <input class="formId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box39" class="box">
+			<h2>/auth/form/group/delete</h2>
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			formId : <input class="formId" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box40" class="box">
+			<h2>/eForm25/get/formId</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box41" class="box">
+			<h2>/auth/getList/action</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box42" class="box">
+			<h2>/eForm25/category/get</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box43" class="box">
+			<h2>/eForm25/unlockFormData</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box44" class="box">
+			<h2>/user/insert</h2>
+			productId : <input class="productId" type="text" /><br />
+			userId : <input class="userId" type="text" /><br />
+			password : <input class="password" type="password" /><br />
+			name : <input class="name" type="text" /><br />
+			useYN : <input class="useYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box45" class="box">
+			<h2>/user/update</h2>
+			productId : <input class="productId" type="text" /><br />
+			userId : <input class="userId" type="text" /><br />
+			password : <input class="password" type="password" /><br />
+			name : <input class="name" type="text" /><br />
+			useYN : <input class="useYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box46" class="box">
+			<h2>/userGroup/update</h2>
+			productId : <input class="productId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			name : <input class="name" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box47" class="box">
+			<h2>/userGroup/mapping/insert</h2>
+			productId : <input class="productId" type="text" /><br />
+			userId : <input class="userId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box48" class="box">
+			<h2>/userGroup/mapping/delete</h2>
+			productId : <input class="productId" type="text" /><br />
+			userId : <input class="userId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box49" class="box">
+			<h2>/auth/action/group/new</h2>
+			productId : <input class="productId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			actionCode : <input class="actionCode" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box50" class="box">
+			<h2>/auth/action/group/delete</h2>
+			productId : <input class="productId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			actionCode : <input class="actionCode" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box51" class="box">
+			<h2>/auth/action/user/new</h2>
+			productId : <input class="productId" type="text" /><br />
+			userId : <input class="userId" type="text" /><br />
+			actionCode : <input class="actionCode" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box52" class="box">
+			<h2>/auth/action/user/delete</h2>
+			productId : <input class="productId" type="text" /><br />
+			userId : <input class="userId" type="text" /><br />
+			actionCode : <input class="actionCode" type="text" /><br />
+			authCode : <input class="authCode" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box53" class="box">
+			<h2>/userGroup/update/useYN</h2>
+			productId : <input class="productId" type="text" /><br />
+			userGroupId : <input class="userGroupId" type="text" /><br />
+			useYN : <input class="useYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box54" class="box">
+			<h2>/category/update/useYN</h2>
+			productId : <input class="productId" type="text" /><br />
+			formCategoryId : <input class="formCategoryId" type="text" /><br />
+			useYN : <input class="useYN" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box55" class="box">
+			<h2>/auth/is</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box56" class="box">
+			<h2>/eForm25/isLockFormData</h2>
+			formId : <input class="formId" type="text" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box57" class="box">
+			<h2>/auth/getList/form</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box58" class="box">
+			<h2>/kumc/migration</h2>
+			password : <input class="password" type="password" value="123456" /><br />
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+		
+		<div id="box59" class="box">
+			<h2>/auth/getList/category</h2>
+			<button class="callButton">호출</button>
+			<textarea class="result"></textarea>
+		</div>
+	</div>
+</body>
+</html>

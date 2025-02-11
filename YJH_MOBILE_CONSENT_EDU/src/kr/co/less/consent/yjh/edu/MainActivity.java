@@ -71,14 +71,13 @@ public class MainActivity extends CordovaActivity {
 				WebView.setWebContentsDebuggingEnabled(true);
 			}
 		}
-
+		
+		Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler(context));
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.i(TAG, "[LIFE CYCLE : onStart]");
-		Log.i(TAG, Environment.getExternalStorageDirectory().toString() + "여기여기여기여기");
 	};
 
 	@Override

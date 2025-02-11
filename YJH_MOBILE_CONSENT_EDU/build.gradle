@@ -188,7 +188,7 @@ android {
 	        arm64 {
 	            versionCode defaultConfig.versionCode + 4
 	            ndk {
-	                abiFilters "arm64-v8a" // arm64 플레버에서는 "arm64-v8a"만 포함
+	                abiFilters "arm64-v8a","armeabi-v7a" // arm64 플레버에서는 "arm64-v8a"만 포함
 	            }
 	        }
 	        x86 {

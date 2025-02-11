@@ -1923,7 +1923,6 @@ public class EFromViewer {
 		try {
 			JSONObject timeObject = new JSONObject();
 			timeObject.put("asdf", "asdf");
-			writeLog("jie");
 			String strDdd = service_submit(EFORM_URL + "/biz/nu/member/viewer/eForm25/consent/nowtime/get", "gettime",
 					timeObject.toString());
 			writeLog("savetime : " + strDdd);

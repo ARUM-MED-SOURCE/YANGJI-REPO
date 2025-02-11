@@ -1,4 +1,4 @@
-$(document).ready(function () { 
+$(document).ready(function () {
 	params = new Object();
 	isRun = false;
 	deviceId = "";
@@ -96,7 +96,6 @@ $(document).ready(function () {
 
 	// 네이티브 백 버튼 이벤트 
 	COMMON.BACKKEY.addEvent();
-
 
 	// include전에 cordova.exec() 호출됨.
 	if (!COMMON.device.isMobile() && !COMMON.device.isTablet()) {
@@ -648,7 +647,7 @@ function fnGoPage(params) {
 
 //앱 업데이트 확인 이벤트 
 function isAppUpdate() {
-	alert("isAppUpdate");
+	//alert("isAppUpdate");
 	COMMON.plugin.versionInfo(isAppUpdateSuccessHandler, errorHandler);
 };
 

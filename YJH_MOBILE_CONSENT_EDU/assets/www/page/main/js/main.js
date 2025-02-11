@@ -3,14 +3,6 @@ var requestMap = COMMON.util.requestMap();
 $(document).ready(function () {
 	 
     var cosignListValue = 0;
-    setTimeout(function () {
-        cosignListValue = searchCosign();
-        if (cosignListValue > 0) {
-            $('.cosign_new_img').css('display', 'block');
-        } else {
-            $('.cosign_new_img').css('display', 'none');
-        }
-    }, 10000); 
 
     var date = new Date();
     var year = date.getFullYear();
@@ -434,20 +426,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
-    // 코사인 시간별 체크(5분)
-    setInterval(function () {
-        var cosignListValue = 0;
-        setTimeout(function () {
-            cosignListValue = searchCosign();
-            if (cosignListValue > 0) {
-                $('.cosign_new_img').css('display', 'block');
-            } else {
-                $('.cosign_new_img').css('display', 'none');
-            }
-        }, 10000);
-    }, 300000);
 
 
     $('.agree_3').click(function () {
@@ -1367,18 +1345,6 @@ $(document).ready(function () {
 			localStorage.setItem("depthngnm", _userDeptName); 
             $('#_userDept').text(getLocalStorage("userDeptName"));
 
-            if ($('.gnb_7').attr('class').indexOf("on") > -1) {
-                if ($('.cosign_out').attr('class').indexOf("on") > -1) {
-                    setTimeout(function () {
-                        searchCosignSend();
-                    }, 500);
-
-                } else {
-                    setTimeout(function () {
-                        searchCosign();
-                    }, 500);
-                }
-            }
         }
     });
 
@@ -1428,22 +1394,6 @@ $(document).ready(function () {
         }
     });
 
-    // 코사인 수신탭 클릭
-    $('.cosign_in').click(function () {
-        $('#_cosignConsentList').empty();
-        searchCosign();
-        $(this).addClass('on');
-        $('.cosign_out').removeClass('on');
-    });
-
-    // 코사인 송신탭 클릭
-    $('.cosign_out').click(function () {
-        $('#_cosignConsentList').empty();
-        //		searchCosign();
-        searchCosignSend();
-        $(this).addClass('on');
-        $('.cosign_in').removeClass('on');
-    });
     // ======================== 코사인 지정 끝 ===================
 
     // if(INTERFACE.USER == "TEST"){
@@ -7156,16 +7106,6 @@ function menuClickEvent(menuId) {
         $(".cnts_3").show();
         $('.cosignListBigLayout').css('display', 'none');
         $('#treateMentBigLayout').css('display', 'none');
-    } else {
-        $('.cosignListBigLayout').css('display', 'block');
-        className = "cosign";
-        // 대메뉴 색상에 따라 디자인 변경
-        $('.Consent_List').css('display', 'none');
-        h3_tit.attr('class', 'h3_tit find');
-        patient_info.css('color', '#144c9a');
-        $(".cnts_1").hide();
-        $('#treateMentBigLayout').css('display', 'none');
-        searchCosign();
     }
     $("#_menus li").removeClass("on");
     $("#_" + menuId).addClass("on");
@@ -7637,18 +7577,7 @@ function eformReturnCallback(message) {
     }
     $('#loading_bar').css('display', 'none');
     COMMON.plugin.loadingBar("hide", "뷰어를 실행하는 중입니다.");
-    if ($('.gnb_7').attr('class').indexOf("on") > -1) {
-        if ($('.cosign_out').attr('class').indexOf("on") > -1) {
-            setTimeout(function () {
-                searchCosignSend();
-            }, 500);
-
-        } else {
-            setTimeout(function () {
-                searchCosign();
-            }, 500);
-        }
-    } else if ($('.gnb_8').attr('class').indexOf("on") > -1) {
+    if ($('.gnb_8').attr('class').indexOf("on") > -1) {
         $('#myConsentSearch').trigger('click');
         setTimeout(function () {
             if($('#NEW').prop('checked')== false){

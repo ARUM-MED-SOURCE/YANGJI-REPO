@@ -1,0 +1,8 @@
+
+E
+java:S3740I"/Provide the parametrized type for this generic.(Æ¦ÝÕ
+|
+java:S1319I"fThe type of "parameter" should be an interface such as "Map" rather than the implementation "HashMap".(Æ¦ÝÕ
+c	java:S100="NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀÅ÷“
+c	java:S100A"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÇÂž
+c	java:S100I"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æ¦ÝÕ

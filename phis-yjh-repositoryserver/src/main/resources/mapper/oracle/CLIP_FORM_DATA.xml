@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_FORM_DATA">
+	<sql id="ALL_COLUMS">
+		PRODUCT_ID
+	    , FORM_ID
+	    , FORM_VERSION
+	    , FORM_DATA
+	    , COMMIT_COMMENT
+	    , PUBLICATION_YN
+	    , ENCRYPTION_YN
+	    , COMPRESSION_YN
+	    , CREATE_DATE
+	    , CREATE_USER_ID
+	    , UPDATE_DATE
+	    , UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMS_RENAME">
+		PRODUCT_ID AS productId
+		, FORM_ID AS formId
+		, FORM_VERSION AS formVersion
+		, FORM_DATA AS formDataByteValue
+		, COMMIT_COMMENT AS commitComment
+		, PUBLICATION_YN AS publicationYN_stringValue
+		, ENCRYPTION_YN AS encryptionYN_stringValue
+	    , COMPRESSION_YN AS compressionYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipFormDataDto">
+		INSERT
+		INTO CLIP_FORM_DATA (
+		    <include refid="ALL_COLUMS"></include>
+		) VALUES (
+		    #{productId}
+		    , #{formId}
+		    , #{formVersion}
+		    , #{formDataByteValue}
+		    , #{commitComment}
+		    , #{publicationYN_stringValue}
+		    , #{encryptionYN_stringValue}
+			, #{compressionYN_stringValue}
+		    , SYSDATE
+		    , #{createUserId}
+		    , SYSDATE
+		    , #{updateUserId}
+		)
+	</insert>
+
+	<update id="updateFormData" parameterType="kr.co.clipsoft.repository.model.ClipFormDataDto">
+		UPDATE
+			CLIP_FORM_DATA
+		SET
+			FORM_DATA = #{formDataByteValue}
+			, COMMIT_COMMENT = #{commitComment}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			AND FORM_VERSION = #{formVersion}
+	</update>
+	
+	<update id="updatePublication" parameterType="kr.co.clipsoft.repository.model.ClipFormDataDto">
+		UPDATE
+			CLIP_FORM_DATA
+		SET
+			PUBLICATION_YN = #{publicationYN_stringValue}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			AND FORM_VERSION = #{formVersion}
+	</update>
+
+	
+	
+	<select id="getFormLastVersion" parameterType="kr.co.clipsoft.repository.model.ClipFormDataDto" resultType="java.lang.Long">
+		SELECT
+			MAX(FORM_VERSION)
+		FROM
+			CLIP_FORM_DATA
+		WHERE
+			PRODUCT_ID = #{productId}
+		    AND FORM_ID = #{formId}
+	</select>
+</mapper>

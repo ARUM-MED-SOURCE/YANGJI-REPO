@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document description="" id="" name="TYPE_NONE" version="1" designer-version="2.5" designer-build-version="2.5.120.0" designer-build-last-version="2.5.120.0" tag="" document-state="None" first-initialize-date="">
+  <global>
+    <fields>
+      <field-set field-type="data" />
+      <field-set field-type="parameter" />
+      <field-set field-type="transform" />
+      <field-set field-type="system" />
+      <field-set field-type="script">
+        <field name="PatNmLengthCheck" description="환자명 길이 체크 후 출력" value="var prnt_patnminfo = '';&#xD;&#xA;var patnminfo = '%Param.PATNM%';&#xD;&#xA;var tmp_patnminfo = '';&#xD;&#xA;var dept = '%Param.ORDDEPTCD%';&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;if (patnminfo.length &gt; 3 &amp;&amp; patnminfo.length &lt;= 10)&#xD;&#xA;{&#xD;&#xA;	prnt_patnminfo = patnminfo;&#xD;&#xA;}&#xD;&#xA;else if (patnminfo.length &gt;= 11)&#xD;&#xA;{&#xD;&#xA;	prnt_patnminfo = patnminfo.substring(0, 10);&#xD;&#xA;}&#xD;&#xA;else&#xD;&#xA;{&#xD;&#xA;	for(var i = 0; i &lt;= patnminfo.length; i++)&#xD;&#xA;	{&#xD;&#xA;		tmp_patnminfo = patnminfo.substring(i, i+1);&#xD;&#xA;		if(i == patnminfo.length)&#xD;&#xA;		{&#xD;&#xA;			break;&#xD;&#xA;		}&#xD;&#xA;		prnt_patnminfo = prnt_patnminfo + tmp_patnminfo.concat(' ');&#xD;&#xA;	}&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;// 환자명에 한글이 포함된 경우 진료과 영문 약어가 3자 이하 이면 최대 10자 -&gt; 7자, 3자 초과 이면 최대 10자 -&gt; 6자&#xD;&#xA;var check = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;&#xD;&#xA;if (check.test(prnt_patnminfo) &amp;&amp; prnt_patnminfo.length &gt; 6)&#xD;&#xA;{&#xD;&#xA;	if (dept.length &lt;= 3)&#xD;&#xA;	{&#xD;&#xA;		prnt_patnminfo = prnt_patnminfo.substring(0, 7);&#xD;&#xA;	}&#xD;&#xA;	else&#xD;&#xA;	{&#xD;&#xA;		prnt_patnminfo = prnt_patnminfo.substring(0, 6);&#xD;&#xA;	}&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;return prnt_patnminfo;&#xD;&#xA;" />
+      </field-set>
+    </fields>
+    <connection name="noname" connection-type="xml">
+      <connection-prop prop-type="data-schema-url" value="" data-post-key="" />
+      <connection-prop prop-type="setdata-service-url" value="" data-post-key="" />
+      <connection-prop prop-type="getdata-service-url" value="" data-post-key="" />
+      <connection-prop prop-type="tempsetdata-service-url" value="" data-post-key="" />
+      <connection-prop prop-type="tempgetdata-service-url" value="" data-post-key="" />
+    </connection>
+    <customdialogs />
+  </global>
+  <form change-controls-value-by-condition="" save-error-condition="" page-orientation="Portrait" size="{width=2100,height=2970}" margin="{left=50,top=50,right=50,bottom=50}" required-mode="None">
+    <pagemanager>
+      <order>
+        <page id="page1" page-type="Normal" page-number="1" />
+      </order>
+    </pagemanager>
+    <background background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+    <header input-section-order="1" height="210" background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+    <body input-section-order="2">
+      <page is-dynamic-add-page="False" except-current-page-data-when-saving="False" except-current-page-from-export-target="False" except-current-page-when-printing="False" id="page1" use-background="True" paper-color="{a=255,r=255,g=255,b=255}" name="noname" use-header="True" use-footer="True" page-hidden="False" tag="" page-type="Normal" background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+    </body>
+    <pagetemplatemanager />
+    <footer input-section-order="3" height="210" background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+  </form>
+</document>

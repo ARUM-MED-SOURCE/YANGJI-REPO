@@ -531,6 +531,7 @@ public class ClipsoftPlugin extends CordovaPlugin {
 		try {
 			type = args.getString(0);
 			if (type.equals("get")) {
+				EFromViewer.writeLog("실행됨");// will be deleted
 				String value = Storage.getInstance(context).getStorage(args.getString(1));
 				Log.i(TAG, "[storage] type : " + type + "/ key : " + args.getString(1) + "/ val : " + value);
 				callbackContext.success(value);
