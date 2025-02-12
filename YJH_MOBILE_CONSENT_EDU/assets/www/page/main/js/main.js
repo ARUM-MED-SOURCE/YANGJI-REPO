@@ -5786,8 +5786,6 @@ function consentSearchSuccessHandler(resData, type) {
                               } 
                               if (ecoFlag != true && cosign_Flags != true && nurscert_Flag != true) {
                                   COMMON.plugin.loadingBar("hide", "뷰어를 실행하는 중입니다."); 
-                                  alert("여기1?");
-                                  alert('signPwd is 뭔들 : ' + getLocalStorage("signPwd"));
                                   if (getLocalStorage("signPwd") == "" || getLocalStorage("signPwd") == null || getLocalStorage("signPwd") == undefined) {
                                       $('#sign_popup').css('display', 'block');
                                       $('#_certpassword').focus();

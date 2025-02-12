@@ -634,7 +634,7 @@
 .cnts_1 .form_box {
 	float: left;
 	width: calc(50% - 5px);
-	margin: 0 5px 10px 0;
+	margin: 0 5px 0 0;/* by sangu02 하단 마진 10px -> 0px*/
 }
 
 .cnts_1 .form_box:nth-child(even) {

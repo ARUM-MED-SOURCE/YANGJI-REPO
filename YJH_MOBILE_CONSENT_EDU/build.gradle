@@ -182,7 +182,7 @@ android {
 	        armv7 {
 	            versionCode defaultConfig.versionCode + 2
 	            ndk {
-	                abiFilters "armeabi-v7a" // armv7 플레버에서는 "armeabi-v7a"만 포함
+	                abiFilters "armeabi" // armv7 플레버에서는 "armeabi-v7a"만 포함
 	            }
 	        }
 	        arm64 {
@@ -199,7 +199,7 @@ android {
 	        }
             all {
                 ndk {
-                    abiFilters "all", "arm64-v8a"
+                    abiFilters "armeabi", "arm64-v8a"
                 }
             }
         }

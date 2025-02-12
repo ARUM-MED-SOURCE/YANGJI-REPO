@@ -1,48 +1,34 @@
-/*
-       Licensed to the Apache Software Foundation (ASF) under one
-       or more contributor license agreements.  See the NOTICE file
-       distributed with this work for additional information
-       regarding copyright ownership.  The ASF licenses this file
-       to you under the Apache License, Version 2.0 (the
-       "License"); you may not use this file except in compliance
-       with the License.  You may obtain a copy of the License at
-
-         http://www.apache.org/licenses/LICENSE-2.0
-
-       Unless required by applicable law or agreed to in writing,
-       software distributed under the License is distributed on an
-       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-       KIND, either express or implied.  See the License for the
-       specific language governing permissions and limitations
-       under the License.
- */
 
 package kr.co.less.consent.yjh.edu;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
 
 import org.apache.cordova.CordovaActivity;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.Toast;
 import kr.co.clipsoft.util.CommonUtil;
+import kr.co.clipsoft.util.EFromViewer;
 import kr.co.clipsoft.util.PermissionHelper;
 import kr.co.clipsoft.util.Storage;
 
@@ -60,6 +46,7 @@ public class MainActivity extends CordovaActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, "[LIFE CYCLE : onCreate]");
+		Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler(this)); 
 		context = this;
 		permissionHelper = new PermissionHelper(this);
 		MainActivity.activityShow();
@@ -69,6 +56,16 @@ public class MainActivity extends CordovaActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			if (0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
 				WebView.setWebContentsDebuggingEnabled(true);
+			}
+		}
+
+		// hajun :: 2024.12.30
+		// 백그라운드 작업 수행중인 스레드 종료
+		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+		for (Thread thread : threadSet) {
+			if (thread.getName().equals(MyForegroundService.CUSTOM_THREAD_NAME) && thread.isAlive()) {
+				EFromViewer.writeLog("MainActivity :: onCreate() :: 스레드 종료 요청_tname_" + thread.getName());
+				thread.interrupt();
 			}
 		}
 		
@@ -186,6 +183,8 @@ public class MainActivity extends CordovaActivity {
 		Log.i(TAG, "[verificationPermission] 권한 허용 여부");
 		Log.i(TAG, "[verificationPermission] Android Version : " + CommonUtil.getInstance(context).getAndroidVersion());
 		// 안드로이드 마시멜로우 버전(23)부터는 중요 권한을 사용자에게 부여받아야만 한다.
+		setBatteryOptimizations();
+		
 		if (CommonUtil.getInstance(context).getAndroidVersion() < 23) {
 			if (!isStart) {
 				activityStart();
@@ -212,5 +211,98 @@ public class MainActivity extends CordovaActivity {
 			permissionHelper.showCustomPermissionsDialog();
 		}
 	}
- 
+
+	// 전자동의서 어플 배터리 최적화 모드 해제
+	private void setBatteryOptimizations() {
+		PowerManager pm = (PowerManager) getSystemService(context.POWER_SERVICE);
+		boolean isWhiteListing = false;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+			isWhiteListing = pm.isIgnoringBatteryOptimizations(context.getPackageName());
+		}
+		if (!isWhiteListing) {
+			AlertDialog.Builder setdialog = new AlertDialog.Builder(MainActivity.this);
+			setdialog.setTitle("권한이 필요합니다.")
+					.setMessage("전자동의서를 사용하기 위해서는 \"배터리 사용량 최적화\" 목록에서 제외하는 권한이 필요합니다. 계속하시겠습니까?")
+					.setCancelable(false)
+					.setPositiveButton("예", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+							
+							intent.setData(Uri.parse("package:" + context.getPackageName()));
+							context.startActivity(intent);
+						}
+					}).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Toast.makeText(MainActivity.this, "해당 권한을 허용하지 않으면 앱이 정상적으로 동작하지 않습니다.\n앱을 종료합니다.", Toast.LENGTH_SHORT)
+									.show();
+							dialog.cancel();
+							((Activity) context).finish();
+						}
+					}).create().show();
+		}
+	}
+	
+	/**
+	 * @author sangu02
+	 * @since 2024/09/06
+	 * @note 로그캣 로그 저장을 시작하는 메서드
+	 */
+    private void startLogging() {
+    	File logDirectory = new File(Environment.getExternalStorageDirectory() + "/arum_log");
+		if (!logDirectory.exists()) { // 파일 없으면 생성
+			logDirectory.mkdir();
+		}
+		
+        // 현재 날짜로 파일 이름 생성
+        String logFileName = logDirectory + "/logcat_"+new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".txt";
+        File logFile = new File(logFileName);
+        
+		
+		
+        // logcat 명령어로 로그를 파일로 저장
+        try {
+            if (!logFile.exists()) {
+                logFile.createNewFile(); // 파일이 없으면 생성
+            }
+
+            // logcat 명령 실행
+            String[] command = new String[]{"logcat", "-f", logFile.getAbsolutePath(), "*:V"};
+            Runtime.getRuntime().exec(command);
+
+            Log.i(TAG, "Logcat started, writing logs to: " + logFile.getAbsolutePath());
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to start logging to file", e);
+        }
+    }
+
+/**
+	 * hajun :: 2024.12.30 디바이스 메모리 상태가 변화할 때 마다 호출되는 이벤트
+	 */
+	@Override
+	public void onTrimMemory(int level) {
+		super.onTrimMemory(level);
+
+		switch (level) {
+		case TRIM_MEMORY_RUNNING_MODERATE:
+			EFromViewer.writeLog("MainActivity :: onTrimMemory() :: 디바이스 메모리 보통(TRIM_MEMORY_RUNNING_MODERATE)");
+			break;
+
+		case TRIM_MEMORY_RUNNING_LOW:
+			EFromViewer.writeLog("MainActivity :: onTrimMemory() :: 디바이스 메모리 부족(TRIM_MEMORY_RUNNING_LOW)");
+			break;
+
+		case TRIM_MEMORY_RUNNING_CRITICAL:
+			EFromViewer.writeLog("MainActivity :: onTrimMemory() :: 디바이스 메모리 상당히 부족(TRIM_MEMORY_RUNNING_CRITICAL)");
+			break;
+
+		case TRIM_MEMORY_COMPLETE:
+			EFromViewer.writeLog("MainActivity :: onTrimMemory() :: 디바이스 메모리 매우 부족, 앱 종료 가능성 있음(TRIM_MEMORY_COMPLETE)");
+			break;
+
+		default:
+			break;
+		}
+	}
 }

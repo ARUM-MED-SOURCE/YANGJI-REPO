@@ -649,7 +649,6 @@ function fnGoPage(params) {
 
 //앱 업데이트 확인 이벤트 
 function isAppUpdate() {
-	alert("isAppUpdate");
 	COMMON.plugin.versionInfo(isAppUpdateSuccessHandler, errorHandler);
 };
 
@@ -661,7 +660,6 @@ function isAppUpdateSuccessHandler(resData) {
 		$("#_btnUpdate").hide();
 		alert("버전 정보가 없습니다.");
 	} else {
-		alert(JSON.stringify(resData));
 		var viewerVersion;
 		var clientVersion; 
 		for (var i = 0; i < versionInfo.length; i++) { 
