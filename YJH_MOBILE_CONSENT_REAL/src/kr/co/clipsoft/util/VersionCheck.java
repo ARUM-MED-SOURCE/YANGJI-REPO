@@ -16,7 +16,7 @@ import android.util.Log;
   */
 public class VersionCheck {
 	
-	private static final String CONSENT_APP = "kr.co.less.consent.yjh.edu";
+	private static final String CONSENT_APP = "kr.co.less.consent.yjh.real";
 	private static final String EFORM_APP = "kr.co.clipsoft.eform";
 	private static final String TAG = "VersionCheck";
 	

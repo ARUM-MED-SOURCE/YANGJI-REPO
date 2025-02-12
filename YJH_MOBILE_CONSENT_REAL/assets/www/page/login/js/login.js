@@ -1,4 +1,4 @@
-$(document).ready(function () { 
+$(document).ready(function () {
 	params = new Object();
 	isRun = false;
 	deviceId = "";
@@ -97,7 +97,6 @@ $(document).ready(function () {
 	// 네이티브 백 버튼 이벤트 
 	COMMON.BACKKEY.addEvent();
 
-
 	// include전에 cordova.exec() 호출됨.
 	if (!COMMON.device.isMobile() && !COMMON.device.isTablet()) {
 		onDeviceReady();
@@ -175,7 +174,7 @@ $(document).ready(function () {
 		
 		if(applyduty=="Y"){
 			$.ajax({
-				url: 'http://emrdev.yjh.com/cmcnu/.live',
+				url: 'http://emr.yjh.com/cmcnu/.live',
 				type: 'post',
 				data: 'submit_id=DRZSU11708&business_id=zz&dutplceinstcd=204&dutplcecd=' + DeptCode + '&userid=' + $('#_loginId').val(),
 				dataType: 'xml',
@@ -196,7 +195,7 @@ $(document).ready(function () {
 			}) 
 			
 			// 교육서버기준
-			loginCheck="Y";
+			//loginCheck="Y";
 			
 			if(loginCheck=="N"){
 				alert("근무시간이 아닙니다. 근무표를 확인하여 주십시오.\n근무시간 외에는 접속이 불가합니다.");
@@ -272,7 +271,7 @@ function onDeviceReady() {
 	
 	var checkTime = "";
 	$.ajax({
-			url: 'http://emrdev.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
+			url: 'http://emr.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
 			type: 'post',
 			timeout: 10000,
 			async: false,
@@ -384,7 +383,7 @@ function fnLoginConditionCheck() {
 
 	var checkTime = "";
 	$.ajax({
-		url: 'http://emrdev.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
+		url: 'http://emr.yjh.com/eform' + '/biz/nu/member/viewer/eForm25/consent/nowtime/get',
 		type: 'post',
 		timeout: 10000,
 		async: false,
@@ -435,7 +434,7 @@ function fnLoginConditionCheck() {
 					}		
 					isRun = true; 
 					$.ajax({
-						url: 'http://emrdev.yjh.com/cmcnu/.live?'+'submit_id=DRMRF00119&business_id=mr&userid=' + id + '&pwd=' + pw + '&instcd=204&syscd=' + HIS_EPH,
+						url: 'http://emr.yjh.com/cmcnu/.live?'+'submit_id=DRMRF00119&business_id=mr&userid=' + id + '&pwd=' + pw + '&instcd=204&syscd=' + HIS_EPH,
 						type: 'post', 
 						dataType: 'xml',
 						timeout: 10000,
@@ -638,8 +637,7 @@ function fnGoPage(params) {
 	localStorage.setItem("userGroupCode", params.userGroupCode);
 	localStorage.setItem("jobkindcd", params.jobkindcd);
 	localStorage.setItem("docYN", params.docYN);
-	alert("사용자 인증 비밀번호 초기화");
-	localStorage.setItem("signPwd", "");
+	localStorage.setItem("signPwd", "");	// removeSignPwd 종종 안먹어서, 확실하게 초기화
 	COMMON.plugin.storage("set", params, function () {
 		loadingbar_display();
 		location.href = '../main/main.html';
@@ -649,7 +647,7 @@ function fnGoPage(params) {
 
 //앱 업데이트 확인 이벤트 
 function isAppUpdate() {
-	alert("isAppUpdate");
+	//alert("isAppUpdate");
 	COMMON.plugin.versionInfo(isAppUpdateSuccessHandler, errorHandler);
 };
 

@@ -79,10 +79,10 @@ public class ClipsoftPlugin extends CordovaPlugin {
 
 	public Boolean setConnect(String ip, int port, CallbackContext callbackContext) {
 		if (kapi.kmsConnect(ip, port)) {
-			System.out.println("&&&&&&&&& : " + "성공");
+			//System.out.println("&&&&&&&&& : " + "성공");
 			callbackContext.success("ok");
 		} else {
-			System.out.println("&&&&&&&&& : " + "실패");
+			//System.out.println("&&&&&&&&& : " + "실패");
 			callbackContext.error(kapi.errorMsg());
 		}
 		return kapi.kmsConnect(ip, port);
@@ -337,7 +337,7 @@ public class ClipsoftPlugin extends CordovaPlugin {
 	// JSON폴더 생성 및 파일 생성
 	private void WriteJsonFile(CallbackContext callbackContext) {
 		String path = Environment.getExternalStorageDirectory().toString() + "/Documents";
-		String file_name = path + "/" + "yjh_consent_config_edu.json";
+		String file_name = path + "/" + "yjh_consent_config_real.json";
 		File dir = new File(path);
 		File dir2 = new File(file_name);
 
@@ -347,8 +347,8 @@ public class ClipsoftPlugin extends CordovaPlugin {
 
 		JSONObject obj = new JSONObject();
 		try { // config.json 값 수정 by sangu02 2025/01/08
-			obj.put("eformUrl", "http://emrdev.yjh.com/eform");
-			obj.put("serverUrl", "http://emrdev.yjh.com");
+			obj.put("eformUrl", "http://emr.yjh.com/eform");
+			obj.put("serverUrl", "http://emr.yjh.com");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -375,7 +375,7 @@ public class ClipsoftPlugin extends CordovaPlugin {
 	private void checkJSONFile(CallbackContext callbackContext) throws JsonIOException, JsonSyntaxException,
 			JSONException, IOException, org.json.simple.parser.ParseException {
 		String path = Environment.getExternalStorageDirectory().toString() + "/Documents";
-		String file_name = path + "/" + "yjh_consent_config_edu.json";
+		String file_name = path + "/" + "yjh_consent_config_real.json";
 		File dir2 = new File(file_name);
 		if (dir2.isFile()) {
 			String instcd = Storage.getInstance(context).getStorage("serverUrl");
@@ -389,7 +389,7 @@ public class ClipsoftPlugin extends CordovaPlugin {
 
 	private void createJSONFile(String instcd, CallbackContext callbackContext) {
 		String path = Environment.getExternalStorageDirectory().toString() + "/Documents";
-		String file_name = path + "/" + "yjh_consent_config_edu.json";
+		String file_name = path + "/" + "yjh_consent_config_real.json";
 		File dir = new File(path);
 		File dir2 = new File(file_name);
 
@@ -399,8 +399,8 @@ public class ClipsoftPlugin extends CordovaPlugin {
 
 		JSONObject obj = new JSONObject();
 		try { // by sangu02 2025-01-08 일단 하드코딩
-			obj.put("eformUrl", "http://emrdev.yjh.com/eform/");
-			obj.put("serverUrl", "http://emrdev.yjh.com/");
+			obj.put("eformUrl", "http://emr.yjh.com/eform/");
+			obj.put("serverUrl", "http://emr.yjh.com/");
 			obj.put("instCd", 204);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
@@ -531,6 +531,7 @@ public class ClipsoftPlugin extends CordovaPlugin {
 		try {
 			type = args.getString(0);
 			if (type.equals("get")) {
+				EFromViewer.writeLog("실행됨");// will be deleted
 				String value = Storage.getInstance(context).getStorage(args.getString(1));
 				Log.i(TAG, "[storage] type : " + type + "/ key : " + args.getString(1) + "/ val : " + value);
 				callbackContext.success(value);

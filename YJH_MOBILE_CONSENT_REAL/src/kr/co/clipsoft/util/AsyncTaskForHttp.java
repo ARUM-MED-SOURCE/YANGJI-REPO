@@ -317,7 +317,7 @@ public class AsyncTaskForHttp extends AsyncTask<String, String, String> {
 			if (type.equals("appVersionCheck")) {
 				VersionCheck vCheck = new VersionCheck(context);
 
-				int currentConsentAppVersion = vCheck.getCurrentVersion("kr.co.less.consent.yjh.edu"); // 업무앱
+				int currentConsentAppVersion = vCheck.getCurrentVersion("kr.co.less.consent.yjh.real"); // 업무앱
 				int currentEfromAppVersion = vCheck.getCurrentVersion("kr.co.clipsoft.eform"); // 뷰어앱
 
 				JSONObject versioncheckResult = new JSONObject();
@@ -327,7 +327,7 @@ public class AsyncTaskForHttp extends AsyncTask<String, String, String> {
 					versioncheckResult.put("eformClientVersion", Integer.toString(currentEfromAppVersion)); // 클라이언트 뷰어
 																											// 앱 버전
 					versioncheckResult.put("consentClientVersionName",
-							vCheck.getCurrentVersionName("kr.co.less.consent.yjh.edu"));// 클라이언트
+							vCheck.getCurrentVersionName("kr.co.less.consent.yjh.real"));// 클라이언트
 					versioncheckResult.put("eformClientVersionName",
 							vCheck.getCurrentVersionName("kr.co.clipsoft.eform"));
 					versioncheckResult.put("appType", Storage.getInstance(context).getStorage("INTERFACE_USER"));
@@ -343,7 +343,7 @@ public class AsyncTaskForHttp extends AsyncTask<String, String, String> {
 			} else if (type.equals("appVersionCheckList")) {
 				VersionCheck vCheck = new VersionCheck(context);
 
-				int currentConsentAppVersion = vCheck.getCurrentVersion("kr.co.less.consent.yjh.edu"); // 업무앱
+				int currentConsentAppVersion = vCheck.getCurrentVersion("kr.co.less.consent.yjh.real"); // 업무앱
 				int currentEfromAppVersion = vCheck.getCurrentVersion("kr.co.clipsoft.eform"); // 뷰어앱
 
 				JSONArray versioncheckResult = new JSONArray();
@@ -356,7 +356,7 @@ public class AsyncTaskForHttp extends AsyncTask<String, String, String> {
 						minObj.put("eformClientVersion", Integer.toString(currentEfromAppVersion)); // 클라이언트 뷰어
 																									// 앱 버전
 						minObj.put("consentClientVersionName",
-								vCheck.getCurrentVersionName("kr.co.less.consent.yjh.edu"));// 클라이언트
+								vCheck.getCurrentVersionName("kr.co.less.consent.yjh.real"));// 클라이언트
 						minObj.put("eformClientVersionName", vCheck.getCurrentVersionName("kr.co.clipsoft.eform")); 
 						versioncheckResults.put(minObj);
 					}
