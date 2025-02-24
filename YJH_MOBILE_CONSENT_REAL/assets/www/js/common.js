@@ -833,55 +833,55 @@ if (!COMMON) {
 				//alert(result)
 			}, "ClipsoftPlugin", "timeNotMatch", []);
 		},
-//		GetDevicesUUID: function () {
-//			cordova.exec(function (result) {
-//				//				alert(result) 
-//				//				COMMON.plugin.storage("set", "DeviceId", result);
-//				if (INTERFACE.USER != "") {
-//					if (INTERFACE.TYPE == "REAL") {
-//						ajax_url = "http://emr013.cmcnu.or.kr/cmcnu/.live";
-//						ajax_nu_url = "http://emr013.cmcnu.or.kr/eform";
-//						//HIS_EPH = "HIS015";
+		GetDevicesUUID: function () {
+			cordova.exec(function (result) {
+				//				alert(result) 
+				//				COMMON.plugin.storage("set", "DeviceId", result);
+				if (INTERFACE.USER != "") {
+					if (INTERFACE.TYPE == "REAL") {
+						ajax_url = "http://emr.yjh.com/cmcnu/.live";
+						ajax_nu_url = "http://emr.yjh.com/eform";
+						//HIS_EPH = "HIS015";
+					} else {
+						ajax_url = "http://emredu.yjh.com/cmcnu/.live";
+						ajax_nu_url = "http://emrdev.yjh.com/eform";
+						//HIS_EPH = "HIS015EDU";
+					}
+				}
+				var value = {
+					//"patientCode": $("#_detailPatientCode").text() ,
+					"deviceId": result
+				}
+				$.ajax({
+					url: ajax_nu_url + '/biz/nu/member/viewer/eForm25/consent/device/mst/get',
+					type: 'post',
+					timeout: 5000,
+					data: {
+						parameter: JSON.stringify(value)
+					}
+				}).done(function (data) {
+//					if (data == null) {
+//						$('#_DeviceUUID').text("미등록");
+//						$('#_DeviceUUID').css('color', 'red');
 //					} else {
-//						ajax_url = "http://emr013edu.cmcnu.or.kr/cmcnu/.live";
-//						ajax_nu_url = "http://emr013edu.cmcnu.or.kr/eform";
-//						//HIS_EPH = "HIS015EDU";
+//						$('#_DeviceUUID').text(data.useDeptNm);
+//						$('#_DeviceUUID').css('color', 'white');
 //					}
-//				}
-//				var value = {
-//					//"patientCode": $("#_detailPatientCode").text() ,
-//					"deviceId": result
-//				}
-//				$.ajax({
-//					url: ajax_nu_url + '/biz/nu/member/viewer/eForm25/consent/device/mst/get',
-//					type: 'post',
-//					timeout: 5000,
-//					data: {
-//						parameter: JSON.stringify(value)
-//					}
-//				}).done(function (data) {
-////					if (data == null) {
-////						$('#_DeviceUUID').text("미등록");
-////						$('#_DeviceUUID').css('color', 'red');
-////					} else {
-////						$('#_DeviceUUID').text(data.useDeptNm);
-////						$('#_DeviceUUID').css('color', 'white');
-////					}
-//					$('#_DeviceUUID').text("교육용");
-//					$('#_DeviceUUID').css('color', 'white');
-//				});
-////				$('#uuidQrCord').barcode(result, "code128",{showHRI:true,bgColor:"white"});
-//				//				alert(result);
-//				new QRCode(document.getElementById("uuidQrCord"), {
-//					text: result,
-//					width: 64,
-//					height: 64
-//				});
-//				return result;
-//			}, function (result) {
-//				alert(result)
-//			}, "ClipsoftPlugin", "GetDevicesUUID", []);
-//		},
+					$('#_DeviceUUID').text("운영");
+					$('#_DeviceUUID').css('color', 'white');
+				});
+//				$('#uuidQrCord').barcode(result, "code128",{showHRI:true,bgColor:"white"});
+				//				alert(result);
+				new QRCode(document.getElementById("uuidQrCord"), {
+					text: result,
+					width: 64,
+					height: 64
+				});
+				return result;
+			}, function (result) {
+				alert(result)
+			}, "ClipsoftPlugin", "GetDevicesUUID", []);
+		},
 		FileUploadTest: function (obj) {
 			cordova.exec(function (result) {
 				alert("success")

@@ -189,7 +189,7 @@ public class CommonUtil {
 		String name = "";
 		try {
 			if(packageName == null || packageName.equals("")){
-				name = "kr.co.less.consent.yjh.edu";
+				name = "kr.co.less.consent.yjh.real";
 			}else{
 				name = packageName;
 			}
@@ -208,12 +208,13 @@ public class CommonUtil {
 		String name = "";
 		try {
 			if(packageName == null || packageName.equals("")){
-				name = "kr.co.less.consent.yjh.edu";
+				name = "kr.co.less.consent.yjh.real";
 			}else{
 				name = packageName;
 			}
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(name, PackageManager.GET_META_DATA);
 			versionName = pInfo.versionName;
+			EFromViewer.writeLog("버전정보: " + versionName);// will be deleted
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

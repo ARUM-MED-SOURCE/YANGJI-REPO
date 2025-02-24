@@ -1,11 +1,11 @@
 var INTERFACE = {};
 
-INTERFACE.TYPE = "DEV";
-//INTERFACE.TYPE = "REAL";
+//INTERFACE.TYPE = "DEV";
+INTERFACE.TYPE = "REAL";
 
 INTERFACE.USER = "";
-INTERFACE.USER = "TEST";	// 테스트용  : 로그인 기본 셋팅, 공인인증서 해제 
-//INTERFACE.USER = "REAL"; // 운영서버
+//INTERFACE.USER = "TEST";	// 테스트용  : 로그인 기본 셋팅, 공인인증서 해제 
+INTERFACE.USER = "REAL"; // 운영서버
 
 // alert 로그 사용 여부 
 //INTERFACE.IS_ALTER = "TRUE";
