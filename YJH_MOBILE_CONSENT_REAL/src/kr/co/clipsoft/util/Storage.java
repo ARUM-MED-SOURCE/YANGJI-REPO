@@ -17,7 +17,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
-import kr.co.less.consent.yjh.edu.R;
+import kr.co.less.consent.yjh.real.R;
 public class Storage {
 	public static final String TAG = "Storage";
 	 
@@ -67,14 +67,14 @@ public class Storage {
 		String mode = "";
 		String defaultMode = "";
 		try {			
-			String configFilePath = Environment.getExternalStorageDirectory().toString() + "/Documents/yjh_consent_config_edu.json";	
+			String configFilePath = Environment.getExternalStorageDirectory().toString() + "/Documents/yjh_consent_config_real.json";	
 			Log.i(TAG, "configFilePath : " + configFilePath);
 			File configFile  = new File(configFilePath);
 			if(configFile.exists() && configFile.isFile()){
 				Log.i(TAG, "[외부 설정 정보]");
 				is = new FileInputStream(configFile);	
 			}else{			
-				String appVersionName = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.edu");
+				String appVersionName = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.real");
 				if(appVersionName.indexOf("DEV") > -1) {
 					defaultMode = "DEV";
 				}else {
@@ -130,6 +130,7 @@ public class Storage {
 	  * @return
 	  */
 	public String getStorage(String key){	
+		EFromViewer.writeLog("getStorage: " + key);	// will be deleted
 		String value = storage.getString(key, "");
 		if(value.equals("")){		
 			// 저장소에 해당 값들이 없을 경우 다시 설정 파일에서 가져와서 저장소에 저장 
@@ -146,7 +147,8 @@ public class Storage {
 		    	editor.putString(key, value);
 		    	editor.commit();
 		    }else if(key.equals("CONSENT_APP_VERSION")){
-		    	value = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.edu");
+		    	value = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.real");
+		    	EFromViewer.writeLog("value: " + value);
 		    	editor.putString(key, value);
 		    	editor.commit();
 		    }else if(key.equals("EFORM_APP_VERSION")){ 	
@@ -191,7 +193,7 @@ public class Storage {
 		String defaultMode = "";
 		try {
 			
-			String configFilePath = Environment.getExternalStorageDirectory().toString() + "/Documents/yjh_consent_config_edu.json";
+			String configFilePath = Environment.getExternalStorageDirectory().toString() + "/Documents/yjh_consent_config_real.json";
 //			String configFilePath = Environment.getExternalStorageState()+"/Documents/consent_config.json";
 			Log.i(TAG, "configFilePath : " + configFilePath);
 			File configFile  = new File(configFilePath);       
@@ -200,7 +202,7 @@ public class Storage {
 				Log.i(TAG, "[외부 설정 정보]");
 				is = new FileInputStream(configFile);	
 			}else{
-				String appVersionName = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.edu");
+				String appVersionName = CommonUtil.getInstance(context).getCurrentVersionName("kr.co.less.consent.yjh.real");
 				if(appVersionName.indexOf("DEV") > -1) {
 					defaultMode = "DEV";
 				}else {

@@ -39,7 +39,7 @@ gen-external-apklibs
 ### Java ###
 # Compiled class file
 *.class
-*.classpath
+# *.classpath
 
 # Log file
 
