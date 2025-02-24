@@ -60,14 +60,18 @@ public class ClipHttpDownlaodConnection {
 				outputStream.close();
 				inputStream.close();		
 				Log.i(TAG_NAME, "[DOWNLOAD] " + downloadFileName + " download Success!!");
+				EFromViewer.writeLog("[DOWNLOAD] " + downloadFileName + " download Success!!");
 			} else {
 				Log.i(TAG_NAME, "[DOWNLOAD] " + downloadFileName + " download Fail!!!!");
 				Log.i(TAG_NAME, "[DOWNLOAD] responseCode : " + responseCode);				
+				EFromViewer.writeLog("[DOWNLOAD] " + downloadFileName + " download Success!!");
+								
 			}
 			httpConn.disconnect();			
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.i(TAG_NAME, "[DOWNLOAD] exception : " + e.toString());
+			EFromViewer.writeLog("[DOWNLOAD] exception : " + e.toString());
 		}
 		Log.i(TAG_NAME, "[DOWNLOAD] ==========================================");
 		return respone;

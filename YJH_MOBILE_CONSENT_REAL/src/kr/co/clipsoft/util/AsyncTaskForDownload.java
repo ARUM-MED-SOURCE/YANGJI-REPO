@@ -52,7 +52,7 @@ public class AsyncTaskForDownload extends AsyncTask<String, String, String> {
 
 		ClipHttpDownlaodConnection httpDownloadCon = new ClipHttpDownlaodConnection();
 
-		String downloadUrl = "http://app.smartcmc.or.kr/eform/013";
+		String downloadUrl = "https://192.168.4.30/apk/emr";
 		downloadPath = Environment.getExternalStorageDirectory().toString() + "/CLIPe-Form/CONSENT/UPDATE";
 		// downloadPath = Environment.getExternalStorageDirectory().toString() +
 		// "/Download";
