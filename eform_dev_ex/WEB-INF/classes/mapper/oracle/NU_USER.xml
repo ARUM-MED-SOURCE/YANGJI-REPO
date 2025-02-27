@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NU_USER">
+   	<select id="getUser" parameterType="kr.co.clipsoft.repository.model.ClipUserDto" resultType="kr.co.clipsoft.repository.model.ClipUserDto">
+   		SELECT 
+   			PRODUCT_ID AS productId
+   			, USER_ID AS userId
+   			, PASSWORD AS password
+   			, NAME AS name
+   			, USE_YN AS useYN_stringValue
+   			, CREATE_DATE AS createDate
+   			, CREATE_USER_ID AS createUserId
+   			, UPDATE_DATE AS updateDate
+   			, UPDATE_USER_ID AS updateUserId
+   		FROM 
+   			CLIP_USER
+   		WHERE
+   			PRODUCT_ID = #{productId}
+   			AND USER_ID = #{userId}
+   	</select>
+   	
+	<insert id="insertUser" parameterType="kr.co.clipsoft.repository.model.ClipUserDto">
+		INSERT INTO CLIP_USER (
+			PRODUCT_ID
+   			, USER_ID
+   			, PASSWORD
+   			, NAME
+   			, USE_YN
+   			, CREATE_DATE
+   			, CREATE_USER_ID
+   			, UPDATE_DATE
+   			, UPDATE_USER_ID
+        )
+		VALUES(
+			#{productId, jdbcType=NUMERIC}
+			, #{userId, jdbcType=VARCHAR}
+			, #{password, jdbcType=VARCHAR}
+			, #{name, jdbcType=VARCHAR}
+			, 'Y'
+			, SYSDATE
+			, #{createUserId, jdbcType=VARCHAR}
+			, SYSDATE
+			, #{updateUserId, jdbcType=VARCHAR}
+		)		
+	</insert>
+</mapper>

@@ -20,7 +20,7 @@
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
 
 		<!-- EDU -->
-		<param name="File" value="/logs/solution/eform/yjhdev/clipeform.log" />
+		<param name="File" value="/logs/solution/eform/yjhemr/clipeform.log" />
 
 		<param name="DatePattern" value="'.'yyyy_MM_dd"/>
 

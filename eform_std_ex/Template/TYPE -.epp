@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document description="" id="" name="TYPE_NONE" version="1" designer-version="2.5" designer-build-version="2.5.120.0" designer-build-last-version="2.5.120.0" tag="" document-state="None" first-initialize-date="">
+  <global>
+    <fields>
+      <field-set field-type="data" />
+      <field-set field-type="parameter" />
+      <field-set field-type="transform" />
+      <field-set field-type="system" />
+      <field-set field-type="script" />
+    </fields>
+    <connection name="noname" connection-type="xml">
+      <connection-prop prop-type="data-schema-url" value="" data-post-key="" />
+      <connection-prop prop-type="setdata-service-url" value="" data-post-key="" />
+      <connection-prop prop-type="getdata-service-url" value="" data-post-key="" />
+      <connection-prop prop-type="tempsetdata-service-url" value="" data-post-key="" />
+      <connection-prop prop-type="tempgetdata-service-url" value="" data-post-key="" />
+    </connection>
+    <customdialogs />
+  </global>
+  <form change-controls-value-by-condition="" save-error-condition="" page-orientation="Portrait" size="{width=2100,height=2970}" margin="{left=50,top=50,right=50,bottom=50}" required-mode="None">
+    <pagemanager>
+      <order>
+        <page id="page1" page-type="Normal" page-number="1" />
+      </order>
+    </pagemanager>
+    <background background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+    <header input-section-order="1" height="210" background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+    <body input-section-order="2">
+      <page is-dynamic-add-page="False" except-current-page-data-when-saving="False" except-current-page-from-export-target="False" except-current-page-when-printing="False" id="page1" use-background="True" paper-color="{a=255,r=255,g=255,b=255}" name="noname" use-header="True" use-footer="True" page-hidden="False" tag="" page-type="Normal" background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+    </body>
+    <pagetemplatemanager />
+    <footer input-section-order="3" height="210" background-color="{a=255,r=255,g=255,b=255}" background-color-visible="False" />
+  </form>
+</document>

@@ -129,8 +129,7 @@ public class Storage {
 	  * @param key
 	  * @return
 	  */
-	public String getStorage(String key){	
-		EFromViewer.writeLog("getStorage: " + key);	// will be deleted
+	public String getStorage(String key){
 		String value = storage.getString(key, "");
 		if(value.equals("")){		
 			// 저장소에 해당 값들이 없을 경우 다시 설정 파일에서 가져와서 저장소에 저장 

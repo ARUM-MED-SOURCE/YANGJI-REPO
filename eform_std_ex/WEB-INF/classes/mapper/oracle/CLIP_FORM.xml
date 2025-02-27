@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_FORM">
+	<resultMap id="getList_all_resultMap" type="java.util.HashMap">
+		<result property="productId" column="PRODUCT_ID" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="formId" column="FORM_ID" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="formType" column="FORM_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="formName" column="FORM_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="useYN_stringValue" column="USE_YN" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="createDate" column="CREATE_DATE" javaType="java.util.Date" jdbcType="DATE" />
+		<result property="createUserId" column="CREATE_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.util.Date" jdbcType="DATE" />
+		<result property="updateUserId" column="UPDATE_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="formCategoryId" column="FORM_CATEGORY_ID" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="lastFormVersion" column="FORM_VERSION" javaType="java.lang.Long" jdbcType="NUMERIC" />
+	</resultMap>
+
+	<sql id="ALL_COLUMN">
+		PRODUCT_ID
+		, FORM_ID
+		, FORM_TYPE
+		, FORM_CATEGORY_ID
+		, FORM_NAME
+		, USE_YN
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMN_RENAME">
+		PRODUCT_ID AS productId
+		, FORM_ID AS formId
+		, FORM_TYPE AS formType
+		, FORM_CATEGORY_ID AS formCategoryId
+		, FORM_NAME AS formName
+		, USE_YN AS useYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	<sql id="SELECT_COLUMN">
+		PRODUCT_ID AS productId
+		, FORM_ID AS formId
+		, FORM_TYPE AS formType
+		, FORM_CATEGORY_ID AS formCategoryId
+		, FORM_NAME AS formName
+		, USE_YN AS useYN_stringValue
+		, FORM_VERSION AS formVersion
+		, FORM_DATA AS formDataByteValue
+		, COMMIT_COMMENT AS commitComment
+		, PUBLICATION_YN AS publicationYN_stringValue
+		, ENCRYPTION_YN AS encryptionYN_stringValue
+		, COMPRESSION_YN AS compressionYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	<sql id="INNER_JOIN_SELECT_COLUMN">
+		form.PRODUCT_ID AS productId
+		, form.FORM_ID AS formId
+		, form.FORM_TYPE AS formType
+		, form.FORM_CATEGORY_ID AS formCategoryId
+		, form.FORM_NAME AS formName
+		, form.USE_YN AS useYN_stringValue
+		, data.FORM_VERSION AS formVersion
+		, data.FORM_DATA AS formDataByteValue
+		, data.COMMIT_COMMENT AS commitComment
+		, data.PUBLICATION_YN AS publicationYN_stringValue
+		, data.ENCRYPTION_YN AS encryptionYN_stringValue
+		, data.COMPRESSION_YN AS compressionYN_stringValue
+		, data.CREATE_DATE AS createDate
+		, data.CREATE_USER_ID AS createUserId
+		, data.UPDATE_DATE AS updateDate
+		, data.UPDATE_USER_ID AS updateUserId
+	</sql>
+	<sql id="INNER_JOIN_SELECT_COLUMN_NOT_RENAME">
+		form.PRODUCT_ID
+		, form.FORM_ID
+		, form.FORM_TYPE
+		, form.FORM_CATEGORY_ID
+		, form.FORM_NAME
+		, form.USE_YN
+		, data.FORM_VERSION
+		, data.FORM_DATA
+		, data.COMMIT_COMMENT
+		, data.PUBLICATION_YN
+		, data.ENCRYPTION_YN
+		, data.COMPRESSION_YN
+		, data.CREATE_DATE
+		, data.CREATE_USER_ID
+		, data.UPDATE_DATE
+		, data.UPDATE_USER_ID
+	</sql>
+	
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipFormDto">
+		INSERT
+		INTO CLIP_FORM (
+			<include refid="ALL_COLUMN"></include>
+		) VALUES (
+			#{productId}
+			, #{formId}
+			, #{formType}
+			, #{formCategoryId, jdbcType=DECIMAL}
+			, #{formName}
+			, #{useYN_stringValue}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<update id="update" parameterType="kr.co.clipsoft.repository.model.ClipFormDto">
+		UPDATE
+			CLIP_FORM
+		SET
+			, FORM_CATEGORY_ID = #{formCategoryId, jdbcType=DECIMAL}
+			, FORM_NAME = #{formName}
+			, USE_YN = #{useYN_stringValue}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			AND FORM_TYPE = #{formType}
+	</update>
+	
+	<update id="updateUse" parameterType="kr.co.clipsoft.repository.model.ClipFormDto">
+		UPDATE
+			CLIP_FORM
+		SET
+			USE_YN = #{useYN_stringValue}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			AND FORM_TYPE = #{formType}
+	</update>
+	
+	<update id="updateName" parameterType="kr.co.clipsoft.repository.model.ClipFormDto">
+		UPDATE
+			CLIP_FORM
+		SET
+			  FORM_NAME = #{formName}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			AND FORM_TYPE = #{formType}
+	</update>
+	
+	<update id="updateCategory" parameterType="kr.co.clipsoft.repository.model.ClipFormDto">
+		UPDATE
+			CLIP_FORM
+		SET
+			  FORM_CATEGORY_ID = #{formCategoryId, jdbcType=DECIMAL}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			AND FORM_TYPE = #{formType}
+	</update>
+	
+	<select id="getForm" parameterType="java.util.HashMap" resultType="kr.co.clipsoft.repository.model.ClipFormDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM
+			CLIP_FORM
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_ID = #{formId}
+			<if test="enableCheckUseYN == 'true'">
+				AND USE_YN = 'Y'
+			</if>
+	</select>
+
+	<select id="get" parameterType="java.util.HashMap" resultType="kr.co.clipsoft.repository.model.ClipFormAndDataDto">
+		SELECT 
+            <include refid="INNER_JOIN_SELECT_COLUMN"></include>
+        FROM
+            CLIP_FORM form
+                LEFT OUTER JOIN
+            CLIP_FORM_DATA data
+                ON form.PRODUCT_ID = data.PRODUCT_ID
+                    AND form.FORM_ID = data.FORM_ID
+        WHERE
+       		form.PRODUCT_ID = #{productId}
+			AND form.FORM_ID = #{formId}
+			AND data.FORM_VERSION = #{formVersion}
+			AND form.FORM_TYPE = #{formType}
+			<if test="enableCheckUseYN == 'true'">
+				AND form.USE_YN = 'Y'
+			</if>
+			<if test="eForm_setPublicationYN != 'true'">
+				AND data.PUBLICATION_YN = 'Y'
+			</if>
+	</select> 
+	
+	<select id="getRecent" parameterType="java.util.HashMap" resultType="kr.co.clipsoft.repository.model.ClipFormAndDataDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, FORM_ID AS formId
+			, FORM_TYPE AS formType
+			, FORM_CATEGORY_ID AS formCategoryId
+			, FORM_NAME AS formName
+			, USE_YN AS useYN_stringValue
+			, FORM_VERSION AS formVersion
+			<if test="includeFormData == true">
+				, FORM_DATA AS formDataByteValue
+			</if>
+			, COMMIT_COMMENT AS commitComment
+			, PUBLICATION_YN AS publicationYN_stringValue
+			, ENCRYPTION_YN AS encryptionYN_stringValue
+			, COMPRESSION_YN AS compressionYN_stringValue
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate 
+			, UPDATE_USER_ID AS updateUserId
+		FROM 
+			(
+				SELECT 
+		            <include refid="INNER_JOIN_SELECT_COLUMN_NOT_RENAME"></include>
+		        FROM
+		            CLIP_FORM form
+		                INNER JOIN
+		            CLIP_FORM_DATA data 
+		                ON form.PRODUCT_ID = data.PRODUCT_ID
+		                    AND form.FORM_ID = data.FORM_ID
+		        WHERE
+	        		form.PRODUCT_ID = #{dto.productId}
+					AND form.FORM_ID = #{dto.formId}
+					AND form.FORM_TYPE = #{dto.formType}
+					<if test="enableCheckUseYN == 'true'">
+						AND form.USE_YN = 'Y'
+					</if>
+					<if test="eForm_setPublicationYN != 'true'">
+						AND data.PUBLICATION_YN = 'Y'
+					</if>
+				ORDER BY 
+					data.FORM_VERSION DESC
+			)
+		WHERE 
+			ROWNUM = 1
+	</select>
+	
+	<select id="getList_allVersion" parameterType="java.util.HashMap" resultType="kr.co.clipsoft.repository.model.ClipFormAndDataDto">
+		SELECT 
+            form.PRODUCT_ID AS productId
+			, form.FORM_ID AS formId
+			, form.FORM_TYPE AS formType
+			, form.FORM_CATEGORY_ID AS formCategoryId
+			, form.FORM_NAME AS formName
+			, form.USE_YN AS useYN_stringValue
+			, data.FORM_VERSION AS formVersion
+			, data.COMMIT_COMMENT AS commitComment
+			, data.PUBLICATION_YN AS publicationYN_stringValue
+			, data.ENCRYPTION_YN AS encryptionYN_stringValue
+			, data.COMPRESSION_YN AS compressionYN_stringValue
+			, data.CREATE_DATE AS createDate
+			, data.CREATE_USER_ID AS createUserId
+			, data.UPDATE_DATE AS updateDate
+			, data.UPDATE_USER_ID AS updateUserId
+        FROM
+            CLIP_FORM form
+                LEFT OUTER JOIN
+            CLIP_FORM_DATA data
+                ON form.PRODUCT_ID = data.PRODUCT_ID
+                    AND form.FORM_ID = data.FORM_ID
+        WHERE
+       		form.PRODUCT_ID = #{productId}
+			AND form.FORM_ID = #{formId}
+			AND form.FORM_TYPE = #{formType}
+			<if test="enableCheckUseYN == 'true'">
+				AND form.USE_YN = 'Y'
+			</if>
+			<if test="eForm_setPublicationYN != 'true'">
+				AND data.PUBLICATION_YN = 'Y'
+			</if>
+		ORDER BY
+			data.FORM_VERSION DESC
+	</select>
+	
+	<select id="getList_all" parameterType="java.util.HashMap" resultMap="getList_all_resultMap">
+		SELECT
+		    form.PRODUCT_ID
+		    , form.FORM_ID
+		    , form.FORM_TYPE
+		    , form.FORM_NAME
+		    , CASE WHEN form.USE_YN = 'Y' THEN 'true'
+             	ELSE 'false'
+             	END AS setUseYN_stringValue
+		    , form.CREATE_DATE
+		    , form.CREATE_USER_ID
+		    , form.UPDATE_DATE AS
+		    , form.UPDATE_USER_ID
+		    , form.FORM_CATEGORY_ID
+		    , data.FORM_VERSION
+		FROM
+		    CLIP_FORM form
+		    INNER JOIN (
+		        SELECT PRODUCT_ID, FORM_ID, MAX(FORM_VERSION) AS FORM_VERSION
+		        FROM CLIP_FORM_DATA
+		        <if test="eForm_setPublicationYN != 'true'">
+		        WHERE
+		        	PUBLICATION_YN = 'Y'
+		        </if>
+		        GROUP BY PRODUCT_ID, FORM_ID
+		    ) data
+		        ON form.PRODUCT_ID = data.PRODUCT_ID
+		            AND form.FORM_ID = data.FORM_ID
+		WHERE
+		    form.PRODUCT_ID = #{productId}
+		    AND form.FORM_TYPE = #{formType}
+		    <if test="enableCheckUseYN == 'true'">
+				AND form.USE_YN = 'Y'
+			</if>
+		ORDER BY
+		    form.FORM_NAME
+	</select>
+	
+	<select id="getList_allCategoryform" parameterType="kr.co.clipsoft.repository.model.ClipFormCategoryDto" resultType="kr.co.clipsoft.repository.model.ClipFormDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM
+			CLIP_FORM
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_TYPE = 'FORM_TYPE_001'
+			AND FORM_CATEGORY_ID = #{formCategoryId}
+			<if test="enableCheckUseYN == 'true'">
+				AND USE_YN = 'Y'
+			</if>
+			<if test="eForm_setPublicationYN != 'true'">
+				AND data.PUBLICATION_YN = 'Y'
+			</if>
+		ORDER BY
+			FORM_NAME
+	</select>
+	
+	<select id="getList_allRegist" parameterType="kr.co.clipsoft.repository.model.ClipFormDto" resultType="kr.co.clipsoft.repository.model.ClipFormDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM
+			CLIP_FORM
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_TYPE = #{formType}
+			AND FORM_NAME LIKE #{formName}
+			<if test="enableCheckUseYN == 'true'">
+				AND USE_YN = 'Y'
+			</if>
+			<if test="eForm_setPublicationYN != 'true'">
+				AND data.PUBLICATION_YN = 'Y'
+			</if>
+		ORDER BY
+			FORM_NAME
+	</select>
+</mapper>

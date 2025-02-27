@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_USER"> 
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipUserDto">
+		INSERT
+		INTO CLIP_USER (
+			PRODUCT_ID
+   			, USER_ID
+   			, PASSWORD
+   			, NAME
+   			, USE_YN
+   			, CREATE_DATE
+   			, CREATE_USER_ID
+   			, UPDATE_DATE
+   			, UPDATE_USER_ID
+		) VALUES (
+			#{productId}
+   			, #{userId}
+   			, #{password}
+   			, #{name}
+   			, #{useYN_stringValue}
+   			, SYSDATE
+   			, #{createUserId}
+   			, SYSDATE
+   			, #{updateUserId}
+		)
+	</insert>
+	
+	<update id="update" parameterType="kr.co.clipsoft.repository.model.ClipUserDto">
+		UPDATE
+			CLIP_USER
+		SET
+			UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+			<if test="password != null">
+				, PASSWORD = #{password}
+			</if>
+			<if test="name != null">
+				, NAME = #{name}
+			</if>
+			<if test="useYN != null">
+				, USE_YN = #{useYN_stringValue}
+			</if>
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+	</update>
+
+   	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipUserDto" resultType="kr.co.clipsoft.repository.model.ClipUserDto">
+   		SELECT 
+   			PRODUCT_ID AS productId
+   			, USER_ID AS userId
+   			, PASSWORD AS password
+   			, NAME AS name
+   			, USE_YN AS useYN_stringValue
+   			, CREATE_DATE AS createDate
+   			, CREATE_USER_ID AS createUserId
+   			, UPDATE_DATE AS updateDate
+   			, UPDATE_USER_ID AS updateUserId
+   		FROM 
+   			CLIP_USER
+   		WHERE
+   			PRODUCT_ID = #{productId}
+   			AND USER_ID = #{userId}
+   	</select>
+   	
+   	<select id="getList" parameterType="kr.co.clipsoft.repository.model.ClipSearchDto" resultType="kr.co.clipsoft.repository.model.ClipUserDto">
+   		SELECT 
+   			PRODUCT_ID AS productId
+   			, USER_ID AS userId
+   			, PASSWORD AS password
+   			, NAME AS name
+   			, USE_YN AS useYN_stringValue
+   			, CREATE_DATE AS createDate
+   			, CREATE_USER_ID AS createUserId
+   			, UPDATE_DATE AS updateDate
+   			, UPDATE_USER_ID AS updateUserId
+   		FROM 
+   		(
+   			SELECT 
+   				* 
+   			FROM
+   				CLIP_USER
+   			WHERE PRODUCT_ID = #{productId}
+   			<if test="useYN != null">
+				AND USE_YN = #{useYN_stringValue}
+			</if>	
+			<if test="id != null"> 
+				AND  USER_ID NOT IN 
+					(
+						SELECT 
+							USER_ID 
+						FROM 
+							CLIP_USER_GROUP_MAPPING 
+						WHERE
+							USER_GROUP_ID = #{id}
+					)
+			</if>
+   		)
+   		WHERE   			
+   			USER_ID LIKE #{keyword}
+   	</select>
+   	
+   	<delete id="delete" parameterType="kr.co.clipsoft.repository.model.ClipUserDto">
+		DELETE
+		FROM 
+			CLIP_USER
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+	</delete>
+   	
+</mapper>

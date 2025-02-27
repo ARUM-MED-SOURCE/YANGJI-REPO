@@ -1724,7 +1724,6 @@ $(document).ready(function () {
     $("#_btnPopupOk").on("click", function () {
         var id = getLocalStorage("userId");
         var pw = $("#_certpassword").val();
-        searchAppVersion(); // will be deleted (인증서dn이 없어서, 임시로 무조건 열리게 해둠)
         if (pw != "" && pw != undefined) {
             var ITnadePlugins = new ITnadePlugin();
             ITnadePlugins.setConnect("192.168.4.17", '6001', getLocalStorage("userId"), pw);

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_FORM_CATEGORY">
+	<resultMap id="categoryAndFormResultMap" type="java.util.HashMap">
+		<result property="itemType" column="itemType" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="itemId" column="itemId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="parentItemId" column="parentItemId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+		<result property="itemName" column="itemName" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="seq" column="seq" javaType="java.lang.Long" jdbcType="NUMERIC" />
+	</resultMap>
+
+	<sql id="ALL_COLUMS">
+		PRODUCT_ID
+		, FORM_CATEGORY_ID
+		, FORM_CATEGORY_CODE
+		, PARENT_FORM_CATEGORY_ID
+		, FORM_CATEGORY_NAME
+		, SEQ
+		, USE_YN
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMS_RENAME">
+		PRODUCT_ID AS productId
+		, FORM_CATEGORY_ID AS formCategoryId
+		, FORM_CATEGORY_CODE as formCategoryCode
+		, PARENT_FORM_CATEGORY_ID AS parentFormCategoryId
+		, FORM_CATEGORY_NAME AS formCategoryName
+		, SEQ AS seq
+		, USE_YN AS useYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+	
+	<insert id="newFormCategory" parameterType="kr.co.clipsoft.repository.model.ClipFormCategoryDto">
+		INSERT
+		INTO CLIP_FORM_CATEGORY (
+			<include refid="ALL_COLUMS"></include>
+		) VALUES (
+			#{productId}
+			, #{formCategoryId}
+			, #{formCategoryCode}
+			, #{parentFormCategoryId, jdbcType=DECIMAL}
+			, #{formCategoryName}
+			, #{seq}
+			, #{useYN_stringValue}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<update id="update" parameterType="kr.co.clipsoft.repository.model.ClipFormCategoryDto">
+		UPDATE 
+			CLIP_FORM_CATEGORY
+		SET
+			UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+			, FORM_CATEGORY_CODE = #{formCategoryCode}
+			, FORM_CATEGORY_NAME = #{formCategoryName}
+			, PARENT_FORM_CATEGORY_ID = #{parentFormCategoryId}
+			<if test="seq != null">
+				, SEQ = #{seq}
+			</if>
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_CATEGORY_ID = #{formCategoryId}	
+	</update>
+	
+	<update id="update_useYN" parameterType="kr.co.clipsoft.repository.model.ClipFormCategoryDto">
+		UPDATE 
+			CLIP_FORM_CATEGORY
+		SET
+			USE_YN = #{useYN_stringValue}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_CATEGORY_ID = #{formCategoryId}	
+	</update>
+	
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipFormCategoryDto" resultType="kr.co.clipsoft.repository.model.ClipFormCategoryDto">
+		SELECT
+			<include refid="ALL_COLUMS_RENAME"></include>
+		FROM
+			CLIP_FORM_CATEGORY
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND FORM_CATEGORY_ID = #{formCategoryId}
+			AND USE_YN = 'Y'
+	</select>
+	
+	<select id="getList_sameParentFormCategoryId" parameterType="kr.co.clipsoft.repository.model.ClipFormCategoryDto" resultType="kr.co.clipsoft.repository.model.ClipFormCategoryDto">
+		SELECT 
+			<include refid="ALL_COLUMS_RENAME"></include>
+		FROM 
+		    CLIP_FORM_CATEGORY
+		WHERE
+			PRODUCT_ID = #{productID}
+			AND USE_YN = 'Y'
+			<if test="parentFormCategoryId == null">
+				AND PARENT_FORM_CATEGORY_ID IS NULL
+			</if>
+		    <if test="parentFormCategoryId != null">
+				AND PARENT_FORM_CATEGORY_ID = #{parentFormCategoryId}
+			</if>
+		ORDER BY
+	   	 	SEQ, FORM_CATEGORY_NAME, FORM_CATEGORY_NAME
+	</select>
+	
+	<select id="getList_all_categoryAndForm" parameterType="java.util.HashMap" resultMap="categoryAndFormResultMap">
+		SELECT *
+		FROM (
+		    SELECT DISTINCT itemType, itemId, parentItemId, itemName, seq
+		    FROM
+		    (
+		        SELECT DISTINCT
+		            'category' AS itemType
+		            , category.FORM_CATEGORY_ID AS itemId
+		            , NVL(category.PARENT_FORM_CATEGORY_ID, 0) AS parentItemId
+		            , category.FORM_CATEGORY_NAME AS itemName
+		            , NVL(category.SEQ, 0) AS seq
+		            , category.FORM_CATEGORY_NAME
+		            , category.PARENT_FORM_CATEGORY_ID
+		        FROM
+		            CLIP_FORM_CATEGORY category                            
+		            LEFT OUTER JOIN (
+		                SELECT
+		                    PRODUCT_ID, FORM_CATEGORY_ID, AUTH_CODE
+		                FROM
+		                    CLIP_FORM_CATEGORY_USER_AUTH
+		                WHERE
+		                    PRODUCT_ID = #{productId}
+		                    AND USER_ID = #{userId}
+		                    AND AUTH_CODE = 'CATEGORY_AUTH_001'
+		            ) userAuth
+		                ON category.PRODUCT_ID = userAuth.PRODUCT_ID
+		                    AND category.FORM_CATEGORY_ID = userAuth.FORM_CATEGORY_ID
+		            LEFT OUTER JOIN (
+		                SELECT
+		                    b.PRODUCT_ID, b.FORM_CATEGORY_ID, b.AUTH_CODE
+		                FROM
+		                    CLIP_USER_GROUP_MAPPING a
+		                    LEFT OUTER JOIN CLIP_FORM_CATEGORY_GROUP_AUTH b
+		                        ON a.PRODUCT_ID = b.PRODUCT_ID
+		                            AND a.USER_GROUP_ID = b.USER_GROUP_ID
+		                WHERE
+		                    a.PRODUCT_ID = #{productId}
+		                    AND a.USER_ID = #{userId}
+		                    AND b.AUTH_CODE = 'CATEGORY_AUTH_001'
+		            ) groupAuth
+		                ON category.PRODUCT_ID = groupAuth.PRODUCT_ID
+		                    AND category.FORM_CATEGORY_ID = groupAuth.FORM_CATEGORY_ID            
+		            WHERE
+		                category.PRODUCT_ID = #{productId}
+		                AND category.USE_YN = 'Y'
+		                AND (userAuth.AUTH_CODE IS NOT NULL OR groupAuth.AUTH_CODE IS NOT NULL)
+		      )
+		    START WITH FORM_CATEGORY_NAME like '%${itemName}%' 
+		        OR itemId IN (
+	            	SELECT FORM_CATEGORY_ID
+		            FROM CLIP_FORM_CATEGORY
+		            WHERE
+		            	PRODUCT_ID = #{productId}
+		              	AND FORM_CATEGORY_ID IN (
+		                  	SELECT FORM_CATEGORY_ID
+		                  	FROM CLIP_FORM
+		                  	WHERE FORM_NAME like '%${itemName}%'
+								AND USE_YN = 'Y'
+	                  	)
+					)
+		    CONNECT BY PRIOR parentItemId = itemId
+		    ORDER BY 
+		        parentItemId, itemId, SEQ DESC
+		)
+		
+		UNION 
+		
+		SELECT *
+		FROM (
+		    SELECT DISTINCT itemType, itemId, parentItemId, itemName, seq
+		    FROM
+		        (
+		           SELECT DISTINCT
+		                'form' AS itemType
+		                , form.FORM_ID AS itemId
+		                , NVL(form.FORM_CATEGORY_ID, 0) AS parentItemId
+		                , form.FORM_NAME AS itemName
+		                , 0 AS seq
+		            FROM
+		              CLIP_FORM form
+		              LEFT OUTER JOIN (
+		                SELECT
+		                    PRODUCT_ID, FORM_ID, AUTH_CODE
+		                FROM
+		                    CLIP_FORM_USER_AUTH
+		                WHERE
+		                    PRODUCT_ID = #{productId}
+		                    AND USER_ID = #{userId}
+		                    AND AUTH_CODE = 'FORM_AUTH_001' 
+		              ) userAuth
+		                ON form.PRODUCT_ID = userAuth.PRODUCT_ID
+		                    AND form.FORM_ID = userAuth.FORM_ID
+		              LEFT OUTER JOIN (
+		                SELECT
+		                    b.PRODUCT_ID, b.FORM_ID, b.AUTH_CODE
+		                FROM
+		                    CLIP_USER_GROUP_MAPPING a
+		                    LEFT OUTER JOIN CLIP_FORM_USER_GROUP_AUTH b
+		                        ON a.PRODUCT_ID = b.PRODUCT_ID
+		                            AND a.USER_GROUP_ID = b.USER_GROUP_ID
+		                WHERE
+		                    a.PRODUCT_ID = #{productId}
+		                    AND a.USER_ID = #{userId}
+		                    AND b.AUTH_CODE = 'FORM_AUTH_001'
+		              ) groupAuth
+		                ON form.PRODUCT_ID = groupAuth.PRODUCT_ID
+		                    AND form.FORM_ID = groupAuth.FORM_ID
+		            WHERE
+		              form.PRODUCT_ID = #{productId}
+		              AND form.USE_YN = 'Y'
+		              AND (userAuth.AUTH_CODE IS NOT NULL OR groupAuth.AUTH_CODE IS NOT NULL)
+		              AND form.FORM_NAME like '%${itemName}%' 
+		        )
+		    ORDER BY 
+		      parentItemId, itemId, SEQ DESC
+		)
+	</select>
+	
+	<select id="getList_regist_category" parameterType="java.util.HashMap" resultType="kr.co.clipsoft.repository.model.ClipFormCategoryDto">
+		SELECT 
+		    <include refid="ALL_COLUMS_RENAME"></include>
+		FROM 
+		    CLIP_FORM_CATEGORY
+		WHERE
+		     PRODUCT_ID = #{productId}
+		     AND FORM_CATEGORY_NAME LIKE #{itemName}
+	</select>
+		
+</mapper>

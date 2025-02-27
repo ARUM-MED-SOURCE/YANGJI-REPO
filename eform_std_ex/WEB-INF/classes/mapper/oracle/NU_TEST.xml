@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NU_TEST">
+
+	<select id="getFormList"
+		resultType="kr.co.clipsoft.biz.model.NuTestDto">
+		select a.form_id formId
+		     , c.DOCUMENT_CODE formCd
+		     , a.form_name formName
+		     , b.form_version formVersion
+		  from clip_form a
+		     , clip_form_data b
+		     , clip_mapping_id c
+		 where 1=1
+		   and a.form_id = b.form_id
+		   and b.form_id = c.FORM_ID
+		   and a.form_type = 'FORM_TYPE_001'
+		   and a.use_yn = 'Y'
+		   and b.publication_yn = 'Y'
+		   and B.FORM_VERSION = (
+		                          select max(form_version)
+		                            from clip_form_data
+		                           where publication_yn = 'Y'
+		                             and form_id = b.form_id
+		                        )
+		 order by
+		       a.form_name
+	</select>
+	
+	
+	
+	<select id="getFormList2"
+		parameterType="kr.co.clipsoft.biz.model.NuTestDto"
+		resultType="kr.co.clipsoft.biz.model.NuTestDto">
+		  select 
+               a.form_id formId
+		     , c.DOCUMENT_CODE formCd
+		     , a.form_name formName
+		     , b.form_version formVersion
+             , b.publication_yn
+		  from slt.clip_form a
+		     , slt.clip_form_data b
+		     , slt.clip_mapping_id c
+		 where 1=1
+		   and a.form_id = b.form_id
+		   and b.form_id = c.FORM_ID
+		   and a.form_type = 'FORM_TYPE_001'
+		   and a.use_yn = 'Y'
+	   	   and c.document_code in(${formCd})
+		 group by
+               a.form_id 
+		     , c.DOCUMENT_CODE 
+		     , a.form_name 
+		     , b.form_version 
+             , b.publication_yn
+		  
+         order by
+		       a.form_name
+             , a.form_id
+             , b.form_version desc
+
+	</select>
+
+
+	<select id="getFormList3"
+		parameterType="kr.co.clipsoft.biz.model.NuTestDto"
+		resultType="kr.co.clipsoft.biz.model.NuTestDto">
+		    select a.form_id formId
+			     , c.form_cd formCd
+			     , a.form_name formName
+			     , b.form_version formVersion
+			     , b.publication_yn publicationYn
+			     , c.create_datetime createDatetime
+			  from slt.clip_form a
+			     , slt.clip_form_data b
+			     , slt.consent_form_ex c
+			 where 1=1
+			   and a.form_id = b.form_id
+			   and b.form_id = c.form_id
+			   and b.form_version = c.form_version
+			   and a.form_type = 'FORM_TYPE_001'
+			   and c.inst_cd = #{instCd}
+			   and b.form_version = (
+			                          select MAX(form_version)
+			                            from slt.clip_form_data
+			                           where form_id = a.form_id
+			                        )
+			   order by
+			         c.create_datetime desc
+
+	</select>	
+
+
+</mapper>

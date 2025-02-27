@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_ACTION_USER_AUTH">
+	<resultMap id="getList_auth_action_resultMap" type="java.util.HashMap">
+		<result property="actionCode" column="actionCode" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result property="authCode" column="authCode" javaType="java.lang.String" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto">
+		INSERT
+		INTO CLIP_ACTION_USER_AUTH (
+			PRODUCT_ID
+			, USER_ID
+			, ACTION_CODE
+			, AUTH_CODE
+			, CREATE_DATE
+			, CREATE_USER_ID
+			, UPDATE_DATE
+			, UPDATE_USER_ID
+		) VALUES (
+			#{productId}
+			, #{userId}
+			, #{actionCode}
+			, #{authCode}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto">
+		DELETE
+		FROM
+			CLIP_ACTION_USER_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+			AND ACTION_CODE = #{actionCode}
+			AND AUTH_CODE = #{authCode}
+	</delete>
+	
+	<select id="getList_auth_action" parameterType="kr.co.clipsoft.repository.model.ClipUserDto" resultMap="getList_auth_action_resultMap">
+		SELECT
+		    action.CODE as actionCode
+		    , CASE
+		        WHEN groupAuth.AUTH_CODE IS NOT NULL AND userAuth.AUTH_CODE IS NOT NULL THEN userAuth.AUTH_CODE
+		        WHEN groupAuth.AUTH_CODE IS NULL AND userAuth.AUTH_CODE IS NOT NULL THEN userAuth.AUTH_CODE
+		        WHEN groupAuth.AUTH_CODE IS NOT NULL AND userAuth.AUTH_CODE IS NULL THEN groupAuth.AUTH_CODE
+		        ELSE NULL
+		    END AS authCode
+		FROM
+		    (
+		        SELECT PRODUCT_ID, CODE
+		        FROM CLIP_CODE
+		        WHERE CODE_DIV = 'ACTION'
+		    ) action
+		    INNER JOIN CLIP_ACTION_USER_AUTH userAuth
+		        ON action.PRODUCT_ID = userAuth.PRODUCT_ID
+		            AND action.CODE = userAuth.ACTION_CODE
+		    LEFT OUTER JOIN CLIP_USER_GROUP_MAPPING mapping
+		        ON mapping.PRODUCT_ID = userAuth.PRODUCT_ID
+		            AND mapping.USER_ID = userAuth.USER_ID
+		    LEFT OUTER JOIN CLIP_ACTION_GROUP_AUTH groupAuth
+		        ON mapping.PRODUCT_ID = groupAuth.PRODUCT_ID
+		            AND mapping.USER_GROUP_ID = groupAuth.USER_GROUP_ID
+		WHERE
+		    userAuth.PRODUCT_ID = #{productId}
+		    AND userAuth.USER_ID = #{userId}
+	</select>
+	
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto" resultType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_ID AS userId
+			, ACTION_CODE AS actionCode
+			, AUTH_CODE AS authCode
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM
+			CLIP_ACTION_USER_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+			AND ACTION_CODE = #{actionCode}
+			AND AUTH_CODE = #{authCode}
+	</select>
+	
+	<select id="getList" parameterType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto" resultType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_ID AS userId
+			, ACTION_CODE AS actionCode
+			, AUTH_CODE AS authCode
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM
+			CLIP_ACTION_USER_AUTH
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND ACTION_CODE = #{actionCode}
+			<if test="userId != null"> 
+			AND USER_ID LIKE #{userId}
+			</if>
+	</select>
+	
+	<select id="getAddUserList" parameterType="kr.co.clipsoft.repository.model.ClipActionUserAuthDto" resultType="kr.co.clipsoft.repository.model.ClipUserDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_ID AS userId
+			, NAME AS name
+			, USE_YN AS useYN_stringValue
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM 
+			CLIP_USER
+		WHERE
+		 	USE_YN = 'Y'		 
+			AND USER_ID NOT IN
+				(
+					SELECT
+						USER_ID
+					FROM 
+						CLIP_ACTION_USER_AUTH
+					WHERE 
+						PRODUCT_ID = #{productId}
+						AND ACTION_CODE = #{actionCode}
+				)	
+			<if test="userId != null"> 
+			AND USER_ID LIKE #{userId}
+			</if>
+	</select>
+</mapper>

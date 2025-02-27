@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+	<title>Insert title here</title>
+	
+	<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
+	
+	<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+	
+		textarea {
+			display: block;
+			width: 400px;
+			height: 160px;
+		}
+		h2 {
+			margin: 0 0 1em 0;
+		}
+		button {
+			width: 200px;
+			height: 50px;
+		}
+	
+		.box {
+			background: yellow;
+			margin: 10px;
+			padding: 10px;
+		}
+		
+		textarea.result {
+			background-color: gray;
+			color: white;
+		}
+		
+		.categoryTitle {
+			background-color: aqua;
+			font-size: 20pt;
+			font-weight: blod;
+		}
+		
+		.header {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100px;
+			background-color: orange;
+			overflow: auto;
+		}
+		.header ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			float: left;
+		}
+		.header ul li {
+			margin: 0 0 5px 5px;
+			padding: 0;
+			cursor: pointer;
+		}
+		.header ul li:hover {
+			margin: 0 0 5px 5px;
+			padding: 0;
+			cursor: pointer;
+			background-color: yellow;
+		}
+		
+		.content { 
+			margin-top: 100px;
+		}
+	</style>
+	
+	<script>
+		function initBox0() { 
+			$('#box0 .callButton').click(function(){
+				var box = $('#box0');
+				
+				$.ajax({
+					url: './biz/nu/auth/login',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+				  		userId : box.find('.userId').val()
+					    , password : box.find('.password').val()
+					}
+				}).done(function(data){
+					$('#box0 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		
+		function initBox1() { 
+			$('#box1 .callButton').click(function(){
+				var box = $('#box1');
+				
+				$.ajax({
+					url: './biz/nu/member/category/getList',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					}
+				}).done(function(data){
+					$('#box1 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+
+		function initBox2() { 
+			$('#box2 .callButton').click(function(){
+				var box = $('#box2');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.documentCode = box.find('.documentCode').val();
+				
+				
+				$.ajax({
+					url: './biz/nu/member/form/insertDocumentCode',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)		
+					}
+				}).done(function(data){
+					$('#box2 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+
+		function initBox3() { 
+			$('#box3 .callButton').click(function(){
+				var box = $('#box3');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				
+				$.ajax({
+					url: './biz/nu/member/form/getDocumentCode',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {
+					    parameter : JSON.stringify(parameter)	
+					}
+				}).done(function(data){
+					$('#box3 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+
+
+		function initBox4() { 
+			$('#box4 .callButton').click(function(){
+				var box = $('#box4');
+				
+				$.ajax({
+					url: './biz/nu/auth/getCompanyCode',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {	
+					}
+				}).done(function(data){
+					$('#box4 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+
+		function initBox5() { 
+			$('#box5 .callButton').click(function(){
+				var box = $('#box5');
+				var parameter = {};
+				parameter.formId = box.find('.formId').val();
+				parameter.effective = box.find('.effective').val();
+				parameter.myInstitution = box.find('.myInstitution').val();
+				
+				$.ajax({
+					url: './biz/nu/member/category/getList/CategoryAndForm',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {	
+					    parameter : JSON.stringify(parameter)	
+					}
+				}).done(function(data){
+					$('#box5 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		function initBox6() { 
+			$('#box6 .callButton').click(function(){
+				var box = $('#box6');
+				
+				$.ajax({
+					url: './biz/nu/auth/continuation',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {	
+					}
+				}).done(function(data){
+					$('#box6 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+
+		function initBox7() { 
+
+			$('#box7 .callButton').click(function(){
+
+				var box = $('#box7');
+
+				var parameter = {};
+
+				parameter.formId = box.find('.formId').val();
+
+				parameter.formCode = box.find('.formCode').val();
+
+				parameter.formVersion = box.find('.formVersion').val();
+
+				parameter.dataXml = box.find('.dataXml').val();
+
+				parameter.completeYN = box.find('.completeYN').val();
+
+				parameter.lastYN = box.find('.lastYN').val();
+
+				parameter.ocrTag = box.find('.ocrTag').val();
+
+
+
+				
+
+				$.ajax({
+
+					url: './biz/nu/member/viewer/eForm25/insert/nuData',
+
+				  	type: 'post',
+
+				  	datatype: 'json',
+
+				  	data: {	
+
+					    parameter : JSON.stringify(parameter)	
+
+					}
+
+				}).done(function(data){
+
+					$('#box7 .result').val(JSON.stringify(data));
+
+				});
+
+			});	
+
+		}
+		function initBox8() { 
+			$('#box7 .callButton').click(function(){
+				var box = $('#box7');
+				var parameter = {};
+				parameter.formId  = box.find('.formId').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.documentCode  = box.find('.documentCode').val();
+				parameter.formCategoryId = box.find('.formCategoryId').val();
+				parameter.createDate  = box.find('.createDate').val();
+				parameter.createUserId = box.find('.createUserId').val();
+				parameter.updateDate = box.find('.updateDate').val();
+				parameter.updateUserId = box.find('.updateUserId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.formData  = box.find('.formData').val();
+				parameter.commitComment  = box.find('.commitComment').val();
+				parameter.publicationYN  = box.find('.publicationYN').val();
+				
+				$.ajax({
+					url: './biz/nu/member/form/newmig',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {	
+				  	    parameter : JSON.stringify(parameter)	
+					}
+				}).done(function(data){
+					$('#box7 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		function initBox9() { 
+			$('#box8 .callButton').click(function(){
+				var box = $('#box8');
+				var parameter = {};
+				parameter.formId  = box.find('.formId').val();
+				parameter.formName = box.find('.formName').val();
+				parameter.documentCode  = box.find('.documentCode').val();
+				parameter.formCategoryId = box.find('.formCategoryId').val();
+				parameter.createDate  = box.find('.createDate').val();
+				parameter.createUserId = box.find('.createUserId').val();
+				parameter.updateDate = box.find('.updateDate').val();
+				parameter.updateUserId = box.find('.updateUserId').val();
+				parameter.formVersion = box.find('.formVersion').val();
+				parameter.formData  = box.find('.formData').val();
+				parameter.commitComment  = box.find('.commitComment').val();
+				parameter.publicationYN  = box.find('.publicationYN').val();
+				
+				$.ajax({
+					url: './biz/nu/member/form/new/versionmig',
+				  	type: 'post',
+				  	datatype: 'json',
+				  	data: {	
+				  	    parameter : JSON.stringify(parameter)	
+					}
+				}).done(function(data){
+					$('#box8 .result').val(JSON.stringify(data));
+				});
+			});	
+		}
+		$(document).ready(function(){
+			initBox0();
+			initBox1();
+			initBox2();
+			initBox3();
+			initBox4();
+			initBox5();
+			initBox6();
+			initBox7();
+			initBox8();
+			initBox9();
+		});
+		
+		function toScrollPosition(targetSelector) { 
+			$(window).scrollTop($(targetSelector).offset().top - 100);
+		}
+	</script>
+</head>
+<body>
+	<div class="header">
+		<ul>
+			<li onclick="toScrollPosition('#box0')">/biz/nu/auth/login</li>
+			<li onclick="toScrollPosition('#box6')">/biz/nu/auth/continuation</li>
+			<li onclick="toScrollPosition('#box1')">/biz/nu/member/category/getList</li>
+			<li onclick="toScrollPosition('#box2')">/biz/nu/member/form/insertDocumentCode</li>
+			<li onclick="toScrollPosition('#box3')">/biz/nu/member/form/getDocumentCode</li>
+			<li onclick="toScrollPosition('#box4')">/biz/nu/auth/getCompanyCode</li>
+			<li onclick="toScrollPosition('#box5')">/biz/nu/member/category/getList/CategoryAndForm</li>
+			<li onclick="toScrollPosition('#box7')">/biz/nu/member/viewer/eForm25/insert/nuData</li>
+			<li onclick="toScrollPosition('#box8')">/biz/nu/member/form/newmig</li>
+			<li onclick="toScrollPosition('#box9')">/biz/nu/member/form/new/versionmig</li>
+		</ul>
+	</div>
+	
+	<div id="box0" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/auth/login</h2>
+		userId : <input class="userId" type="text" value="dpTablo" /><br />
+		password : <input class="password" type="password" value="1234" /><br />
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	
+	<div id="box6" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/auth/continuation</h2>
+		<button class="callButton">연장</button>
+		<textarea class="result"></textarea>
+	</div>
+	
+	<div id="box1" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/member/category/getList</h2>
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	<div id="box2" class="box" style="margin-top: 100px;">
+		formId : <input class="formId" type="text" value="" /><br />
+		documentCode : <input class="documentCode" type="text" value="" /><br />
+		<h2>/biz/nu/member/form/insertDocumentCode</h2>
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	<div id="box3" class="box" style="margin-top: 100px;">
+		formId : <input class="formId" type="text" value="" /><br />
+		<h2>/biz/nu/member/form/getDocumentCode</h2>
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	<div id="box4" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/auth/getCompanyCode</h2>
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	<div id="box5" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/member/category/getList/CategoryAndForm</h2>
+		itemName : <input class="userId" type="text" value="" /><br />
+		effective : <input class="effective" type="text" value="" /><br />
+		myInstitution : <input class="myInstitution" type="text" value="" /><br />
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	
+
+	<div id="box7" class="box" style="margin-top: 100px;">
+
+		<h2>/biz/nu/member/viewer/eForm25/insert/nuData</h2>
+
+		formId : <input class="formId" type="text" value="1" /><br />
+
+		formCode : <input class="formCode" type="text" value="" /><br />
+
+		formVersion : <input class="formVersion" type="text" value="4" /><br />
+
+		dataXml : <input class="dataXml" type="text" value="<xml>" /><br />
+
+		completeYN : <input class="completeYN" type="text" value="Y" /><br />
+
+		lastYN : <input class="lastYN" type="text" value="Y" /><br />
+
+		ocrTag : <input class="ocrTag" type="text" value="+1234567+" /><br />
+
+		<button class="callButton">호출</button>
+
+		<textarea class="result"></textarea>
+
+	</div>
+	<div id="box8" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/member/form/newmig</h2>
+		formId : <input class="formId" type="text" value="111000" /><br />
+		formName : <input class="formName" type="text" value="테스트서식1" /><br />
+		documentCode : <input class="documentCode" type="text" value="000111" /><br />
+		formCategoryId : <input class="formCategoryId" type="text" value="10" /><br />
+		createDate : <input class="createDate" type="text" value="2017-05-30 15:44:33" /><br />
+		createUserId : <input class="createUserId" type="text" value="20170530" /><br />
+		updateDate : <input class="updateDate" type="text" value="2018-05-30 15:44:33" /><br />
+		updateUserId : <input class="updateUserId" type="text" value="20180530" /><br />
+		formVersion : <input class="formVersion" type="text" value="10" /><br />
+		formData : <input class="formData" type="text" value="FORMDATA" /><br />
+		commitComment : <input class="commitComment" type="text" value="COMMENT" /><br />
+		publicationYN : <input class="publicationYN" type="text" value="true" /><br />
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+	<div id="box9" class="box" style="margin-top: 100px;">
+		<h2>/biz/nu/member/form/new/versionmig</h2>
+		formId : <input class="formId" type="text" value="111000" /><br />
+		formName : <input class="formName" type="text" value="테스트서식1" /><br />
+		documentCode : <input class="documentCode" type="text" value="000111" /><br />
+		formCategoryId : <input class="formCategoryId" type="text" value="10" /><br />
+		createDate : <input class="createDate" type="text" value="2017-05-30 15:44:33" /><br />
+		createUserId : <input class="createUserId" type="text" value="20170530" /><br />
+		updateDate : <input class="updateDate" type="text" value="2018-05-30 15:44:33" /><br />
+		updateUserId : <input class="updateUserId" type="text" value="20180530" /><br />
+		formVersion : <input class="formVersion" type="text" value="11" /><br />
+		formData : <input class="formData" type="text" value="FORMDATA2" /><br />
+		commitComment : <input class="commitComment" type="text" value="COMMENT2" /><br />
+		publicationYN : <input class="publicationYN" type="text" value="false" /><br />
+		<button class="callButton">호출</button>
+		<textarea class="result"></textarea>
+	</div>
+</body>
+</html>

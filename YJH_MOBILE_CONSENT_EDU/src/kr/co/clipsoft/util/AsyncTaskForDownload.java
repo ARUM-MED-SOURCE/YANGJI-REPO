@@ -52,7 +52,7 @@ public class AsyncTaskForDownload extends AsyncTask<String, String, String> {
 
 		ClipHttpDownlaodConnection httpDownloadCon = new ClipHttpDownlaodConnection();
 
-		String downloadUrl = "https://192.168.4.30/apk/edu"; // by sangu02 2025-02-24 FTP 다운로드 주소
+		String downloadUrl = "https://192.168.4.30/apk/dev"; // by sangu02 2025-02-24 FTP 다운로드 주소
 		downloadPath = Environment.getExternalStorageDirectory().toString() + "/CLIPe-Form/CONSENT/UPDATE";
 		// downloadPath = Environment.getExternalStorageDirectory().toString() +
 		// "/Download";
@@ -83,26 +83,15 @@ public class AsyncTaskForDownload extends AsyncTask<String, String, String> {
 			Uri apkPath;
 			String Fullpath = downloadPath + '/' + apkFileName;
 			// android 누가 버전부터 파일공유시에 FileProvider를 사용해야함.
-
 			String authorities = context.getPackageName() + ".fileprovider";
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-				Log.i(TAG, "[UPDATE] USE FileProvider : " + authorities);
-				Log.i(TAG, "[UPDATE] downloadPath : " + downloadPath);
-				Log.i(TAG, "[UPDATE] apkFileName : " + apkFileName);
-				Log.i(TAG, "[UPDATE] apkFileName : " + Fullpath);
-				// apkPath = FileProvider.getUriForFile(context, authorities, new
-				// File(downloadPath, apkFileName));
-			} else {
-				Log.i(TAG, "[UPDATE] NOT USE FileProvider : " + downloadPath + File.separator + apkFileName);
-				// apkPath = Uri.fromFile(new File(downloadPath+File.separator+apkFileName));
-			}
 			apkPath = FileProvider.getUriForFile(context, authorities, new File(downloadPath, apkFileName));
-			Intent i = new Intent();
-			i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-			i.setAction(Intent.ACTION_VIEW);
-			i.setDataAndType(apkPath, "application/vnd.android.package-archive");
-			this.context.startActivity(i);
+			Intent intent = new Intent();
+
+			intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(apkPath, "application/vnd.android.package-archive");
+			intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+			this.context.startActivity(intent);
 
 		} else {
 			Log.i(TAG, "[onPostExecute] apk파일이 없어서 업데이트를 할 수 없습니다.");

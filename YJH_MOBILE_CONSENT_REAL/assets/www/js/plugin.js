@@ -88,8 +88,7 @@ ITnadePlugin.prototype.CertBatchDel = function (dnsuffix) {
 
 
 ITnadePlugin.prototype.checkpwd = function (id, password) { //
-  var callbackSuccess = function (result) {  
-	alert("checkPwd success result : " + result.toString());
+  var callbackSuccess = function (result) {
     if (result.ret == true) { 
       //ITnadePlugin.prototype.getMessage(id, password); 
         $('#sign_popup').css('display','none'); 

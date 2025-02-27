@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_MANAGE_ID"> 
+   	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipManageIdDto" resultType="kr.co.clipsoft.repository.model.ClipManageIdDto">
+   		SELECT 
+   			PRODUCT_ID AS productId
+   			, KEY AS key
+   			, VALUE AS value
+   			, CREATE_DATE AS createDate
+   			, CREATE_USER_ID AS createUserId
+   			, UPDATE_DATE AS updateDate
+   			, UPDATE_USER_ID AS updateUserId
+   		FROM
+   			CLIP_MANAGE_ID
+   		WHERE
+   			PRODUCT_ID = #{productId}
+   			AND KEY = #{key}
+   	</select>
+   	
+   	<update id="increaseValue" parameterType="kr.co.clipsoft.repository.model.ClipManageIdDto">
+   		UPDATE
+   			CLIP_MANAGE_ID
+   		SET
+   			VALUE = VALUE + 1
+   		WHERE
+   			PRODUCT_ID = #{productId}
+   			AND KEY = #{key}
+   	</update>
+</mapper>

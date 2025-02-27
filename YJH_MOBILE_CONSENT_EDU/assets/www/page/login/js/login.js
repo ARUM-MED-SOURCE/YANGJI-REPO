@@ -445,7 +445,7 @@ function fnLoginConditionCheck() {
 							if ($(result).find('data').length > 0) {
 								$(result).find('data').each(function () {
 									if ($(this).find('login').text() != 'false') { 
-									 	applydevice = $(this).find('applydevice').text();   
+									 	applydevice = $(this).find('applydevice').text();
 									 	if(applydevice =="Y"){ 
 											if ($('#_DeviceUUID').text() == "미등록") {
 												alert("단말기가 등록되어있지 않습니다. \n정보운영팀에서 등록 바랍니다.");
@@ -510,8 +510,16 @@ function fnLoginConditionCheck() {
 												$('.login_section').css('display', 'none');
 												$('.choice_Dept').css('display', 'block'); 
 												applyduty = $(this).find('applyduty').text();
-												jobkindcd = $(this).find('jobkindcd').text(); 
-												licnsno = $(this).find('licnsno').text();
+												jobkindcd = $(this).find('jobkindcd').text(); 													/**
+												 /*  by sangu02 면허번호 로직 수정
+												 *  유저 데이터는 여러 row가 넘어옴,
+												 *  면허번호가 비어있는 row도 있기때문에 교육에서는 해당 코드 적용
+												 *  추후에 운영도 확인
+												 */
+												if($(this).find('licnsno').text() != '')
+													licnsno = $(this).find('licnsno').text();
+												console.log($(this).find('licnsno').text());
+												console.log('licnsno : ' + licnsno );
 												medispclno = $(this).find('medispclno').text();
 												depthngnm = $(this).find('depthngnm').text();
 
@@ -638,8 +646,6 @@ function fnGoPage(params) {
 	localStorage.setItem("userGroupCode", params.userGroupCode);
 	localStorage.setItem("jobkindcd", params.jobkindcd);
 	localStorage.setItem("docYN", params.docYN);
-//	alert("사용자 인증 비밀번호 초기화");
-//	localStorage.setItem("signPwd", "");
 	COMMON.plugin.storage("set", params, function () {
 		loadingbar_display();
 		location.href = '../main/main.html';

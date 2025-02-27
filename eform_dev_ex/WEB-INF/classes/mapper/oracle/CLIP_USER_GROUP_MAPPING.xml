@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_USER_GROUP_MAPPING">
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupMappingDto">
+		INSERT
+		INTO CLIP_USER_GROUP_MAPPING ( 
+			PRODUCT_ID
+			, USER_ID
+			, USER_GROUP_ID
+			, CREATE_DATE
+			, CREATE_USER_ID
+			, UPDATE_DATE
+			, UPDATE_USER_ID
+		) VALUES (
+			#{productId}
+			, #{userId}
+			, #{userGroupId}
+			, SYSDATE
+			, #{createUserId}
+			, SYSDATE
+			, #{updateUserId}
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupMappingDto">
+		DELETE
+		FROM
+			CLIP_USER_GROUP_MAPPING
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+			AND USER_GROUP_ID = #{userGroupId}
+	</delete>
+	
+	<select id="get" resultType="kr.co.clipsoft.repository.model.ClipUserGroupMappingDto">
+		SELECT
+			PRODUCT_ID AS productId
+			, USER_ID AS userId
+			, USER_GROUP_ID AS userGroupId
+			, CREATE_DATE AS createDate
+			, CREATE_USER_ID AS createUserId
+			, UPDATE_DATE AS updateDate
+			, UPDATE_USER_ID AS updateUserId
+		FROM
+			CLIP_USER_GROUP_MAPPING
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_ID = #{userId}
+			AND USER_GROUP_ID = #{userGroupId}
+	</select>
+	
+	<select id="getGroupList" resultType="kr.co.clipsoft.repository.model.ClipUserGroupMappingDto">
+		SELECT
+			m.PRODUCT_ID AS productId
+			, m.USER_ID AS userId
+			, m.USER_GROUP_ID AS userGroupId
+			, m.CREATE_DATE AS createDate
+			, m.CREATE_USER_ID AS createUserId
+			, m.UPDATE_DATE AS updateDate
+			, m.UPDATE_USER_ID AS updateUserId
+		FROM
+			(
+				SELECT
+					* 
+				FROM 
+					CLIP_USER_GROUP_MAPPING
+				WHERE 
+					PRODUCT_ID = #{productId}
+			AND USER_ID = #{id}
+			) m
+		INNER JOIN 
+		(
+			SELECT 
+				USER_GROUP_ID 
+			FROM 
+				CLIP_USER_GROUP 
+			WHERE 
+				USE_YN='Y'
+				AND USER_GROUP_ID LIKE #{keyword}
+		) g
+		ON m.USER_GROUP_ID = g.USER_GROUP_ID
+	</select>
+	
+		<select id="getUserList" resultType="kr.co.clipsoft.repository.model.ClipUserGroupMappingDto">
+		SELECT
+			m.PRODUCT_ID AS productId
+			, m.USER_ID AS userId
+			, m.USER_GROUP_ID AS userGroupId
+			, m.CREATE_DATE AS createDate
+			, m.CREATE_USER_ID AS createUserId
+			, m.UPDATE_DATE AS updateDate
+			, m.UPDATE_USER_ID AS updateUserId
+		FROM
+			(
+				SELECT
+					* 
+				FROM 
+					CLIP_USER_GROUP_MAPPING
+				WHERE 
+					PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{id}
+			) m
+		INNER JOIN 
+		(
+			SELECT 
+				USER_ID 
+			FROM 
+				CLIP_USER
+			WHERE 
+				USE_YN='Y'
+				AND USER_ID LIKE #{keyword}
+		) u
+		ON m.USER_ID = u.USER_ID
+	</select>
+	
+</mapper>

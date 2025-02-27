@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_USER_GROUP">
+	<sql id="ALL_COLUMN">
+		PRODUCT_ID
+		, USER_GROUP_ID
+		, NAME
+		, USE_YN
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+	<sql id="ALL_COLUMN_RENAME">
+		PRODUCT_ID AS productId
+		, USER_GROUP_ID AS userGroupId
+		, NAME AS name
+		, USE_YN AS useYN_stringValue
+		, CREATE_DATE AS createDate
+		, CREATE_USER_ID AS createUserId
+		, UPDATE_DATE AS updateDate
+		, UPDATE_USER_ID AS updateUserId
+	</sql>
+
+	<insert id="insert" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+	 	INSERT
+	 	INTO CLIP_USER_GROUP(
+	 		<include refid="ALL_COLUMN"></include>
+	 	) VALUES(
+	 		#{productId}
+	 		, #{userGroupId}
+	 		, #{name}
+	 		, #{useYN_stringValue}
+	 		, SYSDATE
+	 		, #{createUserId}
+	 		, SYSDATE
+	 		, #{updateUserId}
+		)
+	</insert>
+	
+	<update id="update" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		UPDATE
+			CLIP_USER_GROUP
+		SET
+			NAME = #{name}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+	</update>
+	
+	<update id="update_useYN" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		UPDATE
+			CLIP_USER_GROUP
+		SET
+			USE_YN = #{useYN_stringValue}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER_ID = #{updateUserId}
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+	</update>
+	
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipUserGroupDto" resultType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		SELECT
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM
+			CLIP_USER_GROUP
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND USER_GROUP_ID = #{userGroupId}
+	</select>
+	
+	<select id="getList" parameterType="kr.co.clipsoft.repository.model.ClipSearchDto" resultType="kr.co.clipsoft.repository.model.ClipUserGroupDto">
+		SELECT 
+			<include refid="ALL_COLUMN_RENAME"></include>
+		FROM
+		(
+			SELECT 
+				* 
+			FROM
+				CLIP_USER_GROUP
+			WHERE
+				PRODUCT_ID = #{productId}						
+				<if test="useYN != null">
+				AND USE_YN = #{useYN_stringValue}
+				</if>		
+				<if test="id != null"> 
+				AND  USER_GROUP_ID NOT IN 
+					(
+						SELECT 
+							USER_GROUP_ID 
+						FROM 
+							CLIP_USER_GROUP_MAPPING 
+						WHERE
+							USER_ID = #{id}
+					)
+				</if>
+		)
+		WHERE
+			USER_GROUP_ID LIKE #{keyword}
+	</select>
+</mapper>

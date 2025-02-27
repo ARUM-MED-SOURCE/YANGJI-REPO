@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CLIP_CODE">
+	<sql id="ALL_COLUMN">
+		PRODUCT_ID
+		, CODE
+		, CODE_DIV
+		, NAME
+		, SEQ
+		, DESCRIPTION
+		, CREATE_DATE
+		, CREATE_USER_ID
+		, UPDATE_DATE
+		, UPDATE_USER_ID
+	</sql>
+
+	<select id="get" parameterType="kr.co.clipsoft.repository.model.ClipCodeDto" resultType="kr.co.clipsoft.repository.model.ClipCodeDto">
+		SELECT
+			<include refid="ALL_COLUMN"></include>
+		FROM
+			CLIP_CODE
+		WHERE
+			PRODUCT_ID = #{productId}
+			AND CODE = #{code}
+	</select>
+</mapper>

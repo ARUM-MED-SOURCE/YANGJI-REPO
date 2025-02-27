@@ -195,6 +195,7 @@ public class NuConsentServiceimpl extends ClipMybatisSupport implements NuConsen
                 formExDto.getCertNeedCnt().toString());
         formExDto.setCertNeedCnt(Integer.valueOf(certNeedCnt));
 
+        logger.info(" ");
         // 과거 환자가 작성한 동의서 리스트
         List<NuConsentMstDto> writedMstDtos = nuConsentDao.getConsentMsts(mstDto);
 
