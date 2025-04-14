@@ -910,14 +910,15 @@
         AND CONSENT_STATE = 'TEMP' 
         AND COSIGN_DEPT_CODE IS NULL
     </update>
-    
+
+	<!-- by sangu02 2025/04/14 인덱스 삽입 오류로 인한 max 조건 변경 -->
 	<select id="getConsentXmlData" parameterType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto" resultType="kr.co.clipsoft.biz.model.consent.NuConsentDataDto">
 		SELECT mainCd.FORM_XML formXmlByteValue
 		  FROM CONSENT_DATA mainCd
 		 WHERE 1=1
 		   and mainCd.CONSENT_MST_RID = #{consentMstRid} 
-		   and mainCd.CONSENT_DATA_RID = (
-                                   select max(consent_data_rid)
+		   and mainCd.CREATE_DATETIME = (
+                                   select max(create_datetime)
                                      from CONSENT_DATA cd
                                     where cd.CONSENT_MST_RID = #{consentMstRid}
                                   )
