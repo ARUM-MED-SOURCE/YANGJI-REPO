@@ -457,6 +457,8 @@ body {min-width:0px;min-height:0px;background-color:#f5f5f5;overflow:hidden;}
 	min-height:600px;		/* 갤럭시 탭 S3 9.7인치 기준 1000*740 100% */
 	overflow:hidden;
 }
+
+
 .header {
 	-webkit-box-flex:0 0 120px;
 	-ms-flex:0 0 120px;

@@ -11,6 +11,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import kr.co.clipsoft.util.EFromViewer;
+
 public class SaveValidationCheckManager {
 
 	/**
@@ -48,7 +50,7 @@ public class SaveValidationCheckManager {
 			}
 
 		} catch (Exception e) {
-			System.out.println("isSamePidAndOcrTagInForm ERROR : " + e.toString());
+			EFromViewer.writeLog("isSamePidAndOcrTagInForm ERROR : " + e.toString());
 		} finally {
 
 			if (xpath != null) {

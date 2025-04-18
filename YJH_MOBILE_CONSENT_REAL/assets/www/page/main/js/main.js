@@ -354,6 +354,9 @@ $(document).ready(function () {
                             timeout: 40000,
                             success: function (result) {
                             	COMMON.plugin.loadingBar("hide", "");
+                            	alert('submit_id=DXMRF00115&business_id=mr&instcd=204&ocrtag=' + jsObj.ocrTag + "&updtdt=" + new Date().YYYYMMDDHHMMSS() + "&updtdeptcd=" + getLocalStorage("userDeptCode") +
+                                "&updtuserid=" + getLocalStorage("userId") + "&pagecnt=1" + "&scanpagecnt=0&scanyn=N&mstatcd=E&hstatcd=D&rid=" + jsObj.consentMstRid +
+                                "&drsign=-&nrsign=-&patsign=-&procersign=-&etcsign=-&printsource=M");
                                 alert("임시저장 동의서 삭제가 완료되었습니다.");
                                 fnAllSearchConsent();
                             },
@@ -5861,7 +5864,6 @@ function consentSearchSuccessHandler(resData, type) {
                                   if (nurscert_Flag) {
                                       localStorage.setItem("nurscertAndDoctor", "true"); 
                                       COMMON.plugin.loadingBar("hide", "뷰어를 실행하는 중입니다.");
-                                      alert("여기2?");
                                       if (getLocalStorage("signPwd") == "" || getLocalStorage("signPwd") == null || getLocalStorage("signPwd") == undefined) {
                                           $('#sign_popup').css('display', 'block');
                                           $('#_certpassword').focus();
@@ -6067,7 +6069,8 @@ function consentAllSearchSuccessHandler(resData) {
             // 인증 저장 삭제 추가 2021-10-25
             if(getLocalStorage("aprecupdtyn") == "Y"){
             	if ( consent.ConsentState == "TEMP" && (consent.cosignDeptCode == "-1" || consent.cosignDeptCode == undefined)) {
-                    if (consent.modifyUserDeptCd == getLocalStorage("userDeptCode") && consent.useYn == "Y") {
+
+            		if (consent.modifyUserDeptCd == getLocalStorage("userDeptCode") && consent.useYn == "Y") {
                         li.append("<div class='tempConsentDelete' style='z-index:9400; border: 0px currentColor;min-width:40px; position:flex;right:0px; width: 40px; height: 40px; margin-top: 10px; float: right;' > <img class='tempDelete' style='border: 0px currentColor;  width: 100%; height: 100%;' src='../../images/trash_delete.png'></img></div>")
                     }
                 }else if (consent.ConsentState == "ELECTR_CMP" && (consent.cosignDeptCode == "-1" || consent.cosignDeptCode == undefined)) {
@@ -6079,7 +6082,8 @@ function consentAllSearchSuccessHandler(resData) {
                 }
             }else{
             	if (( consent.ConsentState == "TEMP") && (consent.cosignDeptCode == "-1" || consent.cosignDeptCode == undefined)) {
-                    if (consent.modifyUserDeptCd == getLocalStorage("userDeptCode") && consent.useYn == "Y") {
+                    //consent.modifyUserDeptCd == getLocalStorage("userDeptCode") && 원복하셈
+            		if ( consent.useYn == "Y") {
                         li.append("<div class='tempConsentDelete' style='z-index:9400; border: 0px currentColor;min-width:40px; position:flex;right:0px; width: 40px; height: 40px; margin-top: 10px; float: right;' > <img class='tempDelete' style='border: 0px currentColor;  width: 100%; height: 100%;' src='../../images/trash_delete.png'></img></div>")
                     }
                 }
@@ -7291,7 +7295,6 @@ function searchCosignSend() {
         "searchMode": "cosign-send",
         "userId": getLocalStorage("userId")
     }
-    //			alert(JSON.stringify(value));
     COMMON.plugin.wifiCheck(wifiCheckFn);
     var checkVal = localStorage.getItem("wifiCheckVal");
     if (checkVal < -90) { 

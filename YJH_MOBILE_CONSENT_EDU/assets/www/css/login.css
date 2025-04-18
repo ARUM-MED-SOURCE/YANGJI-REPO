@@ -501,10 +501,11 @@ h1 {
   top: 20px;
 }
 
+/*by sangu02 2025-03-21 배경사진 변경으로 인한 높이 550px -> 100%변경*/
 #hospital_image {
   position: absolute;
   bottom: -10px;
-  height: 550px;
+  height: 100%;
   width: 55%;
   z-index: 9901;
 }

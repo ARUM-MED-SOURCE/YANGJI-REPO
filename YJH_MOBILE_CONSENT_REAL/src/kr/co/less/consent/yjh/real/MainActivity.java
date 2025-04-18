@@ -28,17 +28,23 @@ import org.apache.cordova.CordovaActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -187,6 +193,8 @@ public class MainActivity extends CordovaActivity {
 		Log.i(TAG, "[verificationPermission] 권한 허용 여부");
 		Log.i(TAG, "[verificationPermission] Android Version : " + CommonUtil.getInstance(context).getAndroidVersion());
 		// 안드로이드 마시멜로우 버전(23)부터는 중요 권한을 사용자에게 부여받아야만 한다.
+		setBatteryOptimizations();
+		
 		if (CommonUtil.getInstance(context).getAndroidVersion() < 23) {
 			if (!isStart) {
 				activityStart();
@@ -213,5 +221,37 @@ public class MainActivity extends CordovaActivity {
 			permissionHelper.showCustomPermissionsDialog();
 		}
 	}
+	
+	// 전자동의서 어플 배터리 최적화 모드 해제
+	private void setBatteryOptimizations() {
+		PowerManager pm = (PowerManager) getSystemService(context.POWER_SERVICE);
+		boolean isWhiteListing = false;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+			isWhiteListing = pm.isIgnoringBatteryOptimizations(context.getPackageName());
+		}
+		if (!isWhiteListing) {
+			AlertDialog.Builder setdialog = new AlertDialog.Builder(MainActivity.this);
+			setdialog.setTitle("권한이 필요합니다.")
+					.setMessage("전자동의서를 사용하기 위해서는 \"배터리 사용량 최적화\" 목록에서 제외하는 권한이 필요합니다. 계속하시겠습니까?")
+					.setCancelable(false)
+					.setPositiveButton("예", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+							
+							intent.setData(Uri.parse("package:" + context.getPackageName()));
+							context.startActivity(intent);
+						}
+					}).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Toast.makeText(MainActivity.this, "해당 권한을 허용하지 않으면 앱이 정상적으로 동작하지 않습니다.\n앱을 종료합니다.", Toast.LENGTH_SHORT)
+									.show();
+							dialog.cancel();
+							((Activity) context).finish();
+						}
+					}).create().show();
+			}
+		}
  
 }

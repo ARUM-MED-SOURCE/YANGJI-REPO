@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest android:hardwareAccelerated="true" android:versionCode="103" android:versionName="YJH_CONSENT_SIGN_REAL_V_1.03" package="kr.co.less.consent.yjh.real" xmlns:android="http://schemas.android.com/apk/res/android" >
+<manifest android:hardwareAccelerated="true" android:versionCode="108" android:versionName="YJH_CONSENT_SIGN_REAL_V_1.08" package="kr.co.less.consent.yjh.real" xmlns:android="http://schemas.android.com/apk/res/android" >
     <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
     <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28" />
     

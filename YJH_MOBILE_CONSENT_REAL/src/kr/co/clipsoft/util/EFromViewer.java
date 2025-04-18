@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaWebView;
@@ -138,6 +141,74 @@ public class EFromViewer {
 		}
 	}
 	
+	/**
+	 * @author sangU02
+	 * @since 2025/03/26
+	 * @param 내부저장소
+	 *            경로, 삭제 설정 일수
+	 */
+	private static void deleteOldLogs(File dir, int days) {
+		if (!dir.exists() || !dir.isDirectory()) {
+			return;
+		}
+
+		// 현재 시간
+		long currentTime = System.currentTimeMillis();
+
+		// 디렉토리 내의 파일들을 검사
+		for (File file : dir.listFiles()) {
+			// 파일 이름이 "timer_log_"로 시작하는지 확인
+			if (file.getName().startsWith("timer_log_")) { // 업무앱 로그
+				writeLog("업무앱 로그 삭제");
+				// 파일의 마지막 수정 시간이 기준일보다 이전인지 확인
+				long diff = currentTime - file.lastModified();
+				if (TimeUnit.MILLISECONDS.toDays(diff) > days) {
+					// 파일 삭제
+					if (!file.delete()) {
+						writeLog("Failed to delete log file: " + file.getName());
+					}
+				}
+			}else if (file.getName().startsWith("logcat_")) {
+				writeLog("로그캣  로그 삭제");
+				long diff = currentTime - file.lastModified();
+				if (TimeUnit.MILLISECONDS.toDays(diff) > days) {
+					// 파일 삭제
+					if (!file.delete()) {
+						writeLog("Failed to delete log file: " + file.getName());
+					}
+				}
+			}else if (file.getName().startsWith("BackUP_Viewer_Log_")) {
+				writeLog("BackUP_Viewer_log 삭제");
+	            // 파일 이름에서 yyyy-MM-dd 패턴을 추출
+	            String fileName = file.getName();
+	            Pattern pattern = Pattern.compile("BackUP_Viewer_Log_(\\d{4}-\\d{2}-\\d{2})");
+	            Matcher matcher = pattern.matcher(fileName);
+	            
+	            if (matcher.find()) {
+	                // 추출한 날짜 문자열
+	                String dateString = matcher.group(1);
+	                
+	                try {
+	                    // 날짜 형식 지정 (yyyy-MM-dd)
+	                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                    Date fileDate = dateFormat.parse(dateString);
+	                    long fileTime = fileDate.getTime();
+	                    
+	                    // 파일의 날짜와 현재 시간 비교
+	                    long diff = currentTime - fileTime;
+	                    if (TimeUnit.MILLISECONDS.toDays(diff) > days) {
+	                        if (!file.delete()) {
+	                            System.err.println("Failed to delete log file: " + file.getName());
+	                        }
+	                    }
+	                } catch (ParseException e) {
+	                    writeLog("Failed to parse date: " + dateString);
+	                }
+	            }
+	        }
+		}
+	}
+	
 	public EFromViewer(Context context, CordovaWebView m_oWeb, JSONObject params, JSONArray consents,
 			CallbackContext callbackContext) {
 		this.context = context;
@@ -161,6 +232,10 @@ public class EFromViewer {
 		MODE = Storage.getInstance(context).getStorage("mode");
 		SERVICE_URL = Storage.getInstance(context).getStorage("serviceUrl");// + "/ConsentSvc.aspx" ;
 		Log.i("EFromViewer", "[EFORM_URL ]: " + EFORM_URL);
+		File logDir = new File(Environment.getExternalStorageDirectory()+"/arum_log");
+
+		// 디렉토리 내의 오래된 로그 파일 삭제
+		deleteOldLogs(logDir, 7); // 
 	}
 
 	// e-from toolkit 초기화
@@ -569,7 +644,6 @@ public class EFromViewer {
 							Boolean patientCheck = svc.isSamePidAndOcrTagInForm(readFileString(formFilePath), patientCd,
 									consent.getString("ocrTag"));
 							// patientCheck = false;
-							System.out.println("patientCheck 결과 : " + patientCheck);
 
 							long tempSaveStartTime = System.currentTimeMillis();
 
@@ -974,7 +1048,6 @@ public class EFromViewer {
 
 				cosignFlag = consent.getString("cosignFlag");
 				Boolean recordFlag = false;
-
 				if (!consent.isNull("recordCnt")) {
 					// 녹취정보 있을경우 녹취 추가
 					if (!consent.getString("recordCnt").equals("0")) {
@@ -1416,7 +1489,11 @@ public class EFromViewer {
 						formListXml += "      <param key='bottom_time'><![CDATA[" + ClientTime + "]]></param>";
 						formListXml += "      <param key='barcode'><![CDATA[" + consent.getString("ocrTag")
 						+ "]]></param>";
-						 
+						// by sangu02 2025-03-20 신규서식일 시 유저명으로 간호사 파라미터명 추가
+						writeLog("usernm : " + consent.optString("usernm") );
+						formListXml += "<param key='nurse_name'><![CDATA[" + params.optString("usernm") + "]]></param>";	
+
+						
 						// 연명의료 서식
 						formListXml += "<param key='consent_certcnt'><![CDATA[0]]></param>";
 						formListXml += "<param key='consent_certneedcnt'><![CDATA["
@@ -1518,7 +1595,6 @@ public class EFromViewer {
 						formListXml += "</form>";
 
 					} else {// 신규아닌서식들
-
 						String fos = "<form name='" + consent.getString("FormName") + "' open-sequence='" + (i + 1)
 								+ "' path='" + EFORM_URL + "/biz/nu/member/viewer/eForm25/consent/data/formxml/get' ";
 						if (type.equals("end") || type.equals("endAddDoc") || type.equals("nurscertEnd")) {
@@ -1582,15 +1658,16 @@ public class EFromViewer {
 
 						if (params.getString("jobkindcd").substring(0, 2).equals("03")) {
 							if (consent.getString("certCnt").equals("0")) {
-								fos += "<param key='consent_doc1_nm'><![CDATA[" + params.getString("usernm")
-										+ "]]></param>";
-								// 서명
-								String url = SERVER_URL
-										+ "/cmcnu/webapps/mr/mr/formmngtweb/.live?submit_id=DRMRF02317&business_id=mr&userid="
-										+ params.getString("userId");
-								String signResult = service_submit(url, "sign", "");
-
-								fos += "<param key='consent_doc1_sign'><![CDATA[" + signResult + "]]></param>";
+								// 지금 현재는 인증저장이 아닌 임시저장으로 저장중이기때문에 certCnt가 0일수밖에없음
+//								fos += "<param key='consent_doc1_nm'><![CDATA[" + params.getString("usernm")
+//										+ "]]></param>";
+//								// 서명
+//								String url = SERVER_URL
+//										+ "/cmcnu/webapps/mr/mr/formmngtweb/.live?submit_id=DRMRF02317&business_id=mr&userid="
+//										+ params.getString("userId");
+//								String signResult = service_submit(url, "sign", "");
+//
+//								fos += "<param key='consent_doc1_sign'><![CDATA[" + signResult + "]]></param>";
 
 								fos += "<param key='consent_doc1_licnsno'><![CDATA[" + params.getString("LicenceNo")
 										+ "]]></param>";
@@ -1923,7 +2000,6 @@ public class EFromViewer {
 		try {
 			JSONObject timeObject = new JSONObject();
 			timeObject.put("asdf", "asdf");
-			writeLog("jie");
 			String strDdd = service_submit(EFORM_URL + "/biz/nu/member/viewer/eForm25/consent/nowtime/get", "gettime",
 					timeObject.toString());
 			writeLog("savetime : " + strDdd);
@@ -2529,24 +2605,10 @@ public class EFromViewer {
 							if (type.equals("save")) {
 								nuParam.put("scanyn", "Y");
 								// 연명 서식 아닐 경우
-								if (consent.getString("lifelong_kind").equals("")
-										|| consent.getString("lifelong_kind").equals("null")) {
-									nuParam.put("hstatcd", "C");
-								} else {// 연명 서식일 경우
-									int certneedcnt = Integer.parseInt(consent.getString("consent_certneedcnt"));
-									int certcnt = 0;
-
-									if (returnConsentState.equals("ELECTR_TEMP")) {
-										nuParam.put("hstatcd", "G"); // 진행플래그
-									} else {
-										nuParam.put("hstatcd", "C"); // 완료플래그
-									}
-
-									// if (certneedcnt - 1 == certcnt) {
-									// nuParam.put("hstatcd", "C"); // 완료플래그
-									// } else {
-									// nuParam.put("hstatcd", "G"); // 진행플래그
-									// }
+								if (returnConsentState.equals("ELECTR_TEMP")) {
+									nuParam.put("hstatcd", "G"); // 진행플래그
+								} else {
+									nuParam.put("hstatcd", "C"); // 완료플래그
 								}
 							} else {
 								nuParam.put("scanyn", "N");
@@ -2596,25 +2658,14 @@ public class EFromViewer {
 										nuParams.put("scanyn", "Y");
 
 										// 연명 서식 아닐 경우
-										if (consent.getString("lifelong_kind").equals("")
-												|| consent.getString("lifelong_kind").equals("null")) {
-											nuParams.put("hstatcd", "C");
-										} else {// 연명 서식일 경우
-											int certneedcnt = Integer
-													.parseInt(consent.getString("consent_certneedcnt"));
-											int certcnt = 0;
 
-											if (returnConsentState.equals("ELECTR_TEMP")) {
-												nuParams.put("hstatcd", "G"); // 진행플래그
-											} else {
-												nuParams.put("hstatcd", "C"); // 완료플래그
-											}
-											// if (certneedcnt - 1 == certcnt) {
-											// nuParams.put("hstatcd", "C"); // 완료플래그
-											// } else {
-											// nuParams.put("hstatcd", "G"); // 진행플래그
-											// }
-											// nuParams.put("hstatcd", "G"); // 진행플래그
+										int certneedcnt = Integer.parseInt(consent.getString("consent_certneedcnt"));
+										int certcnt = 0;
+
+										if (returnConsentState.equals("ELECTR_TEMP")) {
+											nuParams.put("hstatcd", "G"); // 진행플래그
+										} else {
+											nuParams.put("hstatcd", "C"); // 완료플래그
 										}
 
 										nuParams.put("scanpagecnt", imageCount);
@@ -2657,25 +2708,13 @@ public class EFromViewer {
 							if (type.equals("save")) {
 								nuParams.put("scanyn", "Y");
 
-								// 연명 서식 아닐 경우
-								if (consent.isNull("lifelong_kind")
-										|| consent.getString("lifelong_kind").equals("null")) {
-									nuParams.put("hstatcd", "C");
-								} else {// 연명 서식일 경우
-									int certneedcnt = Integer.parseInt(consent.getString("consent_certneedcnt"));
-									int certcnt = Integer.parseInt(consent.getString("certCnt"));
 
 									if (returnConsentState.equals("ELECTR_TEMP")) {
 										nuParams.put("hstatcd", "G"); // 진행플래그
 									} else {
 										nuParams.put("hstatcd", "C"); // 완료플래그
 									}
-									// if (certneedcnt - 1 == certcnt) {
-									// nuParams.put("hstatcd", "C"); // 완료플래그
-									// } else {
-									// nuParams.put("hstatcd", "G"); // 진행플래그
-									// }
-								}
+
 								nuParams.put("scanpagecnt", imageCount);
 							} else {
 								nuParams.put("scanyn", "N");

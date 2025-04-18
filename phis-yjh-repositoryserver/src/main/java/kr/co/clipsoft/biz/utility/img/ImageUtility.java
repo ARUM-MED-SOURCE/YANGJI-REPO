@@ -50,6 +50,14 @@ public class ImageUtility {
 
 		for (MultipartFile mImageFile : imageFiles) {
 
+			File rootDir = new File("/imgemr/slt");
+			if(!rootDir.exists()){
+				logger.error("루트 디렉터리가 존재하지 않습니다.");
+				throw new BusinessException(BizErrorInfo.ERROR_IMAGE_UPLOAD_NAS);
+			}else{
+				logger.info("루트 디렉터리가 존재합니다.");
+			}
+
 			String imageFileName = mImageFile.getOriginalFilename();
 			String imageFileDirPath = imageDto.getImgFileSubPath() + File.separator + strNowTime;
 			logger.debug("image Util Param Info imageFileName : " + imageFileName + ", imageFileDirPath : " + imageFileDirPath +
